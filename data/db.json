@@ -1,0 +1,1201 @@
+{
+  "products": [
+    {
+      "id": "zk-101",
+      "name": "Gulmohar Rose-Gold Embroidered Anarkali Set",
+      "category": "Anarkali Kurtis",
+      "originalPrice": 4999,
+      "discountedPrice": 3299,
+      "discountPercent": 34,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        {
+          "name": "Blush Pink",
+          "hex": "#E8C5C8"
+        },
+        {
+          "name": "Ivory Cream",
+          "hex": "#FDFBF7"
+        },
+        {
+          "name": "Rose Gold",
+          "hex": "#C69888"
+        }
+      ],
+      "fabric": "Pure Chanderi Silk & Organza",
+      "description": "An ethereal floor-length Anarkali kurti crafted from gossamer Chanderi silk with delicate rose-gold gota patti and zardozi embroidery along the yoke, sleeve cuffs, and grand hem flare. Includes matching modal churidar and hand-embroidered organza dupatta.",
+      "inStock": true,
+      "stockQuantity": 38,
+      "isNewArrival": true,
+      "isBestSeller": true,
+      "isTrending": true,
+      "isPublished": true,
+      "rating": 4.9,
+      "reviewCount": 42,
+      "images": [
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+      ],
+      "details": {
+        "neckline": "Sweetheart Neck with Zardozi Work",
+        "sleeves": "Churidar Full Sleeves",
+        "pattern": "Intricate Gota Patti & Foliage Zari",
+        "washCare": "Dry Clean Only",
+        "lining": "Soft Cotton Mulmul Lining"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-102",
+      "name": "Parijat Sage Mint Straight-Cut Silk Kurti",
+      "category": "Straight Cut Kurtis",
+      "originalPrice": 3499,
+      "discountedPrice": 2199,
+      "discountPercent": 37,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        {
+          "name": "Sage Mint",
+          "hex": "#9FB8AD"
+        },
+        {
+          "name": "Powder Blue",
+          "hex": "#B8CBD0"
+        },
+        {
+          "name": "Almond Beige",
+          "hex": "#E6D7C3"
+        }
+      ],
+      "fabric": "Raw Silk Blend",
+      "description": "Crisp, tailored straight-cut silhouette adorned with fine resham threadwork and mirror accents framing the split V-neckline. Features side slits and paired matching straight silk cigarette trousers for minimal modern royalty.",
+      "inStock": true,
+      "stockQuantity": 51,
+      "isNewArrival": true,
+      "isBestSeller": true,
+      "isTrending": false,
+      "isPublished": true,
+      "rating": 4.8,
+      "reviewCount": 31,
+      "images": [
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+      ],
+      "details": {
+        "neckline": "Split Mandarin V-Neck",
+        "sleeves": "Three-Quarter Sleeves with Scallop Border",
+        "pattern": "Floral Resham Threadwork & Mirror Sheen",
+        "washCare": "Gentle Hand Wash or Dry Clean",
+        "lining": "Breathable Mulmul"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-103",
+      "name": "Noorani Wine Silk Flared Festive Anarkali",
+      "category": "Festive Wear",
+      "originalPrice": 6499,
+      "discountedPrice": 4299,
+      "discountPercent": 33,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        {
+          "name": "Royal Wine",
+          "hex": "#581D22"
+        },
+        {
+          "name": "Deep Plum",
+          "hex": "#3B1A24"
+        },
+        {
+          "name": "Emerald Green",
+          "hex": "#1C3B2B"
+        }
+      ],
+      "fabric": "Heavy Art Silk & Brocade",
+      "description": "A showstopper festive ensemble in a rich wine red palette, embellished with hand-embroidered sequin flowers, broad antique zari borders, and a magnificent 4-meter flare. Accompanied by a sheer golden dupatta.",
+      "inStock": true,
+      "stockQuantity": 24,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "isTrending": true,
+      "isPublished": true,
+      "rating": 5,
+      "reviewCount": 56,
+      "images": [
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+      ],
+      "details": {
+        "neckline": "Round Neck with Keyhole Detail",
+        "sleeves": "Full Sleeves with Sequin Cuff",
+        "pattern": "Traditional Zari & Sequin Jaal",
+        "washCare": "Strictly Dry Clean",
+        "lining": "Double Cotton Crepe Lining"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-104",
+      "name": "Lilac Whisper Embroidered Pret Co-ord Set",
+      "category": "Co-ord Sets",
+      "originalPrice": 3899,
+      "discountedPrice": 2499,
+      "discountPercent": 35,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        {
+          "name": "Soft Lilac",
+          "hex": "#C8BEDB"
+        },
+        {
+          "name": "Dusty Rose",
+          "hex": "#D9ACB5"
+        },
+        {
+          "name": "Vanilla Cream",
+          "hex": "#F9F5EE"
+        }
+      ],
+      "fabric": "Fine Cotton Modal Slub",
+      "description": "Understated luxury meets everyday ease. Features a hip-length modern tunic kurti with subtle cutwork embroidery on the yoke and cuffs, paired with tailored ankle-length trousers with comfortable elasticated waistband.",
+      "inStock": true,
+      "stockQuantity": 40,
+      "isNewArrival": true,
+      "isBestSeller": false,
+      "isTrending": true,
+      "isPublished": true,
+      "rating": 4.7,
+      "reviewCount": 19,
+      "images": [
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg",
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+      ],
+      "details": {
+        "neckline": "Notched Collar Yoke",
+        "sleeves": "3/4th Sleeves with Slit Hem",
+        "pattern": "Tone-on-Tone Floral Cutwork",
+        "washCare": "Cold Machine Wash, Delicate Cycle",
+        "lining": "Unlined for Lightweight Comfort"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-105",
+      "name": "Chandni Handloom Cotton Short Kurti",
+      "category": "Short Kurtis",
+      "originalPrice": 2199,
+      "discountedPrice": 1399,
+      "discountPercent": 36,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        {
+          "name": "Chalk White",
+          "hex": "#FAF9F6"
+        },
+        {
+          "name": "Peach Sorbet",
+          "hex": "#F6D2C3"
+        },
+        {
+          "name": "Sky Mist",
+          "hex": "#D2E2E8"
+        }
+      ],
+      "fabric": "100% Breathable Handloom Mulmul",
+      "description": "Contemporary short kurti featuring delicate pintuck detailing and wooden button accents down the center placket. Versatile styling piece suitable for university, work desk, or brunch outings with friends.",
+      "inStock": true,
+      "stockQuantity": 65,
+      "isNewArrival": true,
+      "isBestSeller": true,
+      "isTrending": false,
+      "isPublished": true,
+      "rating": 4.8,
+      "reviewCount": 38,
+      "images": [
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg",
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+      ],
+      "details": {
+        "neckline": "Mandarin Collar with Placket",
+        "sleeves": "Roll-up Elbow Sleeves",
+        "pattern": "Geometric Pintucks & Handloom Texture",
+        "washCare": "Hand Wash with Mild Detergent",
+        "lining": "Self Fabric Inner Facing"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-106",
+      "name": "Kashmiri Tilla A-Line Long Kurti",
+      "category": "Long Kurtis",
+      "originalPrice": 4299,
+      "discountedPrice": 2899,
+      "discountPercent": 32,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        {
+          "name": "Midnight Charcoal",
+          "hex": "#2A2C30"
+        },
+        {
+          "name": "Maroon Zari",
+          "hex": "#4D1B24"
+        },
+        {
+          "name": "Emerald Mist",
+          "hex": "#1E352F"
+        }
+      ],
+      "fabric": "Georgette with Silver Tilla Work",
+      "description": "Dramatic long-line silhouette inspired by Kashmiri heritage needlework. Graceful A-line flare with side slits that move effortlessly as you walk. Comes with an attached butter crepe lining.",
+      "inStock": true,
+      "stockQuantity": 28,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "isTrending": true,
+      "isPublished": true,
+      "rating": 4.9,
+      "reviewCount": 27,
+      "images": [
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+      ],
+      "details": {
+        "neckline": "Round Neck with Placket Slit",
+        "sleeves": "Long Flared Sleeves",
+        "pattern": "Traditional Paisley Tilla Zari",
+        "washCare": "Dry Clean Recommended",
+        "lining": "Full Butter Crepe"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-107",
+      "name": "Sanganeri Handblock Floral Printed Kurti",
+      "category": "Printed Kurtis",
+      "originalPrice": 2499,
+      "discountedPrice": 1599,
+      "discountPercent": 36,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        {
+          "name": "Indigo Blue",
+          "hex": "#2B3D52"
+        },
+        {
+          "name": "Mustard Ochre",
+          "hex": "#D4A346"
+        },
+        {
+          "name": "Terracotta",
+          "hex": "#C26A50"
+        }
+      ],
+      "fabric": "Organic Cambric Cotton",
+      "description": "Authentic handcrafted Jaipur Sanganeri block print on pure organic cotton. Gentle round neckline framed with potli buttons and contrast piping. Breathable fabric that softens with every wash.",
+      "inStock": true,
+      "stockQuantity": 48,
+      "isNewArrival": true,
+      "isBestSeller": true,
+      "isTrending": false,
+      "isPublished": true,
+      "rating": 4.8,
+      "reviewCount": 45,
+      "images": [
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+      ],
+      "details": {
+        "neckline": "Round Neck with Potli Buttons",
+        "sleeves": "3/4th Sleeves with Border Trim",
+        "pattern": "Jaipur Hand-Block Floral Buti",
+        "washCare": "Cold Wash Separately First Wash",
+        "lining": "Unlined 100% Cotton"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-108",
+      "name": "Zahra Festive 3-Piece Silk Kurti Set with Dupatta",
+      "category": "Kurti Sets",
+      "originalPrice": 5999,
+      "discountedPrice": 3899,
+      "discountPercent": 35,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        {
+          "name": "Rose Gold Peach",
+          "hex": "#E2B8A6"
+        },
+        {
+          "name": "Turquoise Jewel",
+          "hex": "#3B8B88"
+        },
+        {
+          "name": "Royal Crimson",
+          "hex": "#7D2230"
+        }
+      ],
+      "fabric": "Viscose Silk & Tissue Dupatta",
+      "description": "Complete 3-piece regal celebration set consisting of an embroidered calf-length straight kurti, matching wide-leg silk palazzos, and a luminous metallic tissue dupatta with hand-knotted tassels.",
+      "inStock": true,
+      "stockQuantity": 32,
+      "isNewArrival": true,
+      "isBestSeller": true,
+      "isTrending": true,
+      "isPublished": true,
+      "rating": 4.9,
+      "reviewCount": 52,
+      "images": [
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+      ],
+      "details": {
+        "neckline": "Boat Neck with Gold Zari Resham",
+        "sleeves": "Full Sleeves with Embellished Hem",
+        "pattern": "Floral Jaal & Foil Zari Border",
+        "washCare": "Dry Clean Only",
+        "lining": "Soft Voile Silk Inner"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-109",
+      "name": "Banarasi Zari Handwoven Silk Dupatta",
+      "category": "Dupattas",
+      "originalPrice": 2999,
+      "discountedPrice": 1799,
+      "discountPercent": 40,
+      "sizes": [
+        "Free Size (2.5m)"
+      ],
+      "colors": [
+        {
+          "name": "Antique Gold & Rose",
+          "hex": "#D1A382"
+        },
+        {
+          "name": "Crimson Ruby",
+          "hex": "#871D2D"
+        },
+        {
+          "name": "Bottle Green",
+          "hex": "#1B4D3E"
+        }
+      ],
+      "fabric": "Katan Silk with Pure Gold Zari Weave",
+      "description": "Handcrafted Banarasi heritage dupatta featuring intricate floral kadwa weaves and grand pallu borders. Elevates any solid kurti or suit instantly with timeless royal elegance.",
+      "inStock": true,
+      "stockQuantity": 35,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "isTrending": false,
+      "isPublished": true,
+      "rating": 5,
+      "reviewCount": 64,
+      "images": [
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+      ],
+      "details": {
+        "neckline": "N/A",
+        "sleeves": "N/A",
+        "pattern": "Banarasi Floral Kadwa Weave & Zari Pallu",
+        "washCare": "Dry Clean Only",
+        "lining": "Unlined Pure Silk Weave"
+      },
+      "createdAt": "2026-11-08T03:53:12.383Z"
+    },
+    {
+      "id": "zk-110",
+      "name": "Breeze Cotton Mulmul Tunic with Lace Trims",
+      "category": "Women's Tunics",
+      "originalPrice": 2299,
+      "discountedPrice": 1499,
+      "discountPercent": 34,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        {
+          "name": "Ivory White",
+          "hex": "#FAF8F5"
+        },
+        {
+          "name": "Pastel Lilac",
+          "hex": "#D6CEE2"
+        },
+        {
+          "name": "Dusty Mint",
+          "hex": "#A8C3B8"
+        }
+      ],
+      "fabric": "100% Organic Mulmul Cotton",
+      "description": "Chic fusion tunic tailored with delicate schiffli lace inserts along the sleeve hems and neckline. High-low hemline offers contemporary styling over trousers or denim jeans.",
+      "inStock": true,
+      "stockQuantity": 44,
+      "isNewArrival": true,
+      "isBestSeller": false,
+      "isTrending": true,
+      "isPublished": true,
+      "rating": 4.7,
+      "reviewCount": 22,
+      "images": [
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg",
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+      ],
+      "details": {
+        "neckline": "V-Neck with Schiffli Lace Trim",
+        "sleeves": "Bell Sleeves with Lace Insert",
+        "pattern": "Solid Textured Mulmul with Schiffli Detailing",
+        "washCare": "Machine Wash Cold on Delicate",
+        "lining": "Light Mulmul Lining in Bodice"
+      },
+      "createdAt": "2026-11-08T03:53:12.384Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-1",
+      "name": "Women's Kurtis",
+      "slug": "womens-kurtis",
+      "description": "Timeless everyday & occasion kurtis designed with artisanal finesse.",
+      "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+    },
+    {
+      "id": "cat-2",
+      "name": "Short Kurtis",
+      "slug": "short-kurtis",
+      "description": "Chic hip-length kurtis paired perfectly with palazzos, denims & skirts.",
+      "image": "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+    },
+    {
+      "id": "cat-3",
+      "name": "Long Kurtis",
+      "slug": "long-kurtis",
+      "description": "Floor-grazing & calf-length silhouettes with graceful flow and royalty.",
+      "image": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+    },
+    {
+      "id": "cat-4",
+      "name": "Anarkali Kurtis",
+      "slug": "anarkali-kurtis",
+      "description": "Majestic flared ensembles inspired by Mughal palace grandeur.",
+      "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+    },
+    {
+      "id": "cat-5",
+      "name": "Straight Cut Kurtis",
+      "slug": "straight-cut-kurtis",
+      "description": "Sophisticated straight hemlines ideal for boardroom elegance and gatherings.",
+      "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+    },
+    {
+      "id": "cat-6",
+      "name": "A-Line Kurtis",
+      "slug": "a-line-kurtis",
+      "description": "Universally flattering A-line cuts with breezy comfort.",
+      "image": "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+    },
+    {
+      "id": "cat-7",
+      "name": "Printed Kurtis",
+      "slug": "printed-kurtis",
+      "description": "Hand-block prints, florals, kalamkari, and traditional Indian motifs.",
+      "image": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+    },
+    {
+      "id": "cat-8",
+      "name": "Cotton Kurtis",
+      "slug": "cotton-kurtis",
+      "description": "Breathable 100% pure mulmul and chanderi cotton for all-day luxury.",
+      "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+    },
+    {
+      "id": "cat-9",
+      "name": "Party Wear Kurtis",
+      "slug": "party-wear-kurtis",
+      "description": "Gleaming sequins, zari work, mirror embroidery, and opulent textures.",
+      "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+    },
+    {
+      "id": "cat-10",
+      "name": "Festive Wear",
+      "slug": "festive-wear",
+      "description": "Regal festive couture created for Diwali, Eid, weddings, and celebratory moments.",
+      "image": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+    },
+    {
+      "id": "cat-11",
+      "name": "Ethnic Wear",
+      "slug": "ethnic-wear",
+      "description": "Heritage Indian silhouettes curated with contemporary flair.",
+      "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+    },
+    {
+      "id": "cat-12",
+      "name": "Co-ord Sets",
+      "slug": "co-ord-sets",
+      "description": "Modern tunic & matching trouser sets tailored for elevated pret style.",
+      "image": "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+    },
+    {
+      "id": "cat-13",
+      "name": "Women's Tunics",
+      "slug": "womens-tunics",
+      "description": "Breezy fusion tunics blending eastern craft with western ease.",
+      "image": "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+    },
+    {
+      "id": "cat-14",
+      "name": "Kurti Sets",
+      "slug": "kurti-sets",
+      "description": "Curated 2-piece and 3-piece sets with matching pants and dupattas.",
+      "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+    },
+    {
+      "id": "cat-15",
+      "name": "Dupattas",
+      "slug": "dupattas",
+      "description": "Organza, banarasi, chanderi, and silk dupattas with rich borders.",
+      "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-847646",
+      "customerName": "MD ROMAN",
+      "customerEmail": "mdromaan91@gmail.com",
+      "customerPhone": "7061329121",
+      "deliveryAddress": {
+        "street": "DEILHI",
+        "city": "old seelampur",
+        "state": "Delhi",
+        "pincode": "110031"
+      },
+      "items": [
+        {
+          "productId": "zk-102",
+          "name": "Parijat Sage Mint Straight-Cut Silk Kurti",
+          "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
+          "size": "XS",
+          "color": "Sage Mint",
+          "price": 2199,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 2199,
+      "discount": 0,
+      "shipping": 0,
+      "total": 2199,
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "orderStatus": "Order Placed",
+      "courierDetails": {
+        "provider": "BlueDart Express",
+        "trackingNumber": "BLUEDART-16294127",
+        "estimatedDelivery": "Fri, 13 Nov"
+      },
+      "createdAt": "2026-11-09T09:14:33.806Z",
+      "trackingSteps": [
+        {
+          "title": "Order Placed",
+          "date": "Just now",
+          "completed": true
+        },
+        {
+          "title": "Order Confirmed",
+          "date": "Estimated within 2 hrs",
+          "completed": false
+        },
+        {
+          "title": "Processing",
+          "date": "Pending",
+          "completed": false
+        },
+        {
+          "title": "Packed",
+          "date": "Pending",
+          "completed": false
+        },
+        {
+          "title": "Shipped",
+          "date": "Pending",
+          "completed": false
+        },
+        {
+          "title": "Out for Delivery",
+          "date": "Pending",
+          "completed": false
+        },
+        {
+          "title": "Delivered",
+          "date": "Pending",
+          "completed": false
+        }
+      ],
+      "userId": "user-1794215544631"
+    },
+    {
+      "id": "ORD-98241",
+      "customerName": "Aanya Sharma",
+      "customerEmail": "aanya.sharma@example.com",
+      "customerPhone": "+91 98765 43210",
+      "deliveryAddress": {
+        "street": "Villa 14, Lotus Boulevard, Sector 100",
+        "city": "Noida",
+        "state": "Uttar Pradesh",
+        "pincode": "201304"
+      },
+      "items": [
+        {
+          "productId": "zk-101",
+          "name": "Gulmohar Rose-Gold Embroidered Anarkali Set",
+          "image": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
+          "size": "M",
+          "color": "Blush Pink",
+          "price": 3299,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 3299,
+      "discount": 330,
+      "shipping": 0,
+      "total": 2969,
+      "couponCode": "WELCOME10",
+      "paymentMethod": "online_upi",
+      "paymentStatus": "paid",
+      "transactionId": "UPI-TXN-88491028",
+      "orderStatus": "Shipped",
+      "courierDetails": {
+        "provider": "BlueDart Express",
+        "trackingNumber": "BLUEDART-88291039",
+        "estimatedDelivery": "November 10, 2026"
+      },
+      "createdAt": "2026-11-06T03:53:12.384Z",
+      "trackingSteps": [
+        {
+          "title": "Order Placed & Payment Verified",
+          "date": "2 days ago",
+          "completed": true
+        },
+        {
+          "title": "Tailoring & Quality Check Passed",
+          "date": "Yesterday",
+          "completed": true
+        },
+        {
+          "title": "Dispatched via BlueDart Express",
+          "date": "Today, 10:30 AM",
+          "completed": true
+        },
+        {
+          "title": "Out for Delivery",
+          "date": "Expected Tomorrow",
+          "completed": false
+        },
+        {
+          "title": "Delivered",
+          "date": "Pending",
+          "completed": false
+        }
+      ],
+      "userId": "user-customer-1"
+    },
+    {
+      "id": "ORD-98242",
+      "customerName": "Priyanka Verma",
+      "customerEmail": "priyanka.verma@example.com",
+      "customerPhone": "+91 91234 56789",
+      "deliveryAddress": {
+        "street": "Flat 402, Royal Residency, Indiranagar",
+        "city": "Bengaluru",
+        "state": "Karnataka",
+        "pincode": "560038"
+      },
+      "items": [
+        {
+          "productId": "zk-103",
+          "name": "Noorani Wine Silk Flared Festive Anarkali",
+          "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
+          "size": "L",
+          "color": "Royal Wine",
+          "price": 4299,
+          "quantity": 1
+        },
+        {
+          "productId": "zk-105",
+          "name": "Chandni Handloom Cotton Short Kurti",
+          "image": "/src/assets/images/category_coord_tunics_1794109164576.jpg",
+          "size": "M",
+          "color": "Chalk White",
+          "price": 1399,
+          "quantity": 1
+        }
+      ],
+      "subtotal": 5698,
+      "discount": 500,
+      "shipping": 0,
+      "total": 5198,
+      "couponCode": "FIRST500",
+      "paymentMethod": "online_card",
+      "paymentStatus": "paid",
+      "transactionId": "CARD-TXN-99120485",
+      "orderStatus": "Confirmed",
+      "createdAt": "2026-11-07T03:53:12.384Z",
+      "trackingSteps": [
+        {
+          "title": "Order Placed & Payment Verified",
+          "date": "Yesterday",
+          "completed": true
+        },
+        {
+          "title": "Order Confirmed by Store Admin",
+          "date": "Yesterday, 4:00 PM",
+          "completed": true
+        },
+        {
+          "title": "Packaging & Quality Inspection",
+          "date": "In Progress",
+          "completed": false
+        },
+        {
+          "title": "Dispatched via Express Courier",
+          "date": "Pending",
+          "completed": false
+        },
+        {
+          "title": "Delivered",
+          "date": "Pending",
+          "completed": false
+        }
+      ],
+      "userId": "user-customer-2"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-owner-super-admin",
+      "name": "Super Admin (Website Owner)",
+      "email": "mdtausifraza1459@gmail.com",
+      "role": "admin",
+      "isSuperAdmin": true,
+      "status": "active",
+      "addresses": [],
+      "wishlist": [],
+      "createdAt": "2026-11-08T04:42:28.110Z"
+    },
+    {
+      "id": "user-customer-1",
+      "name": "Aanya Sharma",
+      "email": "aanya.sharma@example.com",
+      "passwordHash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "phone": "+91 98765 43210",
+      "role": "customer",
+      "status": "active",
+      "addresses": [
+        {
+          "id": "addr-1",
+          "fullName": "Aanya Sharma",
+          "phone": "+91 98765 43210",
+          "street": "Villa 14, Lotus Boulevard, Sector 100",
+          "city": "Noida",
+          "state": "Uttar Pradesh",
+          "pincode": "201304",
+          "isDefault": true
+        }
+      ],
+      "wishlist": [
+        "zk-101",
+        "zk-104"
+      ],
+      "createdAt": "2026-10-09T03:53:12.384Z"
+    },
+    {
+      "id": "user-customer-2",
+      "name": "Priyanka Verma",
+      "email": "priyanka.verma@example.com",
+      "passwordHash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "phone": "+91 91234 56789",
+      "role": "customer",
+      "status": "active",
+      "addresses": [
+        {
+          "id": "addr-2",
+          "fullName": "Priyanka Verma",
+          "phone": "+91 91234 56789",
+          "street": "Flat 402, Royal Residency, Indiranagar",
+          "city": "Bengaluru",
+          "state": "Karnataka",
+          "pincode": "560038",
+          "isDefault": true
+        }
+      ],
+      "wishlist": [
+        "zk-102",
+        "zk-108"
+      ],
+      "createdAt": "2026-10-24T03:53:12.384Z"
+    },
+    {
+      "id": "user-1794215544631",
+      "name": "Md roman",
+      "email": "mdromaan91@gmail.com",
+      "passwordHash": "f3366c351716140235ae584c046d1e4e4d4835efd87158c77ec80c5691ba61d1",
+      "role": "customer",
+      "status": "active",
+      "addresses": [],
+      "wishlist": [],
+      "createdAt": "2026-11-09T09:12:24.632Z"
+    },
+    {
+      "id": "admin-1794217435294",
+      "name": "Shop Partner 1",
+      "email": "partner.shop1@gmail.com",
+      "phone": "9310078735",
+      "passwordHash": "6f2cb9dd8f4b65e24e1c3f3fa5bc57982349237f11abceacd45bbcb74d621c25",
+      "role": "customer",
+      "isSuperAdmin": false,
+      "status": "active",
+      "addresses": [],
+      "wishlist": [],
+      "createdAt": "2026-11-09T09:43:55.294Z"
+    }
+  ],
+  "coupons": [
+    {
+      "code": "WELCOME10",
+      "discountType": "percentage",
+      "discountValue": 10,
+      "minOrderValue": 1499,
+      "description": "10% off on your first order above ₹1,499",
+      "expiryDate": "2026-12-31",
+      "festivalOffer": false,
+      "isActive": true,
+      "usedCount": 14
+    },
+    {
+      "code": "FESTIVE20",
+      "discountType": "percentage",
+      "discountValue": 20,
+      "minOrderValue": 2999,
+      "description": "20% off on festive collections above ₹2,999",
+      "expiryDate": "2026-11-30",
+      "festivalOffer": true,
+      "isActive": true,
+      "usedCount": 28
+    },
+    {
+      "code": "ROYAL15",
+      "discountType": "percentage",
+      "discountValue": 15,
+      "minOrderValue": 3999,
+      "description": "15% off on premium ethnic wear above ₹3,999",
+      "expiryDate": "2026-12-15",
+      "festivalOffer": false,
+      "isActive": true,
+      "usedCount": 8
+    },
+    {
+      "code": "FIRST500",
+      "discountType": "fixed",
+      "discountValue": 500,
+      "minOrderValue": 2499,
+      "description": "Flat ₹500 off on luxury sets above ₹2,499",
+      "expiryDate": "2026-12-31",
+      "festivalOffer": false,
+      "isActive": true,
+      "usedCount": 19
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1",
+      "productId": "zk-101",
+      "customerName": "Pooja Kashyap",
+      "rating": 5,
+      "comment": "The zardozi threadwork on the blush pink anarkali is even more breathtaking in person. The fabric is light yet grand. Felt like royalty at my sister’s engagement!",
+      "date": "3 days ago",
+      "verified": true
+    },
+    {
+      "id": "rev-2",
+      "productId": "zk-101",
+      "customerName": "Meera Deshmukh",
+      "rating": 5,
+      "comment": "Flawless fit! The mulmul lining makes it so comfortable to wear for 8+ hours. Truly luxury couture quality at a reasonable price.",
+      "date": "1 week ago",
+      "verified": true
+    },
+    {
+      "id": "rev-3",
+      "productId": "zk-102",
+      "customerName": "Shreya Roy",
+      "rating": 5,
+      "comment": "Such a refreshing sage green shade. Very neat neckline embroidery and the matching cigarette pants give a super sleek silhouette.",
+      "date": "4 days ago",
+      "verified": true
+    }
+  ],
+  "settings": {
+    "brandName": "Zohra Luxe",
+    "tagline": "Luxury Women & Girls Pret Couture",
+    "logoText": "ZOHRA LUXE",
+    "announcement": "✨ Wholesale Rate me lene ke liye call/WhatsApp karein: 9310078735 | Free Express Shipping Above ₹1,499",
+    "whatsappNumber": "+919310078735",
+    "supportEmail": "care@zohraluxe.com",
+    "supportPhone": "+91 9310078735",
+    "freeShippingThreshold": 1499,
+    "standardShippingFee": 99,
+    "returnPolicyDays": 7,
+    "returnPolicyText": "We offer an easy 7-day return and exchange policy from the date of delivery. Items must be unworn, unwashed with original artisanal tags intact.",
+    "privacyPolicyText": "Your privacy is paramount to us. All personal data, measurements, and transaction logs are encrypted using enterprise standards.",
+    "termsConditionsText": "Welcome to Zohra Luxe. All our garments are crafted with authentic fabrics and handcrafted embellishments.",
+    "heroHeadline": "Discover Your Style, Celebrate Your Elegance",
+    "heroSubtitle": "Explore the latest collection of Kurtis, Short Kurtis, and Women's Luxury Ethnic Wear.",
+    "heroImage": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
+    "heroButtonText": "Shop New Arrivals",
+    "socialLinks": {
+      "instagram": "https://instagram.com/zohraluxe",
+      "facebook": "https://facebook.com/zohraluxe",
+      "pinterest": "https://pinterest.com/zohraluxe"
+    }
+  },
+  "activityLogs": [
+    {
+      "id": "log-1794217454350",
+      "timestamp": "2026-11-09T09:44:14.350Z",
+      "adminEmail": "partner.shop1@gmail.com",
+      "action": "Unauthorized Admin Login Attempt",
+      "details": "Access denied for non-authorized email: partner.shop1@gmail.com. Not in authorized admin team."
+    },
+    {
+      "id": "log-1794217450446",
+      "timestamp": "2026-11-09T09:44:10.446Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Revoked Store Admin Access",
+      "details": "Revoked admin access for partner.shop1@gmail.com."
+    },
+    {
+      "id": "log-1794217446418",
+      "timestamp": "2026-11-09T09:44:06.418Z",
+      "adminEmail": "partner.shop1@gmail.com",
+      "action": "Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized Store Admin (partner.shop1@gmail.com)."
+    },
+    {
+      "id": "log-1794217443001",
+      "timestamp": "2026-11-09T09:44:03.001Z",
+      "adminEmail": "stranger.person@gmail.com",
+      "action": "Unauthorized Admin Login Attempt",
+      "details": "Access denied for non-authorized email: stranger.person@gmail.com. Not in authorized admin team."
+    },
+    {
+      "id": "log-1794217438912",
+      "timestamp": "2026-11-09T09:43:58.912Z",
+      "adminEmail": "partner.shop1@gmail.com",
+      "action": "Admin Login Success",
+      "details": "Store Admin (Shop Partner 1) logged in successfully via Gmail & Password."
+    },
+    {
+      "id": "log-1794217435294",
+      "timestamp": "2026-11-09T09:43:55.294Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Added Store Partner Admin",
+      "details": "Added new authorized Store Admin Gmail: partner.shop1@gmail.com (Shop Partner 1)."
+    },
+    {
+      "id": "log-1794217426142",
+      "timestamp": "2026-11-09T09:43:46.142Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Admin Login Success",
+      "details": "Store Admin (Super Admin (Website Owner)) logged in successfully via Gmail & Password."
+    },
+    {
+      "id": "log-1794215756090",
+      "timestamp": "2026-11-09T09:15:56.090Z",
+      "adminEmail": "attacker@gmail.com",
+      "action": "Unauthorized Admin Login Blocked",
+      "details": "Blocked unauthorized access attempt from attacker@gmail.com. Access restricted strictly to mdtausifraza1459@gmail.com."
+    },
+    {
+      "id": "log-1794215750620",
+      "timestamp": "2026-11-09T09:15:50.620Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized Super Admin (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794215745835",
+      "timestamp": "2026-11-09T09:15:45.835Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Admin Password Failed",
+      "details": "Incorrect password attempt for Super Admin Gmail (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794215741448",
+      "timestamp": "2026-11-09T09:15:41.448Z",
+      "adminEmail": "otherperson@gmail.com",
+      "action": "Unauthorized Admin Login Attempt",
+      "details": "Access denied for non-owner username/email: otherperson@gmail.com. Only mdtausifraza1459@gmail.com is authorized."
+    },
+    {
+      "id": "log-1794215736516",
+      "timestamp": "2026-11-09T09:15:36.516Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Login Success",
+      "details": "Authenticated successfully via Gmail & Password as Super Admin (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794129629169",
+      "timestamp": "2026-11-08T09:20:29.169Z",
+      "adminEmail": "intruder@gmail.com",
+      "action": "Unauthorized Admin Login Blocked",
+      "details": "Blocked unauthorized access attempt from intruder@gmail.com. Access restricted strictly to mdtausifraza1459@gmail.com."
+    },
+    {
+      "id": "log-1794129626345",
+      "timestamp": "2026-11-08T09:20:26.345Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Admin Passcode Rejected",
+      "details": "Failed passcode attempt for owner account mdtausifraza1459@gmail.com."
+    },
+    {
+      "id": "log-1794129623314",
+      "timestamp": "2026-11-08T09:20:23.314Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized Super Admin (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794129263792",
+      "timestamp": "2026-11-08T09:14:23.792Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized Super Admin (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794128307424",
+      "timestamp": "2026-11-08T08:58:27.424Z",
+      "adminEmail": "intruder@gmail.com",
+      "action": "Unauthorized Admin Login Blocked",
+      "details": "Blocked unauthorized Google login attempt from intruder@gmail.com. Access restricted strictly to mdtausifraza1459@gmail.com."
+    },
+    {
+      "id": "log-1794128304530",
+      "timestamp": "2026-11-08T08:58:24.530Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized Super Admin (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794114204003",
+      "timestamp": "2026-11-08T05:03:24.003Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized owner (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794114201046",
+      "timestamp": "2026-11-08T05:03:21.046Z",
+      "adminEmail": "unauthorized.guest@gmail.com",
+      "action": "Unauthorized Admin Login Blocked",
+      "details": "Blocked unauthorized Google login attempt from unauthorized.guest@gmail.com. Access restricted strictly to mdtausifraza1459@gmail.com."
+    },
+    {
+      "id": "log-1794112951362",
+      "timestamp": "2026-11-08T04:42:31.362Z",
+      "adminEmail": "someone_else@gmail.com",
+      "action": "Unauthorized Admin Login Blocked",
+      "details": "Blocked unauthorized Google login attempt from someone_else@gmail.com. Access restricted strictly to mdtausifraza1459@gmail.com."
+    },
+    {
+      "id": "log-1794112948111",
+      "timestamp": "2026-11-08T04:42:28.111Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Super Admin Google Login",
+      "details": "Authenticated successfully via Google Sign-In as authorized owner (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794110008264",
+      "timestamp": "2026-11-08T03:53:28.264Z",
+      "adminEmail": "admin@zohraluxe.com",
+      "action": "Admin Login",
+      "details": "Administrator successfully logged in to Admin Console."
+    },
+    {
+      "id": "log-1",
+      "timestamp": "2026-11-08T03:53:12.384Z",
+      "adminEmail": "admin@zohraluxe.com",
+      "action": "System Initialized",
+      "details": "Super Admin initialized catalog with 15 ethnic fashion categories and seed inventory."
+    }
+  ],
+  "supportInquiries": [
+    {
+      "id": "inq-1",
+      "name": "Kavita Chawla",
+      "email": "kavita.c@example.com",
+      "phone": "+91 99887 76655",
+      "subject": "Custom Sizing Inquiry for Anarkali Set",
+      "message": "Hello, can the Gulmohar Anarkali set be customized for 44-inch length? Looking forward to hearing from you.",
+      "status": "open",
+      "createdAt": "2026-11-07T03:53:12.384Z"
+    }
+  ]
+}
