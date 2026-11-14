@@ -17,7 +17,7 @@ const POPULAR_COLORS = [
 
 const SLEEVE_TYPES = ['3/4 Sleeves', 'Full Sleeves', 'Half Sleeves', 'Sleeveless'];
 const KURTI_LENGTHS = ['Short', 'Knee Length', 'Calf Length', 'Ankle Length'];
-const OCCASIONS = ['Daily Wear', 'Office Wear', 'Festive', 'Party', 'Wedding'];
+const OCCASIONS = ['Daily Wear', 'Casual', 'Office', 'Festive', 'Eid', 'Party', 'Wedding'];
 
 const FABRICS = [
   'Pure Chanderi Silk & Organza',
@@ -116,18 +116,19 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
     filters.priceRange[1] < 10000;
 
   return (
-    <aside className="w-full lg:w-68 bg-white p-4 sm:p-5 rounded-lg border border-[#E5DFD7] space-y-5">
-      <div className="flex items-center justify-between pb-3 border-b border-[#E5DFD7]">
+    <aside className="w-full lg:w-68 bg-white p-5 rounded-lg border border-[#E2DFD7] space-y-5">
+      <div className="flex items-center justify-between pb-3 border-b border-[#E2DFD7]">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-[#6D1D3A]" />
-          <h3 className="text-sm font-bold text-[#1C1917]">Refine Results</h3>
-          <span className="text-xs font-mono text-[#6B625D] tabular-nums">({totalCount})</span>
+          <SlidersHorizontal className="w-4 h-4 text-[#164E3F]" />
+          <h3 className="text-sm font-semibold text-[#141413]">Refine Results</h3>
+          <span className="text-xs font-mono text-[#63615C] tabular-nums">({totalCount})</span>
         </div>
 
         {hasActiveFilters && (
           <button
+            type="button"
             onClick={resetFilters}
-            className="text-xs font-semibold text-[#6D1D3A] hover:underline flex items-center gap-1 cursor-pointer"
+            className="text-xs font-semibold text-[#164E3F] hover:underline flex items-center gap-1 cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Reset</span>
@@ -137,34 +138,34 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
 
       {/* Availability */}
       <div className="space-y-2">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">
           Availability
         </span>
         <div className="space-y-1.5">
-          <label className="flex items-center gap-2.5 text-xs text-[#1C1917] cursor-pointer hover:text-[#6D1D3A]">
+          <label className="flex items-center gap-2.5 text-xs text-[#141413] cursor-pointer hover:text-[#164E3F]">
             <input
               type="checkbox"
               checked={filters.inStockOnly}
               onChange={(e) => setFilters((prev) => ({ ...prev, inStockOnly: e.target.checked }))}
-              className="rounded accent-[#6D1D3A]"
+              className="rounded accent-[#164E3F]"
             />
             <span className="font-medium">In Stock Only</span>
           </label>
-          <label className="flex items-center gap-2.5 text-xs text-[#1C1917] cursor-pointer hover:text-[#6D1D3A]">
+          <label className="flex items-center gap-2.5 text-xs text-[#141413] cursor-pointer hover:text-[#164E3F]">
             <input
               type="checkbox"
               checked={filters.newArrivalsOnly}
               onChange={(e) => setFilters((prev) => ({ ...prev, newArrivalsOnly: e.target.checked }))}
-              className="rounded accent-[#6D1D3A]"
+              className="rounded accent-[#164E3F]"
             />
             <span>New Arrivals</span>
           </label>
-          <label className="flex items-center gap-2.5 text-xs text-[#1C1917] cursor-pointer hover:text-[#6D1D3A]">
+          <label className="flex items-center gap-2.5 text-xs text-[#141413] cursor-pointer hover:text-[#164E3F]">
             <input
               type="checkbox"
               checked={filters.bestSellersOnly}
               onChange={(e) => setFilters((prev) => ({ ...prev, bestSellersOnly: e.target.checked }))}
-              className="rounded accent-[#6D1D3A]"
+              className="rounded accent-[#164E3F]"
             />
             <span>Best Sellers</span>
           </label>
@@ -172,35 +173,37 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Categories */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
         <div className="flex items-center justify-between text-[11px]">
-          <span className="font-semibold uppercase tracking-wider text-[#6B625D]">Category</span>
-          <span className="text-[#6B625D]">15 Styles</span>
+          <span className="font-semibold uppercase tracking-wider text-[#63615C]">Category</span>
+          <span className="text-[#63615C]">15 Styles</span>
         </div>
         <div className="space-y-1 max-h-48 overflow-y-auto pr-1 text-xs">
           <button
+            type="button"
             onClick={() => setFilters((prev) => ({ ...prev, category: 'All' }))}
             className={`w-full text-left py-1.5 px-2.5 rounded transition-colors cursor-pointer ${
               filters.category === 'All'
-                ? 'font-semibold text-[#6D1D3A] bg-[#FBF2F5]'
-                : 'text-[#1C1917] hover:bg-[#FAF8F5]'
+                ? 'font-semibold text-[#164E3F] bg-[#ECF4F1]'
+                : 'text-[#141413] hover:bg-[#F7F6F2]'
             }`}
           >
-            All Women's Clothing
+            All Women&apos;s Clothing
           </button>
           {categories.map((cat) => (
             <button
               key={cat.id}
+              type="button"
               onClick={() => setFilters((prev) => ({ ...prev, category: cat.name }))}
               className={`w-full text-left py-1.5 px-2.5 rounded transition-colors flex items-center justify-between cursor-pointer ${
                 filters.category.toLowerCase() === cat.name.toLowerCase()
-                  ? 'font-semibold text-[#6D1D3A] bg-[#FBF2F5]'
-                  : 'text-[#1C1917] hover:bg-[#FAF8F5]'
+                  ? 'font-semibold text-[#164E3F] bg-[#ECF4F1]'
+                  : 'text-[#141413] hover:bg-[#F7F6F2]'
               }`}
             >
               <span className="truncate">{cat.name}</span>
               {cat.productCount !== undefined && (
-                <span className="text-[11px] text-[#6B625D] tabular-nums font-mono">{cat.productCount}</span>
+                <span className="text-[11px] text-[#63615C] tabular-nums font-mono">{cat.productCount}</span>
               )}
             </button>
           ))}
@@ -208,10 +211,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Price */}
-      <div className="space-y-2.5 pt-3 border-t border-[#E5DFD7]">
+      <div className="space-y-2.5 pt-3 border-t border-[#E2DFD7]">
         <div className="flex items-center justify-between text-[11px]">
-          <span className="font-semibold uppercase tracking-wider text-[#6B625D]">Max Price</span>
-          <span className="font-bold font-mono text-[#6D1D3A] tabular-nums">
+          <span className="font-semibold uppercase tracking-wider text-[#63615C]">Max Price</span>
+          <span className="font-semibold font-mono text-[#164E3F] tabular-nums">
             ₹{filters.priceRange[1].toLocaleString()}
           </span>
         </div>
@@ -229,8 +232,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
               onClick={() => setFilters((prev) => ({ ...prev, priceRange: [0, tag.max] }))}
               className={`py-1.5 text-[11px] rounded border font-medium transition-colors cursor-pointer ${
                 filters.priceRange[1] === tag.max
-                  ? 'bg-[#6D1D3A] text-white border-[#6D1D3A]'
-                  : 'bg-white text-[#1C1917] border-[#E5DFD7] hover:border-[#6D1D3A]'
+                  ? 'bg-[#141413] text-white border-[#141413]'
+                  : 'bg-[#F7F6F2] text-[#141413] border-[#E2DFD7] hover:border-[#141413]'
               }`}
             >
               {tag.label}
@@ -250,17 +253,17 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
               priceRange: [0, Number(e.target.value)],
             }))
           }
-          className="w-full accent-[#6D1D3A] cursor-pointer mt-1"
+          className="w-full accent-[#164E3F] cursor-pointer mt-1"
         />
-        <div className="flex items-center justify-between text-[10px] text-[#6B625D] font-mono">
+        <div className="flex items-center justify-between text-[10px] text-[#63615C] font-mono">
           <span>₹500</span>
           <span>₹10,000+</span>
         </div>
       </div>
 
       {/* Sizes */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Size</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Size</span>
         <div className="grid grid-cols-3 gap-1.5">
           {SIZES.map((size) => {
             const isSelected = filters.sizes.includes(size);
@@ -269,10 +272,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
                 key={size}
                 type="button"
                 onClick={() => handleSizeToggle(size)}
-                className={`py-1.5 text-xs font-semibold rounded border transition-colors cursor-pointer ${
+                className={`py-1.5 text-xs font-medium rounded border transition-colors cursor-pointer ${
                   isSelected
-                    ? 'border-[#6D1D3A] bg-[#6D1D3A] text-white'
-                    : 'border-[#E5DFD7] bg-white text-[#1C1917] hover:border-[#6D1D3A]'
+                    ? 'border-[#141413] bg-[#141413] text-white'
+                    : 'border-[#E2DFD7] bg-white text-[#141413] hover:border-[#141413]'
                 }`}
               >
                 {size}
@@ -283,16 +286,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Sleeve Type */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Sleeve Type</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Sleeve Type</span>
         <div className="space-y-1.5 text-xs">
           {SLEEVE_TYPES.map((slv) => (
-            <label key={slv} className="flex items-center gap-2 cursor-pointer text-[#1C1917] hover:text-[#6D1D3A]">
+            <label key={slv} className="flex items-center gap-2 cursor-pointer text-[#141413] hover:text-[#164E3F]">
               <input
                 type="checkbox"
                 checked={filters.sleeveTypes.includes(slv)}
                 onChange={() => handleSleeveToggle(slv)}
-                className="rounded accent-[#6D1D3A]"
+                className="rounded accent-[#164E3F]"
               />
               <span>{slv}</span>
             </label>
@@ -301,16 +304,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Kurti Length */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Length</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Length</span>
         <div className="space-y-1.5 text-xs">
           {KURTI_LENGTHS.map((len) => (
-            <label key={len} className="flex items-center gap-2 cursor-pointer text-[#1C1917] hover:text-[#6D1D3A]">
+            <label key={len} className="flex items-center gap-2 cursor-pointer text-[#141413] hover:text-[#164E3F]">
               <input
                 type="checkbox"
                 checked={filters.kurtiLengths.includes(len)}
                 onChange={() => handleLengthToggle(len)}
-                className="rounded accent-[#6D1D3A]"
+                className="rounded accent-[#164E3F]"
               />
               <span>{len}</span>
             </label>
@@ -319,16 +322,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Occasion */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Occasion</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Occasion</span>
         <div className="space-y-1.5 text-xs">
           {OCCASIONS.map((occ) => (
-            <label key={occ} className="flex items-center gap-2 cursor-pointer text-[#1C1917] hover:text-[#6D1D3A]">
+            <label key={occ} className="flex items-center gap-2 cursor-pointer text-[#141413] hover:text-[#164E3F]">
               <input
                 type="checkbox"
                 checked={filters.occasions.includes(occ)}
                 onChange={() => handleOccasionToggle(occ)}
-                className="rounded accent-[#6D1D3A]"
+                className="rounded accent-[#164E3F]"
               />
               <span>{occ}</span>
             </label>
@@ -337,11 +340,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Discount */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Discount</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Discount</span>
         <div className="space-y-1.5 text-xs">
           {DISCOUNT_RANGES.map((d) => (
-            <label key={d.value} className="flex items-center gap-2 cursor-pointer text-[#1C1917] hover:text-[#6D1D3A]">
+            <label key={d.value} className="flex items-center gap-2 cursor-pointer text-[#141413] hover:text-[#164E3F]">
               <input
                 type="radio"
                 name="discount-filter"
@@ -352,17 +355,17 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
                     minDiscount: prev.minDiscount === d.value ? 0 : d.value,
                   }))
                 }
-                className="accent-[#6D1D3A]"
+                className="accent-[#164E3F]"
               />
-              <span className={filters.minDiscount === d.value ? 'font-semibold text-[#6D1D3A]' : ''}>{d.label}</span>
+              <span className={filters.minDiscount === d.value ? 'font-semibold text-[#164E3F]' : ''}>{d.label}</span>
             </label>
           ))}
         </div>
       </div>
 
       {/* Rating */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Customer Rating</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Customer Rating</span>
         <div className="space-y-1.5 text-xs">
           {RATING_OPTIONS.map((r) => (
             <button
@@ -376,25 +379,25 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
               }
               className={`w-full flex items-center justify-between py-1.5 px-2.5 rounded text-left transition-colors cursor-pointer ${
                 filters.minRating === r.min
-                  ? 'bg-[#FBF2F5] text-[#6D1D3A] font-semibold'
-                  : 'text-[#1C1917] hover:bg-[#FAF8F5]'
+                  ? 'bg-[#ECF4F1] text-[#164E3F] font-semibold'
+                  : 'text-[#141413] hover:bg-[#F7F6F2]'
               }`}
             >
               <div className="flex items-center gap-1.5">
-                <span className="text-[#166534] font-bold flex items-center gap-0.5 tabular-nums">
+                <span className="text-[#8E6D3B] font-mono font-semibold flex items-center gap-0.5 tabular-nums">
                   {r.min} <Star className="w-3 h-3 fill-current" />
                 </span>
-                <span>& above</span>
+                <span>&amp; above</span>
               </div>
-              {filters.minRating === r.min && <Check className="w-3.5 h-3.5 text-[#6D1D3A]" />}
+              {filters.minRating === r.min && <Check className="w-3.5 h-3.5 text-[#164E3F]" />}
             </button>
           ))}
         </div>
       </div>
 
       {/* Colors */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Color</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Color</span>
         <div className="flex flex-wrap gap-2">
           {POPULAR_COLORS.map((c) => {
             const isSelected = filters.colors.includes(c.name);
@@ -405,14 +408,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
                 onClick={() => handleColorToggle(c.name)}
                 title={c.name}
                 className={`relative w-7 h-7 rounded-full border transition-all flex items-center justify-center cursor-pointer ${
-                  isSelected ? 'ring-2 ring-[#6D1D3A] scale-110' : 'border-[#E5DFD7]'
+                  isSelected ? 'ring-2 ring-[#141413] scale-110' : 'border-[#E2DFD7]'
                 }`}
                 style={{ backgroundColor: c.hex }}
               >
                 {isSelected && (
                   <Check
                     className={`w-3.5 h-3.5 ${
-                      c.hex === '#FDFBF7' || c.hex === '#FAF9F6' ? 'text-[#1C1917]' : 'text-white'
+                      c.hex === '#FDFBF7' || c.hex === '#FAF9F6' ? 'text-[#141413]' : 'text-white'
                     }`}
                   />
                 )}
@@ -423,16 +426,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ totalCount }) => {
       </div>
 
       {/* Fabrics */}
-      <div className="space-y-2 pt-3 border-t border-[#E5DFD7]">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#6B625D] block">Fabric</span>
+      <div className="space-y-2 pt-3 border-t border-[#E2DFD7]">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">Fabric</span>
         <div className="space-y-1.5 text-xs max-h-40 overflow-y-auto pr-1">
           {FABRICS.map((fab) => (
-            <label key={fab} className="flex items-start gap-2 cursor-pointer text-[#1C1917] hover:text-[#6D1D3A]">
+            <label key={fab} className="flex items-start gap-2 cursor-pointer text-[#141413] hover:text-[#164E3F]">
               <input
                 type="checkbox"
                 checked={filters.fabrics.includes(fab)}
                 onChange={() => handleFabricToggle(fab)}
-                className="mt-0.5 rounded accent-[#6D1D3A]"
+                className="mt-0.5 rounded accent-[#164E3F]"
               />
               <span className="line-clamp-1">{fab}</span>
             </label>

@@ -50,7 +50,32 @@
         "washCare": "Dry Clean Only",
         "lining": "Soft Cotton Mulmul Lining"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK101",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "XS::Blush Pink": 3,
+        "XS::Ivory Cream": 3,
+        "XS::Rose Gold": 2,
+        "S::Blush Pink": 2,
+        "S::Ivory Cream": 2,
+        "S::Rose Gold": 2,
+        "M::Blush Pink": 2,
+        "M::Ivory Cream": 2,
+        "M::Rose Gold": 2,
+        "L::Blush Pink": 2,
+        "L::Ivory Cream": 2,
+        "L::Rose Gold": 2,
+        "XL::Blush Pink": 2,
+        "XL::Ivory Cream": 2,
+        "XL::Rose Gold": 2,
+        "XXL::Blush Pink": 2,
+        "XXL::Ivory Cream": 2,
+        "XXL::Rose Gold": 2
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-102",
@@ -101,7 +126,29 @@
         "washCare": "Gentle Hand Wash or Dry Clean",
         "lining": "Breathable Mulmul"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK102",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "XS::Sage Mint": 4,
+        "XS::Powder Blue": 4,
+        "XS::Almond Beige": 4,
+        "S::Sage Mint": 4,
+        "S::Powder Blue": 4,
+        "S::Almond Beige": 4,
+        "M::Sage Mint": 3,
+        "M::Powder Blue": 3,
+        "M::Almond Beige": 3,
+        "L::Sage Mint": 3,
+        "L::Powder Blue": 3,
+        "L::Almond Beige": 3,
+        "XL::Sage Mint": 3,
+        "XL::Powder Blue": 3,
+        "XL::Almond Beige": 3
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-103",
@@ -152,7 +199,29 @@
         "washCare": "Strictly Dry Clean",
         "lining": "Double Cotton Crepe Lining"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK103",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "S::Royal Wine": 2,
+        "S::Deep Plum": 2,
+        "S::Emerald Green": 2,
+        "M::Royal Wine": 2,
+        "M::Deep Plum": 2,
+        "M::Emerald Green": 2,
+        "L::Royal Wine": 2,
+        "L::Deep Plum": 2,
+        "L::Emerald Green": 2,
+        "XL::Royal Wine": 1,
+        "XL::Deep Plum": 1,
+        "XL::Emerald Green": 1,
+        "XXL::Royal Wine": 1,
+        "XXL::Deep Plum": 1,
+        "XXL::Emerald Green": 1
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-104",
@@ -203,7 +272,29 @@
         "washCare": "Cold Machine Wash, Delicate Cycle",
         "lining": "Unlined for Lightweight Comfort"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK104",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "XS::Soft Lilac": 3,
+        "XS::Dusty Rose": 3,
+        "XS::Vanilla Cream": 3,
+        "S::Soft Lilac": 3,
+        "S::Dusty Rose": 3,
+        "S::Vanilla Cream": 3,
+        "M::Soft Lilac": 3,
+        "M::Dusty Rose": 3,
+        "M::Vanilla Cream": 3,
+        "L::Soft Lilac": 3,
+        "L::Dusty Rose": 2,
+        "L::Vanilla Cream": 2,
+        "XL::Soft Lilac": 2,
+        "XL::Dusty Rose": 2,
+        "XL::Vanilla Cream": 2
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-105",
@@ -255,7 +346,32 @@
         "washCare": "Hand Wash with Mild Detergent",
         "lining": "Self Fabric Inner Facing"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK105",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "XS::Chalk White": 4,
+        "XS::Peach Sorbet": 4,
+        "XS::Sky Mist": 4,
+        "S::Chalk White": 4,
+        "S::Peach Sorbet": 4,
+        "S::Sky Mist": 4,
+        "M::Chalk White": 4,
+        "M::Peach Sorbet": 4,
+        "M::Sky Mist": 4,
+        "L::Chalk White": 4,
+        "L::Peach Sorbet": 4,
+        "L::Sky Mist": 3,
+        "XL::Chalk White": 3,
+        "XL::Peach Sorbet": 3,
+        "XL::Sky Mist": 3,
+        "XXL::Chalk White": 3,
+        "XXL::Peach Sorbet": 3,
+        "XXL::Sky Mist": 3
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-106",
@@ -305,7 +421,26 @@
         "washCare": "Dry Clean Recommended",
         "lining": "Full Butter Crepe"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK106",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "S::Midnight Charcoal": 3,
+        "S::Maroon Zari": 3,
+        "S::Emerald Mist": 3,
+        "M::Midnight Charcoal": 3,
+        "M::Maroon Zari": 2,
+        "M::Emerald Mist": 2,
+        "L::Midnight Charcoal": 2,
+        "L::Maroon Zari": 2,
+        "L::Emerald Mist": 2,
+        "XL::Midnight Charcoal": 2,
+        "XL::Maroon Zari": 2,
+        "XL::Emerald Mist": 2
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-107",
@@ -357,7 +492,32 @@
         "washCare": "Cold Wash Separately First Wash",
         "lining": "Unlined 100% Cotton"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK107",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "XS::Indigo Blue": 3,
+        "XS::Mustard Ochre": 3,
+        "XS::Terracotta": 3,
+        "S::Indigo Blue": 3,
+        "S::Mustard Ochre": 3,
+        "S::Terracotta": 3,
+        "M::Indigo Blue": 3,
+        "M::Mustard Ochre": 3,
+        "M::Terracotta": 3,
+        "L::Indigo Blue": 3,
+        "L::Mustard Ochre": 3,
+        "L::Terracotta": 3,
+        "XL::Indigo Blue": 2,
+        "XL::Mustard Ochre": 2,
+        "XL::Terracotta": 2,
+        "XXL::Indigo Blue": 2,
+        "XXL::Mustard Ochre": 2,
+        "XXL::Terracotta": 2
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-108",
@@ -408,7 +568,29 @@
         "washCare": "Dry Clean Only",
         "lining": "Soft Voile Silk Inner"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK108",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "S::Rose Gold Peach": 3,
+        "S::Turquoise Jewel": 3,
+        "S::Royal Crimson": 2,
+        "M::Rose Gold Peach": 2,
+        "M::Turquoise Jewel": 2,
+        "M::Royal Crimson": 2,
+        "L::Rose Gold Peach": 2,
+        "L::Turquoise Jewel": 2,
+        "L::Royal Crimson": 2,
+        "XL::Rose Gold Peach": 2,
+        "XL::Turquoise Jewel": 2,
+        "XL::Royal Crimson": 2,
+        "XXL::Rose Gold Peach": 2,
+        "XXL::Turquoise Jewel": 2,
+        "XXL::Royal Crimson": 2
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-109",
@@ -455,7 +637,17 @@
         "washCare": "Dry Clean Only",
         "lining": "Unlined Pure Silk Weave"
       },
-      "createdAt": "2026-11-08T03:53:12.383Z"
+      "createdAt": "2026-11-08T03:53:12.383Z",
+      "sku": "ZL-ZK109",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "Free Size (2.5m)::Antique Gold & Rose": 12,
+        "Free Size (2.5m)::Crimson Ruby": 12,
+        "Free Size (2.5m)::Bottle Green": 11
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     },
     {
       "id": "zk-110",
@@ -506,7 +698,29 @@
         "washCare": "Machine Wash Cold on Delicate",
         "lining": "Light Mulmul Lining in Bodice"
       },
-      "createdAt": "2026-11-08T03:53:12.384Z"
+      "createdAt": "2026-11-08T03:53:12.384Z",
+      "sku": "ZL-ZK110",
+      "brand": "Zohra Luxe",
+      "costPrice": 0,
+      "variantStock": {
+        "XS::Ivory White": 3,
+        "XS::Pastel Lilac": 3,
+        "XS::Dusty Mint": 3,
+        "S::Ivory White": 3,
+        "S::Pastel Lilac": 3,
+        "S::Dusty Mint": 3,
+        "M::Ivory White": 3,
+        "M::Pastel Lilac": 3,
+        "M::Dusty Mint": 3,
+        "L::Ivory White": 3,
+        "L::Pastel Lilac": 3,
+        "L::Dusty Mint": 3,
+        "XL::Ivory White": 3,
+        "XL::Pastel Lilac": 3,
+        "XL::Dusty Mint": 2
+      },
+      "videos": [],
+      "lowStockThreshold": 10
     }
   ],
   "categories": [
@@ -838,7 +1052,14 @@
       "status": "active",
       "addresses": [],
       "wishlist": [],
-      "createdAt": "2026-11-08T04:42:28.110Z"
+      "createdAt": "2026-11-08T04:42:28.110Z",
+      "referralCode": "ZL-SUPEDMIN",
+      "loyaltyPoints": 0,
+      "loyaltyHistory": [],
+      "stockAlerts": [],
+      "priceDropAlerts": {},
+      "adminRole": "primary_owner",
+      "passwordHash": "scrypt$875e1eda6ec403b652fb0d6e2f474a8b$a07170727032ab4aa6f700af9eedb427a4f10dd2bee9e53ebb2bbfdbedc5609f259ea18e2416e96521b84dab4ef527c88efaeabac05a777963cd42c9669b75f6"
     },
     {
       "id": "user-customer-1",
@@ -864,7 +1085,12 @@
         "zk-101",
         "zk-104"
       ],
-      "createdAt": "2026-10-09T03:53:12.384Z"
+      "createdAt": "2026-10-09T03:53:12.384Z",
+      "referralCode": "ZL-AANYER-1",
+      "loyaltyPoints": 0,
+      "loyaltyHistory": [],
+      "stockAlerts": [],
+      "priceDropAlerts": {}
     },
     {
       "id": "user-customer-2",
@@ -890,7 +1116,12 @@
         "zk-102",
         "zk-108"
       ],
-      "createdAt": "2026-10-24T03:53:12.384Z"
+      "createdAt": "2026-10-24T03:53:12.384Z",
+      "referralCode": "ZL-PRIYER-2",
+      "loyaltyPoints": 0,
+      "loyaltyHistory": [],
+      "stockAlerts": [],
+      "priceDropAlerts": {}
     },
     {
       "id": "user-1794215544631",
@@ -901,20 +1132,31 @@
       "status": "active",
       "addresses": [],
       "wishlist": [],
-      "createdAt": "2026-11-09T09:12:24.632Z"
+      "createdAt": "2026-11-09T09:12:24.632Z",
+      "referralCode": "ZL-MDRO4631",
+      "loyaltyPoints": 0,
+      "loyaltyHistory": [],
+      "stockAlerts": [],
+      "priceDropAlerts": {}
     },
     {
-      "id": "admin-1794217435294",
-      "name": "Shop Partner 1",
-      "email": "partner.shop1@gmail.com",
+      "id": "admin-1794498907959",
+      "name": "Store Partner (Md Romaan)",
+      "email": "mdromaan99@gmail.com",
       "phone": "9310078735",
-      "passwordHash": "6f2cb9dd8f4b65e24e1c3f3fa5bc57982349237f11abceacd45bbcb74d621c25",
-      "role": "customer",
+      "passwordHash": "scrypt$5002c1d79cdeaf74083441bf2ef223af$4957c0af5a04e457f074e5233c6f04056b70cf65708011f4730cb14d8e996fd850875dd8b094e08a589aa117aecd2e9164f2145a44f2d8e60e67ca75bbbb74b4",
+      "role": "admin",
       "isSuperAdmin": false,
       "status": "active",
       "addresses": [],
       "wishlist": [],
-      "createdAt": "2026-11-09T09:43:55.294Z"
+      "createdAt": "2026-11-12T15:55:07.959Z",
+      "referralCode": "ZL-STOR7959",
+      "loyaltyPoints": 0,
+      "loyaltyHistory": [],
+      "stockAlerts": [],
+      "priceDropAlerts": {},
+      "adminRole": "store_partner"
     }
   ],
   "coupons": [
@@ -971,7 +1213,9 @@
       "rating": 5,
       "comment": "The zardozi threadwork on the blush pink anarkali is even more breathtaking in person. The fabric is light yet grand. Felt like royalty at my sister’s engagement!",
       "date": "3 days ago",
-      "verified": true
+      "verified": true,
+      "moderationStatus": "approved",
+      "reportedCount": 0
     },
     {
       "id": "rev-2",
@@ -980,7 +1224,9 @@
       "rating": 5,
       "comment": "Flawless fit! The mulmul lining makes it so comfortable to wear for 8+ hours. Truly luxury couture quality at a reasonable price.",
       "date": "1 week ago",
-      "verified": true
+      "verified": true,
+      "moderationStatus": "approved",
+      "reportedCount": 0
     },
     {
       "id": "rev-3",
@@ -989,14 +1235,16 @@
       "rating": 5,
       "comment": "Such a refreshing sage green shade. Very neat neckline embroidery and the matching cigarette pants give a super sleek silhouette.",
       "date": "4 days ago",
-      "verified": true
+      "verified": true,
+      "moderationStatus": "approved",
+      "reportedCount": 0
     }
   ],
   "settings": {
     "brandName": "Zohra Luxe",
     "tagline": "Luxury Women & Girls Pret Couture",
     "logoText": "ZOHRA LUXE",
-    "announcement": "✨ Wholesale Rate me lene ke liye call/WhatsApp karein: 9310078735 | Free Express Shipping Above ₹1,499",
+    "announcement": "Wholesale Bulk Orders: Call or WhatsApp +91 9310078735 · Free Express Delivery Over ₹1,499",
     "whatsappNumber": "+919310078735",
     "supportEmail": "care@zohraluxe.com",
     "supportPhone": "+91 9310078735",
@@ -1004,12 +1252,55 @@
     "standardShippingFee": 99,
     "returnPolicyDays": 7,
     "returnPolicyText": "We offer an easy 7-day return and exchange policy from the date of delivery. Items must be unworn, unwashed with original artisanal tags intact.",
+    "shippingPolicyText": "Orders are inspected and dispatched within 24–48 business hours. Complimentary express delivery is available on prepaid and COD orders over ₹1,499 across serviceable Indian PIN codes.",
+    "aboutUsText": "Founded with a dedication to heirloom Indian needlework and effortless modern silhouettes, Zohra Luxe crafts pure Chanderi, mulmul cotton, and silk ethnic wear for discerning shoppers and boutique retailers.",
+    "contactInfoText": "Customer Concierge & Wholesale Desk: +91 9310078735 (Mon–Sat, 10 AM – 7 PM IST) · Email: care@zohraluxe.com",
     "privacyPolicyText": "Your privacy is paramount to us. All personal data, measurements, and transaction logs are encrypted using enterprise standards.",
     "termsConditionsText": "Welcome to Zohra Luxe. All our garments are crafted with authentic fabrics and handcrafted embellishments.",
     "heroHeadline": "Discover Your Style, Celebrate Your Elegance",
     "heroSubtitle": "Explore the latest collection of Kurtis, Short Kurtis, and Women's Luxury Ethnic Wear.",
     "heroImage": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
     "heroButtonText": "Shop New Arrivals",
+    "cmsBanners": [
+      {
+        "id": "ban-1",
+        "title": "Festive Zardozi Edit 2026",
+        "subtitle": "Handwoven Chanderi silk anarkalis & coordinated sets crafted for celebrations.",
+        "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
+        "ctaText": "Explore Festive Wear",
+        "targetCategory": "Festive Wear",
+        "active": true
+      },
+      {
+        "id": "ban-2",
+        "title": "Everyday Mulmul & Cotton Craft",
+        "subtitle": "Breathable hand-block kurtis tailored for office and effortless daily wear.",
+        "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
+        "ctaText": "Shop Cotton Kurtis",
+        "targetCategory": "Cotton Kurtis",
+        "active": true
+      }
+    ],
+    "faqItems": [
+      {
+        "id": "faq-1",
+        "question": "How do I choose the right size?",
+        "answer": "Use our Women Size Guide or Smart Fit Finder on any product page. Our kurtis allow a 2-inch tailoring margin for comfortable drape."
+      },
+      {
+        "id": "faq-2",
+        "question": "How do returns and size exchanges work?",
+        "answer": "Eligible unworn items with tags intact can be requested for return or size exchange within 7 days of delivery through Track Order."
+      },
+      {
+        "id": "faq-3",
+        "question": "How can boutiques place wholesale orders?",
+        "answer": "Open the Wholesale B2B Portal to submit your business details for approval, or call +91 9310078735 directly."
+      }
+    ],
+    "maintenanceMode": false,
+    "sessionTimeoutHours": 168,
+    "backupRetentionCount": 15,
     "socialLinks": {
       "instagram": "https://instagram.com/zohraluxe",
       "facebook": "https://facebook.com/zohraluxe",
@@ -1017,6 +1308,87 @@
     }
   },
   "activityLogs": [
+    {
+      "id": "log-1794638811934-519",
+      "timestamp": "2026-11-14T06:46:51.934Z",
+      "adminEmail": "mdromaan99@gmail.com",
+      "actorId": "admin-1794498907959",
+      "action": "Admin Login Success",
+      "before": null,
+      "after": null,
+      "result": "success",
+      "ipAddress": "127.0.0.1",
+      "details": "Store Partner (Md Romaan) signed in via password (store_partner)."
+    },
+    {
+      "id": "log-1794638811852-380",
+      "timestamp": "2026-11-14T06:46:51.852Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "actorId": "user-owner-super-admin",
+      "action": "Admin Login Success",
+      "before": null,
+      "after": null,
+      "result": "success",
+      "ipAddress": "127.0.0.1",
+      "details": "Super Admin (Website Owner) signed in via password (primary_owner)."
+    },
+    {
+      "id": "log-1794638805026",
+      "timestamp": "2026-11-14T06:46:45.026Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Updated Admin Credentials",
+      "result": "success",
+      "details": "Initialized salted scrypt credentials for Primary Owner (mdtausifraza1459@gmail.com) and Store Partner (mdromaan99@gmail.com)."
+    },
+    {
+      "id": "log-1794498945297",
+      "timestamp": "2026-11-12T15:55:45.297Z",
+      "adminEmail": "mdromaan99@gmail.com",
+      "action": "Admin Google Login",
+      "details": "Signed in via Google with authorized Gmail (mdromaan99@gmail.com)."
+    },
+    {
+      "id": "log-1794498914768",
+      "timestamp": "2026-11-12T15:55:14.768Z",
+      "adminEmail": "mdromaan99@gmail.com",
+      "action": "Admin Google Login",
+      "details": "Signed in via Google with authorized Gmail (mdromaan99@gmail.com)."
+    },
+    {
+      "id": "log-1794498914752",
+      "timestamp": "2026-11-12T15:55:14.752Z",
+      "adminEmail": "mdromaan99@gmail.com",
+      "action": "Admin Login Success",
+      "details": "Store Admin (Store Partner (Md Romaan)) signed in via Gmail & Password."
+    },
+    {
+      "id": "log-1794498907964",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Added Store Partner Admin",
+      "details": "Added authorized Store Partner Gmail: mdromaan99@gmail.com (Md Romaan).",
+      "timestamp": "2026-11-12T15:55:07.964Z"
+    },
+    {
+      "id": "log-1794498588627",
+      "timestamp": "2026-11-12T15:49:48.627Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Admin Google Login",
+      "details": "Signed in via Google with authorized Gmail (mdtausifraza1459@gmail.com)."
+    },
+    {
+      "id": "log-1794498588606",
+      "timestamp": "2026-11-12T15:49:48.606Z",
+      "adminEmail": "mdtausifraza1459@gmail.com",
+      "action": "Admin Login Success",
+      "details": "Store Admin (Super Admin (Website Owner)) signed in via Gmail & Password."
+    },
+    {
+      "id": "log-1794460217166",
+      "timestamp": "2026-11-12T05:10:17.167Z",
+      "adminEmail": "random.stranger@gmail.com",
+      "action": "Unauthorized Admin Login Blocked",
+      "details": "Blocked unauthorized Google sign-in attempt from random.stranger@gmail.com. Email is not in the authorized store admin team."
+    },
     {
       "id": "log-1794217454350",
       "timestamp": "2026-11-09T09:44:14.350Z",
@@ -1196,6 +1568,63 @@
       "message": "Hello, can the Gulmohar Anarkali set be customized for 44-inch length? Looking forward to hearing from you.",
       "status": "open",
       "createdAt": "2026-11-07T03:53:12.384Z"
+    }
+  ],
+  "stockMovements": [],
+  "paymentTransactions": [
+    {
+      "id": "tx-ORD-847646",
+      "orderId": "ORD-847646",
+      "provider": "cod",
+      "method": "cod",
+      "amount": 2199,
+      "currency": "INR",
+      "status": "created",
+      "createdAt": "2026-11-09T09:14:33.806Z",
+      "updatedAt": "2026-11-09T09:14:33.806Z"
+    },
+    {
+      "id": "UPI-TXN-88491028",
+      "orderId": "ORD-98241",
+      "provider": "manual",
+      "method": "online_upi",
+      "amount": 2969,
+      "currency": "INR",
+      "status": "captured",
+      "createdAt": "2026-11-06T03:53:12.384Z",
+      "updatedAt": "2026-11-06T03:53:12.384Z"
+    },
+    {
+      "id": "CARD-TXN-99120485",
+      "orderId": "ORD-98242",
+      "provider": "manual",
+      "method": "online_card",
+      "amount": 5198,
+      "currency": "INR",
+      "status": "captured",
+      "createdAt": "2026-11-07T03:53:12.384Z",
+      "updatedAt": "2026-11-07T03:53:12.384Z"
+    }
+  ],
+  "returnRequests": [],
+  "wholesaleAccounts": [],
+  "wholesaleOrders": [],
+  "notifications": [],
+  "expenses": [],
+  "backups": [
+    {
+      "id": "bkp-1794638780014-71",
+      "filename": "bkp-1794638780014-71.json",
+      "createdAt": "2026-11-14T06:46:20.014Z",
+      "createdBy": "system@zohraluxe.com",
+      "trigger": "pre_migration",
+      "sizeBytes": 54777,
+      "checksum": "fb012b77b10e0ddc64c98ae18349d2fce361c5780d3a9f3c574a10f6b2f0d4e4",
+      "counts": {
+        "products": 10,
+        "orders": 3,
+        "users": 5
+      }
     }
   ]
 }

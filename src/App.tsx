@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect, Component } from 'react';
 import { StoreProvider, useStore } from './context/StoreContext.tsx';
+import { Product } from './types.ts';
 import { Header } from './components/Header.tsx';
 import { HeroBanner } from './components/HeroBanner.tsx';
 import { CategoryBar } from './components/CategoryBar.tsx';
@@ -16,11 +17,18 @@ import { CheckoutModal } from './components/CheckoutModal.tsx';
 import { CustomerAccountModal } from './components/CustomerAccountModal.tsx';
 import { OrderTrackingModal } from './components/OrderTrackingModal.tsx';
 import { SizeGuideModal } from './components/SizeGuideModal.tsx';
+import { ProductComparisonModal } from './components/ProductComparisonModal.tsx';
+import { WholesalePortalModal } from './components/WholesalePortalModal.tsx';
+import { InfoPagesModal } from './components/InfoPagesModal.tsx';
 import { CustomerReviewsSection } from './components/CustomerReviewsSection.tsx';
 import { NewsletterSection } from './components/NewsletterSection.tsx';
 import { WhatsAppButton } from './components/WhatsAppButton.tsx';
 import { Footer } from './components/Footer.tsx';
 import { AdminPortal } from './components/AdminPortal.tsx';
+import { PWAInstallBanner } from './components/PWAInstallBanner.tsx';
+import { LookbookOutfitModal } from './components/LookbookOutfitModal.tsx';
+import { DigitalGiftCardModal } from './components/DigitalGiftCardModal.tsx';
+import { AIShoppingAssistant } from './components/AIShoppingAssistant.tsx';
 import {
   SlidersHorizontal,
   ArrowUpDown,
@@ -31,11 +39,54 @@ import {
   ShoppingBag,
   X,
   CheckCircle2,
+  GitCompare,
+  Shield,
+  Sparkles,
+  Clock,
+  Wrench,
 } from 'lucide-react';
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  message: string;
+}
+
+class AppErrorBoundary extends Component<{ children: React.ReactNode }, ErrorBoundaryState> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, message: '' };
+  }
+
+  static getDerivedStateFromError(err: Error): ErrorBoundaryState {
+    return { hasError: true, message: err?.message || 'Unexpected rendering error' };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#F7F6F2] flex items-center justify-center p-6 text-[#141413] font-sans">
+          <div className="max-w-md w-full bg-white border border-[#E2DFD7] rounded-xl p-8 text-center space-y-4 shadow-sm">
+            <h1 className="font-serif text-2xl font-semibold">Something needs a quick refresh</h1>
+            <p className="text-xs text-[#63615C]">{this.state.message}</p>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="px-5 py-2.5 bg-[#164E3F] text-white text-xs font-semibold uppercase tracking-wider rounded-md cursor-pointer"
+            >
+              Reload Storefront
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const StoreContent: React.FC = () => {
   const {
     products,
+    settings,
     loading,
     filters,
     setFilters,
@@ -53,26 +104,88 @@ const StoreContent: React.FC = () => {
     setActiveView,
     toast,
     dismissToast,
+    compareList,
+    setCompareModalOpen,
+    clearCompare,
+    recentlyViewed,
+    setLookbookModalOpen,
+    setGiftCardModalOpen,
+    flashSales,
   } = useStore();
 
-  const [mobileFilterOpen, setMobileFilterOpen] = React.useState(false);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
 
-  // Admin route shortcut (?admin=true, #admin, or Ctrl/Cmd+Shift+A)
-  React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('admin') === 'true' || window.location.hash === '#admin') {
-      setActiveView('admin');
-    }
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-        e.preventDefault();
-        setActiveView(activeView === 'admin' ? 'store' : 'admin');
-      }
+  // Fetch server-computed recommendations based on recently viewed IDs
+  useEffect(() => {
+    const idsParam = recentlyViewed.slice(0, 6).join(',');
+    let cancelled = false;
+    fetch(`/api/products/recommendations?ids=${encodeURIComponent(idsParam)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        const list = Array.isArray(data?.products) ? data.products : Array.isArray(data) ? data : [];
+        if (!cancelled && list.length > 0) {
+          setRecommendedProducts(list.slice(0, 4));
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setActiveView, activeView]);
+  }, [recentlyViewed]);
+
+  // Dynamic Schema.org Product JSON-LD when Quick View PDP is open
+  useEffect(() => {
+    const existingScript = document.getElementById('zohra-product-jsonld');
+    if (existingScript) existingScript.remove();
+
+    if (!quickViewProduct) return;
+
+    const script = document.createElement('script');
+    script.id = 'zohra-product-jsonld';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: quickViewProduct.name,
+      sku: quickViewProduct.sku || quickViewProduct.id,
+      image: quickViewProduct.images,
+      description: quickViewProduct.description,
+      brand: {
+        '@type': 'Brand',
+        name: quickViewProduct.brand || settings?.brandName || 'Zohra Luxe',
+      },
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'INR',
+        price: quickViewProduct.discountedPrice,
+        availability:
+          quickViewProduct.inStock && quickViewProduct.stockQuantity > 0
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+      },
+      ...(quickViewProduct.reviewCount > 0
+        ? {
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: quickViewProduct.rating,
+              reviewCount: quickViewProduct.reviewCount,
+            },
+          }
+        : {}),
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.getElementById('zohra-product-jsonld')?.remove();
+    };
+  }, [quickViewProduct, settings?.brandName]);
+
+  const recentlyViewedProducts = useMemo(() => {
+    return recentlyViewed
+      .map((id) => products.find((p) => p.id === id))
+      .filter((p): p is Product => Boolean(p))
+      .slice(0, 4);
+  }, [recentlyViewed, products]);
 
   const filteredProducts = useMemo(() => {
     return products
@@ -96,7 +209,7 @@ const StoreContent: React.FC = () => {
             .filter(Boolean);
 
           if (cleanTerms.length > 0) {
-            const haystack = `${p.name} ${p.category} ${p.brand || ''} ${p.fabric} ${
+            const haystack = `${p.name} ${p.sku || ''} ${p.category} ${p.brand || ''} ${p.fabric} ${
               p.sleeveType || ''
             } ${p.kurtiLength || ''} ${p.occasion || ''} ${p.description} ${p.colors
               ?.map((c) => c.name)
@@ -141,7 +254,9 @@ const StoreContent: React.FC = () => {
 
         if (
           filters.occasions.length > 0 &&
-          !filters.occasions.some((occ) => p.occasion && p.occasion.toLowerCase() === occ.toLowerCase())
+          !filters.occasions.some(
+            (occ) => p.occasion && p.occasion.toLowerCase().includes(occ.toLowerCase())
+          )
         ) {
           return false;
         }
@@ -168,6 +283,38 @@ const StoreContent: React.FC = () => {
 
   if (activeView === 'admin') {
     return <AdminPortal />;
+  }
+
+  // Maintenance mode gate for storefront shoppers while still letting authorized owners sign in
+  if (settings?.maintenanceMode) {
+    return (
+      <div className="min-h-screen bg-[#F7F6F2] flex items-center justify-center p-6 font-sans text-[#141413]">
+        <div className="max-w-lg w-full bg-white border border-[#E2DFD7] rounded-xl p-8 text-center space-y-5 shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-[#ECF4F1] text-[#164E3F] flex items-center justify-center mx-auto">
+            <Wrench className="w-6 h-6" />
+          </div>
+          <div className="space-y-2">
+            <p className="font-serif text-xs uppercase tracking-[0.25em] text-[#8E6D3B] font-semibold">
+              {settings?.brandName || 'ZOHRA LUXE'} Atelier
+            </p>
+            <h1 className="font-serif text-3xl font-semibold">Scheduled Storefront Maintenance</h1>
+            <p className="text-sm text-[#63615C] leading-relaxed">
+              We are curating our seasonal collection and refining the online atelier experience. We will return shortly.
+              For urgent wholesale inquiries, please call{' '}
+              <span className="font-mono font-semibold text-[#164E3F]">+91 {settings?.whatsappNumber || '9310078735'}</span>.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setActiveView('admin')}
+            className="inline-flex items-center gap-2 px-4 py-2 border border-[#E2DFD7] hover:border-[#141413] text-xs font-medium text-[#63615C] hover:text-[#141413] rounded-md transition-colors cursor-pointer"
+          >
+            <Shield className="w-3.5 h-3.5 text-[#164E3F]" />
+            <span>Store Owner Sign In</span>
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const quickTabs = [
@@ -235,7 +382,8 @@ const StoreContent: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#1C1917] pb-16 md:pb-0 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#F7F6F2] text-[#141413] pb-16 md:pb-0 font-sans">
+      <PWAInstallBanner />
       <Header />
 
       <HeroBanner />
@@ -244,17 +392,37 @@ const StoreContent: React.FC = () => {
 
       {/* Main Catalog Workspace */}
       <main id="catalog-section" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        {/* Quick Filter Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 no-scrollbar mb-6">
+        {/* Live Flash Sale Strip when active */}
+        {flashSales.length > 0 && (
+          <div className="mb-6 bg-[#141413] text-white rounded-lg border border-[#2E2D2A] px-5 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="px-2 py-0.5 bg-[#D4AF6A] text-[#141413] font-mono text-[10px] font-bold uppercase tracking-wider rounded">
+                Live Flash Event
+              </span>
+              <p className="text-xs sm:text-sm font-medium">
+                {flashSales[0].title} —{' '}
+                <span className="text-[#D4AF6A] font-mono font-semibold">
+                  Up to {flashSales[0].discountPercent}% Extra Privilege
+                </span>
+              </p>
+            </div>
+            <span className="text-[11px] font-mono text-[#CBC7BE]">
+              Ends {new Date(flashSales[0].endsAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
+        )}
+
+        {/* Segmented Quick Filter Strip */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 no-scrollbar mb-3">
           {quickTabs.map((tab, idx) => (
             <button
               key={idx}
               type="button"
               onClick={tab.action}
-              className={`shrink-0 px-3.5 py-1.5 rounded-md text-xs font-semibold border transition-colors cursor-pointer whitespace-nowrap ${
+              className={`shrink-0 px-3.5 py-1.5 rounded-md text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap ${
                 tab.active
-                  ? 'bg-[#6D1D3A] text-white border-[#6D1D3A]'
-                  : 'bg-white text-[#1C1917] border-[#E5DFD7] hover:border-[#6D1D3A] hover:text-[#6D1D3A]'
+                  ? 'bg-[#164E3F] text-white border-[#164E3F]'
+                  : 'bg-white text-[#141413] border-[#E2DFD7] hover:border-[#141413]'
               }`}
             >
               {tab.label}
@@ -262,18 +430,69 @@ const StoreContent: React.FC = () => {
           ))}
         </div>
 
-        {/* Section Title, Results Count & Sort Selector */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E5DFD7]">
+        {/* Shop by Occasion Editorial Selector + Lookbook Shortcut */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-5 mb-6 border-b border-[#E2DFD7]">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] shrink-0 mr-1">
+              Shop by Occasion:
+            </span>
+            {['Wedding', 'Party', 'Festive', 'Eid', 'Office', 'Casual', 'Daily Wear'].map((occ) => {
+              const active = filters.occasions.includes(occ);
+              return (
+                <button
+                  key={occ}
+                  type="button"
+                  onClick={() =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      occasions: prev.occasions.includes(occ)
+                        ? prev.occasions.filter((o) => o !== occ)
+                        : [...prev.occasions, occ],
+                    }))
+                  }
+                  className={`shrink-0 px-2.5 py-1 rounded text-[11px] font-medium border transition-colors cursor-pointer ${
+                    active
+                      ? 'bg-[#141413] text-white border-[#141413]'
+                      : 'bg-[#F7F6F2] text-[#141413] border-[#E2DFD7] hover:border-[#8E6D3B]'
+                  }`}
+                >
+                  {occ}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => setLookbookModalOpen(true)}
+              className="px-3 py-1.5 bg-[#FBF6EB] hover:bg-[#F5EBD6] border border-[#D4AF6A]/60 text-[#8E6D3B] text-xs font-semibold rounded-md flex items-center gap-1.5 cursor-pointer transition-colors"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Lookbooks &amp; Outfit Builder</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setGiftCardModalOpen(true)}
+              className="px-3 py-1.5 bg-white hover:bg-[#ECF4F1] border border-[#E2DFD7] text-[#164E3F] text-xs font-semibold rounded-md cursor-pointer transition-colors"
+            >
+              Gift Cards
+            </button>
+          </div>
+        </div>
+
+        {/* Section Header, Count & Sort Selector */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E2DFD7]">
           <div>
-            <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#1C1917]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#141413]">
               {filters.category === 'All' ? "Girls' & Women's Collections" : filters.category}
             </h2>
-            <p className="text-xs text-[#6B625D] mt-0.5">
+            <p className="text-xs text-[#63615C] mt-0.5">
               Showing{' '}
-              <span className="font-bold text-[#6D1D3A] font-mono tabular-nums">
+              <span className="font-semibold text-[#164E3F] font-mono tabular-nums">
                 {filteredProducts.length}
               </span>{' '}
-              styles {searchQuery && <span>for &ldquo;{searchQuery}&rdquo;</span>}
+              curated styles {searchQuery && <span>for &ldquo;{searchQuery}&rdquo;</span>}
             </p>
           </div>
 
@@ -281,15 +500,15 @@ const StoreContent: React.FC = () => {
             <button
               type="button"
               onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden px-3.5 py-2 border border-[#6D1D3A] bg-[#FBF2F5] rounded-md text-xs font-semibold text-[#6D1D3A] flex items-center gap-1.5 cursor-pointer"
+              className="lg:hidden px-3.5 py-2 border border-[#141413] bg-white rounded-md text-xs font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#164E3F]" />
               <span>Filters ({filteredProducts.length})</span>
             </button>
 
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-[#6B625D] hidden sm:inline-flex items-center gap-1 font-medium">
-                <ArrowUpDown className="w-3.5 h-3.5 text-[#6D1D3A]" />
+              <span className="text-[#63615C] hidden sm:inline-flex items-center gap-1 font-medium">
+                <ArrowUpDown className="w-3.5 h-3.5 text-[#164E3F]" />
                 <span>Sort:</span>
               </span>
               <select
@@ -300,7 +519,7 @@ const StoreContent: React.FC = () => {
                     sortBy: e.target.value as any,
                   }))
                 }
-                className="bg-white border border-[#E5DFD7] text-xs font-semibold text-[#1C1917] rounded-md px-3 py-2 focus:outline-none focus:border-[#6D1D3A] cursor-pointer"
+                className="bg-white border border-[#E2DFD7] text-xs font-medium text-[#141413] rounded-md px-3 py-2 focus:outline-none focus:border-[#141413] cursor-pointer"
               >
                 <option value="relevance">Relevance</option>
                 <option value="popularity">Popularity</option>
@@ -322,13 +541,13 @@ const StoreContent: React.FC = () => {
 
           {mobileFilterOpen && (
             <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs p-4 flex justify-end">
-              <div className="bg-white w-full max-w-xs p-5 rounded-lg overflow-y-auto max-h-[92vh] space-y-4 shadow-2xl border border-[#E5DFD7]">
-                <div className="flex justify-between items-center border-b border-[#E5DFD7] pb-3">
-                  <h3 className="font-serif text-base font-bold text-[#1C1917]">Refine Styles</h3>
+              <div className="bg-white w-full max-w-xs p-5 rounded-lg overflow-y-auto max-h-[92vh] space-y-4 shadow-2xl border border-[#E2DFD7]">
+                <div className="flex justify-between items-center border-b border-[#E2DFD7] pb-3">
+                  <h3 className="font-serif text-lg font-semibold text-[#141413]">Refine Styles</h3>
                   <button
                     type="button"
                     onClick={() => setMobileFilterOpen(false)}
-                    className="text-xs font-semibold text-[#6D1D3A] px-3 py-1 bg-[#FBF2F5] rounded border border-[#E5DFD7] cursor-pointer"
+                    className="text-xs font-medium text-[#164E3F] px-3 py-1 bg-[#ECF4F1] rounded border border-[#E2DFD7] cursor-pointer"
                   >
                     Done
                   </button>
@@ -342,18 +561,21 @@ const StoreContent: React.FC = () => {
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="aspect-[3/4] bg-[#F3EFEA] animate-pulse rounded-lg" />
+                  <div
+                    key={i}
+                    className="aspect-[3/4] bg-[#EFECE6] rounded-lg border border-[#E2DFD7]"
+                  />
                 ))}
               </div>
             ) : filteredProducts.length === 0 ? (
-              <div className="text-center py-16 px-4 bg-white rounded-lg border border-[#E5DFD7] space-y-3">
-                <div className="w-12 h-12 rounded-full bg-[#FBF2F5] text-[#6D1D3A] flex items-center justify-center mx-auto">
+              <div className="text-center py-16 px-4 bg-white rounded-lg border border-[#E2DFD7] space-y-3">
+                <div className="w-12 h-12 rounded-full bg-[#ECF4F1] text-[#164E3F] flex items-center justify-center mx-auto">
                   <SlidersHorizontal className="w-5 h-5" />
                 </div>
-                <p className="font-serif text-xl font-bold text-[#1C1917]">
+                <p className="font-serif text-2xl font-semibold text-[#141413]">
                   No products found. Try another search.
                 </p>
-                <p className="text-xs text-[#6B625D] max-w-md mx-auto">
+                <p className="text-xs text-[#63615C] max-w-md mx-auto">
                   No styles match your current search or filter selection. Clear filters to browse all collections.
                 </p>
                 <button
@@ -377,7 +599,7 @@ const StoreContent: React.FC = () => {
                       bestSellersOnly: false,
                     });
                   }}
-                  className="px-5 py-2.5 bg-[#6D1D3A] hover:bg-[#53142B] text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors cursor-pointer"
+                  className="px-5 py-2.5 bg-[#141413] hover:bg-[#164E3F] text-white text-xs font-medium tracking-wider uppercase rounded-md transition-colors cursor-pointer"
                 >
                   Clear All Filters
                 </button>
@@ -391,6 +613,42 @@ const StoreContent: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Recently Viewed Section */}
+        {recentlyViewedProducts.length > 0 && (
+          <section className="mt-14 pt-10 border-t border-[#E2DFD7] space-y-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Clock className="w-4 h-4 text-[#8E6D3B]" />
+                <h3 className="font-serif text-2xl font-semibold text-[#141413]">Recently Viewed</h3>
+              </div>
+              <span className="text-xs text-[#63615C]">Pick up where you left off</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+              {recentlyViewedProducts.map((item) => (
+                <ProductCard key={`recent-${item.id}`} product={item} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Personalized Recommendations Section */}
+        {recommendedProducts.length > 0 && (
+          <section className="mt-14 pt-10 border-t border-[#E2DFD7] space-y-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Sparkles className="w-4 h-4 text-[#164E3F]" />
+                <h3 className="font-serif text-2xl font-semibold text-[#141413]">Recommended For You</h3>
+              </div>
+              <span className="text-xs text-[#63615C]">Curated from your browsing preferences</span>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+              {recommendedProducts.map((item) => (
+                <ProductCard key={`rec-${item.id}`} product={item} />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
 
       <CustomerReviewsSection />
@@ -401,29 +659,57 @@ const StoreContent: React.FC = () => {
 
       <WhatsAppButton />
 
-      {/* Interactive Ordering Toast Notification */}
+      {/* Floating Compare Bar */}
+      {compareList.length > 0 && (
+        <div className="fixed bottom-16 md:bottom-6 left-4 z-40 bg-[#141413] text-white border border-[#2E2D2A] rounded-lg shadow-2xl px-4 py-2.5 flex items-center gap-3">
+          <GitCompare className="w-4 h-4 text-[#D4AF6A] shrink-0" />
+          <div className="text-xs">
+            <span className="font-semibold">{compareList.length}</span>{' '}
+            <span className="text-[#CBC7BE]">
+              {compareList.length === 1 ? 'style' : 'styles'} selected to compare
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setCompareModalOpen(true)}
+            className="px-3 py-1 bg-[#164E3F] hover:bg-[#0F3A2E] text-white text-[11px] font-semibold uppercase tracking-wider rounded cursor-pointer"
+          >
+            Compare
+          </button>
+          <button
+            type="button"
+            onClick={clearCompare}
+            aria-label="Clear compare list"
+            className="text-white/60 hover:text-white p-0.5 cursor-pointer"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Non-blocking Floating Ordering Toast */}
       {toast && (
         <div
           role="status"
-          className="fixed bottom-20 md:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-50 bg-white border border-[#E5DFD7] rounded-lg shadow-xl p-3.5 flex items-start gap-3 text-[#1C1917]"
+          className="fixed bottom-20 md:bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-50 bg-white border border-[#E2DFD7] rounded-lg shadow-xl p-3.5 flex items-start gap-3 text-[#141413]"
         >
           {toast.image ? (
             <img
               src={toast.image}
               alt=""
               referrerPolicy="no-referrer"
-              className="w-11 h-14 object-cover rounded border border-[#E5DFD7] shrink-0"
+              className="w-11 h-14 object-cover rounded border border-[#E2DFD7] shrink-0"
             />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-[#ECFDF5] text-[#166534] flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#ECF4F1] text-[#164E3F] flex items-center justify-center shrink-0">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           )}
 
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-[#1C1917] truncate">{toast.title}</p>
+            <p className="text-xs font-semibold text-[#141413] truncate">{toast.title}</p>
             {toast.subtitle && (
-              <p className="text-[11px] text-[#6B625D] mt-0.5 truncate">{toast.subtitle}</p>
+              <p className="text-[11px] text-[#63615C] mt-0.5 truncate">{toast.subtitle}</p>
             )}
             {toast.showBagActions && (
               <div className="flex items-center gap-2 mt-2">
@@ -433,7 +719,7 @@ const StoreContent: React.FC = () => {
                     dismissToast();
                     setCartDrawerOpen(true);
                   }}
-                  className="px-2.5 py-1 bg-[#F3EFEA] hover:bg-[#E5DFD7] text-[#1C1917] rounded text-[11px] font-semibold cursor-pointer"
+                  className="px-2.5 py-1 bg-[#EFECE6] hover:bg-[#E2DFD7] text-[#141413] rounded text-[11px] font-medium cursor-pointer"
                 >
                   View Bag
                 </button>
@@ -443,7 +729,7 @@ const StoreContent: React.FC = () => {
                     dismissToast();
                     setCheckoutModalOpen(true);
                   }}
-                  className="px-2.5 py-1 bg-[#6D1D3A] hover:bg-[#53142B] text-white rounded text-[11px] font-semibold cursor-pointer"
+                  className="px-2.5 py-1 bg-[#164E3F] hover:bg-[#0F3A2E] text-white rounded text-[11px] font-medium cursor-pointer"
                 >
                   Checkout
                 </button>
@@ -455,53 +741,53 @@ const StoreContent: React.FC = () => {
             type="button"
             onClick={dismissToast}
             aria-label="Dismiss notification"
-            className="text-[#6B625D] hover:text-[#1C1917] p-0.5 cursor-pointer"
+            className="text-[#63615C] hover:text-[#141413] p-0.5 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* Clean Mobile Bottom Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E5DFD7] flex items-center justify-around py-2 px-2">
+      {/* Compact Mobile Bottom Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E2DFD7] flex items-center justify-around py-1.5 px-2 h-14">
         <button
           type="button"
           onClick={() => {
             setFilters((prev) => ({ ...prev, category: 'All' }));
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="flex flex-col items-center gap-0.5 text-[#6D1D3A] p-1 cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#141413] p-1 cursor-pointer"
         >
-          <Home className="w-5 h-5" />
+          <Home className="w-4 h-4" />
           <span className="text-[10px] font-semibold">Home</span>
         </button>
 
         <button
           type="button"
           onClick={() => document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="flex flex-col items-center gap-0.5 text-[#6B625D] hover:text-[#6D1D3A] p-1 cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 cursor-pointer"
         >
-          <Grid className="w-5 h-5" />
+          <Grid className="w-4 h-4" />
           <span className="text-[10px] font-medium">Catalog</span>
         </button>
 
         <button
           type="button"
           onClick={() => setTrackingModalOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[#6B625D] hover:text-[#6D1D3A] p-1 cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 cursor-pointer"
         >
-          <Truck className="w-5 h-5" />
+          <Truck className="w-4 h-4" />
           <span className="text-[10px] font-medium">Track</span>
         </button>
 
         <button
           type="button"
           onClick={() => setAuthModalOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[#6B625D] hover:text-[#6D1D3A] p-1 relative cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 relative cursor-pointer"
         >
-          <Heart className="w-5 h-5" />
+          <Heart className="w-4 h-4" />
           {wishlist.length > 0 && (
-            <span className="absolute -top-0.5 right-0 text-[9px] font-bold font-mono text-[#6D1D3A]">
+            <span className="absolute -top-0.5 right-0 text-[9px] font-bold font-mono text-[#164E3F]">
               {wishlist.length}
             </span>
           )}
@@ -511,11 +797,11 @@ const StoreContent: React.FC = () => {
         <button
           type="button"
           onClick={() => setCartDrawerOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[#6B625D] hover:text-[#6D1D3A] p-1 relative cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 relative cursor-pointer"
         >
-          <ShoppingBag className="w-5 h-5" />
+          <ShoppingBag className="w-4 h-4" />
           {cartItemCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#6D1D3A] text-white text-[10px] font-bold rounded-full flex items-center justify-center font-mono tabular-nums">
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#164E3F] text-white text-[10px] font-bold rounded-full flex items-center justify-center font-mono tabular-nums">
               {cartItemCount}
             </span>
           )}
@@ -529,6 +815,12 @@ const StoreContent: React.FC = () => {
       <CustomerAccountModal />
       <OrderTrackingModal />
       <SizeGuideModal />
+      <ProductComparisonModal />
+      <WholesalePortalModal />
+      <InfoPagesModal />
+      <LookbookOutfitModal />
+      <DigitalGiftCardModal />
+      <AIShoppingAssistant />
       {quickViewProduct && (
         <ProductDetailModal
           product={quickViewProduct}
@@ -541,8 +833,10 @@ const StoreContent: React.FC = () => {
 
 export default function App() {
   return (
-    <StoreProvider>
-      <StoreContent />
-    </StoreProvider>
+    <AppErrorBoundary>
+      <StoreProvider>
+        <StoreContent />
+      </StoreProvider>
+    </AppErrorBoundary>
   );
 }

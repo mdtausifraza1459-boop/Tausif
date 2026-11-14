@@ -18,7 +18,7 @@ export const WhatsAppButton: React.FC = () => {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Wholesale & Order Support on WhatsApp: +91 9310078735"
-      className="fixed bottom-20 md:bottom-6 right-5 z-40 bg-[#166534] hover:bg-[#14532D] text-white p-3.5 rounded-full shadow-xl hover:scale-105 transition-all flex items-center gap-2 group cursor-pointer"
+      className="fixed bottom-20 md:bottom-6 right-5 z-40 bg-[#164E3F] hover:bg-[#0F3A2E] text-white p-3.5 rounded-full shadow-xl hover:scale-105 transition-all flex items-center gap-2 group cursor-pointer border border-white/15"
     >
       <MessageCircle className="w-5 h-5 fill-current" />
       <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 text-xs font-semibold tracking-wide">

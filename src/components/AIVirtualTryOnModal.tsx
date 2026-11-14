@@ -90,14 +90,14 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs p-3 sm:p-4 flex items-center justify-center font-sans">
-      <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E5DFD7] overflow-hidden my-auto max-h-[92vh] flex flex-col text-[#1C1917]">
-        <div className="flex items-center justify-between p-4 bg-[#6D1D3A] text-white">
+      <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E2DFD7] overflow-hidden my-auto max-h-[92vh] flex flex-col text-[#141413]">
+        <div className="flex items-center justify-between p-4 bg-[#141413] text-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-md bg-white/15 flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-serif text-base font-bold">Virtual Try-On Studio</h3>
+              <h3 className="font-serif text-base font-semibold">Virtual Try-On Studio</h3>
               <p className="text-[11px] text-white/80">Preview {product.name} silhouette</p>
             </div>
           </div>
@@ -110,12 +110,12 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
         </div>
 
         <div className="p-5 overflow-y-auto space-y-4 text-xs">
-          <div className="p-3 bg-[#FAF8F5] rounded-md border border-[#E5DFD7] space-y-1">
-            <p className="font-bold flex items-center gap-1.5 text-[#6D1D3A]">
+          <div className="p-3 bg-[#F7F6F2] rounded-md border border-[#E2DFD7] space-y-1">
+            <p className="font-bold flex items-center gap-1.5 text-[#164E3F]">
               <ShieldCheck className="w-4 h-4" />
               <span>Private &amp; Secure Image Processing</span>
             </p>
-            <p className="text-[11px] text-[#6B625D] leading-relaxed">
+            <p className="text-[11px] text-[#63615C] leading-relaxed">
               Your photo is processed strictly in-memory for preview generation and is never stored or shared publicly.
             </p>
           </div>
@@ -128,11 +128,11 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-            <div className="p-3 bg-[#FAF8F5] border border-[#E5DFD7] rounded-lg space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B625D] block">
+            <div className="p-3 bg-[#F7F6F2] border border-[#E2DFD7] rounded-lg space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#63615C] block">
                 Selected Garment
               </span>
-              <div className="aspect-[3/4] rounded overflow-hidden bg-white border border-[#E5DFD7]">
+              <div className="aspect-[3/4] rounded overflow-hidden bg-white border border-[#E2DFD7]">
                 <img
                   src={product.images[0]}
                   alt={product.name}
@@ -140,14 +140,14 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
                   className="w-full h-full object-cover object-top"
                 />
               </div>
-              <p className="font-semibold text-xs text-[#1C1917] truncate">{product.name}</p>
-              <p className="text-[11px] text-[#6D1D3A] font-mono font-bold tabular-nums">
+              <p className="font-semibold text-xs text-[#141413] truncate">{product.name}</p>
+              <p className="text-[11px] text-[#164E3F] font-mono font-bold tabular-nums">
                 ₹{product.discountedPrice.toLocaleString()}
               </p>
             </div>
 
-            <div className="p-3 bg-[#FAF8F5] border border-[#E5DFD7] rounded-lg space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B625D] block">
+            <div className="p-3 bg-[#F7F6F2] border border-[#E2DFD7] rounded-lg space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#63615C] block">
                 {tryOnResult ? 'Generated Silhouette Preview' : 'Your Photo'}
               </span>
 
@@ -160,7 +160,7 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
                   />
                 </div>
               ) : userPhoto ? (
-                <div className="relative aspect-[3/4] rounded overflow-hidden bg-white border border-[#E5DFD7]">
+                <div className="relative aspect-[3/4] rounded overflow-hidden bg-white border border-[#E2DFD7]">
                   <img
                     src={userPhoto}
                     alt="Uploaded photo"
@@ -176,10 +176,10 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
                   </button>
                 </div>
               ) : (
-                <label className="aspect-[3/4] rounded border-2 border-dashed border-[#E5DFD7] hover:border-[#6D1D3A] bg-white flex flex-col items-center justify-center p-4 text-center cursor-pointer transition-colors">
-                  <Upload className="w-7 h-7 text-[#6D1D3A] mb-2" />
-                  <span className="font-semibold text-[#1C1917] text-xs">Upload Photo</span>
-                  <span className="text-[10px] text-[#6B625D] mt-1">
+                <label className="aspect-[3/4] rounded border-2 border-dashed border-[#E2DFD7] hover:border-[#164E3F] bg-white flex flex-col items-center justify-center p-4 text-center cursor-pointer transition-colors">
+                  <Upload className="w-7 h-7 text-[#164E3F] mb-2" />
+                  <span className="font-semibold text-[#141413] text-xs">Upload Photo</span>
+                  <span className="text-[10px] text-[#63615C] mt-1">
                     Front-facing portrait or full-length photo
                   </span>
                   <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
@@ -199,15 +199,15 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[#E5DFD7]">
-            <label className="flex items-start gap-2.5 text-xs text-[#1C1917] cursor-pointer">
+          <div className="pt-2 border-t border-[#E2DFD7]">
+            <label className="flex items-start gap-2.5 text-xs text-[#141413] cursor-pointer">
               <input
                 type="checkbox"
                 checked={consentGiven}
                 onChange={(e) => setConsentGiven(e.target.checked)}
-                className="mt-0.5 rounded accent-[#6D1D3A]"
+                className="mt-0.5 rounded accent-[#164E3F]"
               />
-              <span className="leading-snug text-[11px] text-[#6B625D]">
+              <span className="leading-snug text-[11px] text-[#63615C]">
                 I consent to private, temporary in-memory processing of my uploaded photo to preview how this outfit drapes.
               </span>
             </label>
@@ -217,7 +217,7 @@ export const AIVirtualTryOnModal: React.FC<AIVirtualTryOnModalProps> = ({ produc
             type="button"
             onClick={handleGenerateTryOn}
             disabled={loading || !userPhoto || !consentGiven}
-            className="w-full py-3 bg-[#6D1D3A] hover:bg-[#53142B] text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-3 bg-[#164E3F] hover:bg-[#0F3A2E] text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             {loading ? (
               <>

@@ -18,31 +18,31 @@ export const SizeGuideModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs p-4 flex items-center justify-center">
-      <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E5DFD7] overflow-hidden my-auto font-sans text-[#1C1917]">
-        <div className="flex items-center justify-between p-5 border-b border-[#E5DFD7] bg-[#FAF8F5]">
+      <div className="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E2DFD7] overflow-hidden my-auto font-sans text-[#141413]">
+        <div className="flex items-center justify-between p-5 border-b border-[#E2DFD7] bg-[#F7F6F2]">
           <div className="flex items-center gap-2">
-            <Ruler className="w-5 h-5 text-[#6D1D3A]" />
-            <h3 className="font-serif text-lg font-bold text-[#1C1917]">
+            <Ruler className="w-5 h-5 text-[#164E3F]" />
+            <h3 className="font-serif text-lg font-semibold text-[#141413]">
               Women&apos;s Ethnic Size Guide &amp; Body Measurements
             </h3>
           </div>
           <button
             onClick={() => setSizeGuideModalOpen(false)}
-            className="p-1.5 rounded-md text-[#6B625D] hover:text-[#1C1917] hover:bg-[#F3EFEA] transition-colors cursor-pointer"
+            className="p-1.5 rounded-md text-[#63615C] hover:text-[#141413] hover:bg-[#EFECE6] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <div className="p-6 space-y-4">
-          <p className="text-xs text-[#6B625D]">
+          <p className="text-xs text-[#63615C]">
             All measurements in the chart below are in <strong>Inches</strong>. Our kurtis and ethnic silhouettes are
             tailored with a 2-inch garment ease margin for breathable comfort.
           </p>
 
-          <div className="overflow-x-auto border border-[#E5DFD7] rounded-lg">
+          <div className="overflow-x-auto border border-[#E2DFD7] rounded-lg">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#FAF8F5] text-[#6D1D3A] font-semibold border-b border-[#E5DFD7]">
+              <thead className="bg-[#F7F6F2] text-[#164E3F] font-semibold border-b border-[#E2DFD7]">
                 <tr>
                   <th className="p-3">Size</th>
                   <th className="p-3">Bust (in)</th>
@@ -51,23 +51,23 @@ export const SizeGuideModal: React.FC = () => {
                   <th className="p-3">Length (in)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5DFD7]">
+              <tbody className="divide-y divide-[#E2DFD7]">
                 {measurements.map((row) => (
-                  <tr key={row.size} className="hover:bg-[#FAF8F5]">
-                    <td className="p-3 font-bold text-[#6D1D3A]">{row.size}</td>
-                    <td className="p-3 font-mono tabular-nums text-[#1C1917]">{row.bust}&rdquo;</td>
-                    <td className="p-3 font-mono tabular-nums text-[#1C1917]">{row.waist}&rdquo;</td>
-                    <td className="p-3 font-mono tabular-nums text-[#1C1917]">{row.hip}&rdquo;</td>
-                    <td className="p-3 font-mono tabular-nums text-[#1C1917]">{row.kurtiLength}&rdquo;</td>
+                  <tr key={row.size} className="hover:bg-[#F7F6F2]">
+                    <td className="p-3 font-bold text-[#164E3F]">{row.size}</td>
+                    <td className="p-3 font-mono tabular-nums text-[#141413]">{row.bust}&rdquo;</td>
+                    <td className="p-3 font-mono tabular-nums text-[#141413]">{row.waist}&rdquo;</td>
+                    <td className="p-3 font-mono tabular-nums text-[#141413]">{row.hip}&rdquo;</td>
+                    <td className="p-3 font-mono tabular-nums text-[#141413]">{row.kurtiLength}&rdquo;</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <div className="p-3.5 bg-[#FAF8F5] border border-[#E5DFD7] rounded-lg text-[11px] text-[#6B625D] space-y-1">
+          <div className="p-3.5 bg-[#F7F6F2] border border-[#E2DFD7] rounded-lg text-[11px] text-[#63615C] space-y-1">
             <p>
-              <strong className="text-[#1C1917]">Fit Recommendation:</strong> If you prefer a relaxed silhouette for
+              <strong className="text-[#141413]">Fit Recommendation:</strong> If you prefer a relaxed silhouette for
               Anarkalis or Straight Kurtis, consider choosing one size up.
             </p>
             <p>For bulk sizing orders or assistance, call +91 9310078735.</p>
