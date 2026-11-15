@@ -12,30 +12,30 @@ export const NewsletterSection: React.FC = () => {
   };
 
   return (
-    <section className="py-14 bg-white border-t border-[#E2DFD7]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-4">
-        <p className="text-xs uppercase font-medium tracking-[0.18em] text-[#164E3F]">
-          Atelier Private Invitation
+    <section className="py-10 px-4 sm:px-6 bg-[#FCF8F2] border-t border-[#E7DEC9]">
+      <div className="max-w-4xl mx-auto bg-gradient-to-br from-[#0F3A2E] via-[#164E3F] to-[#581134] text-white rounded-2xl p-8 sm:p-10 text-center space-y-3.5 shadow-lg border border-[#D4AF6A]/45">
+        <p className="text-xs uppercase font-semibold tracking-[0.2em] text-[#F5D076]">
+          Private Club
         </p>
 
-        <h2 className="font-serif text-3xl sm:text-4xl font-semibold text-[#141413]">
-          Receive 10% Off Your First Ethnic Order
+        <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-white">
+          Get 10% Off Your First Order
         </h2>
 
-        <p className="text-xs sm:text-sm text-[#63615C] max-w-lg mx-auto leading-relaxed">
-          Join for early previews of festive capsules, seasonal kurti launches, and apply coupon code{' '}
-          <strong className="text-[#164E3F] font-mono">WELCOME10</strong> at checkout.
+        <p className="text-xs sm:text-sm text-white/85 max-w-md mx-auto">
+          Early access to festive edits. Use code{' '}
+          <strong className="text-[#F5D076] font-mono">WELCOME10</strong> at checkout.
         </p>
 
         {subscribed ? (
-          <div className="max-w-md mx-auto p-3.5 bg-[#ECF4F1] border border-[#164E3F]/25 rounded-md text-[#164E3F] text-xs flex items-center justify-center gap-2 font-semibold">
+          <div className="max-w-md mx-auto p-3 bg-white/10 border border-[#F5D076]/50 rounded-md text-[#F5D076] text-xs flex items-center justify-center gap-2 font-semibold">
             <Check className="w-4 h-4 shrink-0" />
             <span>
-              Subscribed. Use code <strong className="font-mono">WELCOME10</strong> at checkout for 10% off.
+              Subscribed — apply <strong className="font-mono text-white">WELCOME10</strong> at checkout.
             </span>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col sm:flex-row gap-2 pt-2">
+          <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col sm:flex-row gap-2.5 pt-1">
             <div className="relative flex-1">
               <Mail className="w-4 h-4 text-[#63615C] absolute left-3.5 top-3" />
               <input
@@ -43,22 +43,18 @@ export const NewsletterSection: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="w-full text-xs pl-10 pr-4 py-2.5 bg-[#F7F6F2] border border-[#E2DFD7] rounded-md focus:outline-none focus:border-[#141413] text-[#141413] focus:bg-white transition-colors"
+                placeholder="Enter your email"
+                className="w-full text-xs pl-10 pr-4 py-2.5 bg-white border border-[#D4AF6A]/40 rounded-md focus:outline-none focus:border-[#F5D076] text-[#141413] placeholder:text-[#63615C] transition-colors"
               />
             </div>
             <button
               type="submit"
-              className="py-2.5 px-6 bg-[#141413] hover:bg-[#164E3F] text-white text-xs font-medium uppercase tracking-wider rounded-md transition-colors cursor-pointer whitespace-nowrap"
+              className="py-2.5 px-6 bg-[#F5D076] hover:bg-[#D4AF6A] text-[#141413] text-xs font-bold uppercase tracking-wider rounded-md transition-colors cursor-pointer whitespace-nowrap shadow-xs"
             >
               Subscribe
             </button>
           </form>
         )}
-
-        <p className="text-[11px] text-[#63615C]">
-          Zero spam. Unsubscribe with one click anytime.
-        </p>
       </div>
     </section>
   );

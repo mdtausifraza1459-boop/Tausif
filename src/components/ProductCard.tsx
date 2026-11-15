@@ -16,7 +16,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     addToCart,
     buyNow,
     setQuickViewProduct,
-    setWholesaleModalOpen,
     showToast,
     getEffectivePrice,
   } = useStore();
@@ -78,7 +77,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <article
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group flex flex-col bg-white rounded-lg overflow-hidden border border-[#E2DFD7] hover:border-[#141413] hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 relative"
+      className="group flex flex-col bg-white rounded-xl overflow-hidden border border-[#E6DFD3] hover:border-[#D4AF6A] hover:-translate-y-1 hover:shadow-lg hover:shadow-[#8E6D3B]/15 transition-all duration-200 relative"
     >
       {/* Editorial 3:4 Portrait Container with Smooth Secondary Crossfade */}
       <div
@@ -117,14 +116,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {highlightLabel && (
           <span
-            className={`absolute top-2.5 left-2.5 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded z-10 pointer-events-none ${
+            className={`absolute top-2.5 left-2.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded shadow-sm z-10 pointer-events-none ${
               highlightLabel === 'SOLD OUT'
                 ? 'bg-[#B91C1C] text-white'
                 : highlightLabel === 'FLASH SALE'
-                ? 'bg-[#164E3F] text-[#D4AF6A]'
+                ? 'bg-gradient-to-r from-[#881337] to-[#BE185D] text-[#F5D076]'
                 : highlightLabel === 'LOW STOCK'
-                ? 'bg-[#B45309] text-white'
-                : 'bg-[#141413]/90 text-white'
+                ? 'bg-[#D97706] text-white'
+                : highlightLabel === 'BEST SELLER'
+                ? 'bg-gradient-to-r from-[#9F1239] to-[#7A1C3A] text-white'
+                : 'bg-[#164E3F] text-[#F5D076]'
             }`}
           >
             {highlightLabel}
@@ -141,10 +142,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             }}
             aria-label={isLiked ? 'Remove from wishlist' : 'Add to wishlist'}
             title={isLiked ? 'Remove from wishlist' : 'Save to wishlist'}
-            className={`p-2 rounded-full transition-colors cursor-pointer ${
+            className={`p-2 rounded-full transition-colors cursor-pointer shadow-xs ${
               isLiked
-                ? 'bg-[#164E3F] text-white'
-                : 'bg-white/90 text-[#63615C] hover:bg-white hover:text-[#141413]'
+                ? 'bg-[#BE185D] text-white'
+                : 'bg-white/95 text-[#9F1239] hover:bg-[#FFF1F5] hover:text-[#BE185D]'
             }`}
           >
             <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''}`} />
@@ -198,14 +199,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* Product Metadata, Swatches & Variant Ordering Controls */}
+      {/* Clean Metadata, Swatches & Variant Ordering Controls */}
       <div className="p-4 flex flex-col flex-1 justify-between gap-2.5 bg-white">
         <div className="space-y-1">
           <div className="flex items-center justify-between gap-2 text-[11px] text-[#63615C]">
-            <span className="truncate font-medium">
-              {product.brand || 'Zohra Luxe'} · {product.category}
+            <span className="truncate font-semibold uppercase tracking-wider text-[#164E3F]">
+              {product.category}
             </span>
-            <span className="inline-flex items-center gap-0.5 text-[#8E6D3B] font-mono font-semibold shrink-0 tabular-nums">
+            <span className="inline-flex items-center gap-0.5 text-[#D97706] font-mono font-semibold shrink-0 tabular-nums">
               <span>{product.rating}</span>
               <Star className="w-3 h-3 fill-current" />
             </span>
@@ -213,12 +214,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           <h3
             onClick={() => setQuickViewProduct(product)}
-            className="font-serif text-[17px] font-semibold text-[#141413] hover:text-[#164E3F] transition-colors line-clamp-1 cursor-pointer leading-snug"
+            className="font-serif text-[17px] font-semibold text-[#141413] hover:text-[#9F1239] transition-colors line-clamp-1 cursor-pointer leading-snug"
             title={product.name}
           >
             {product.name}
           </h3>
-          <p className="text-[11px] text-[#63615C] truncate font-mono">{product.sku}</p>
+          <p className="text-[11px] text-[#63615C] truncate">{product.fabric}</p>
         </div>
 
         {/* Colour Swatch Row */}
@@ -234,54 +235,49 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   aria-label={`Select color ${col.name}`}
                   className={`w-4 h-4 rounded-full border transition-transform cursor-pointer ${
                     selectedColorIndex === idx
-                      ? 'ring-2 ring-offset-1 ring-[#141413] scale-110 border-[#141413]'
+                      ? 'ring-2 ring-offset-1 ring-[#9F1239] scale-110 border-[#9F1239]'
                       : 'border-[#E2DFD7] hover:scale-105'
                   }`}
                   style={{ backgroundColor: col.hex }}
                 />
               ))}
-              <span className="text-[11px] text-[#63615C] ml-1 truncate max-w-[100px]">
+              <span className="text-[11px] text-[#63615C] ml-1 truncate max-w-[95px]">
                 {selectedColor}
               </span>
             </div>
-            <span
-              className={`text-[10px] font-mono font-semibold shrink-0 tabular-nums ${
-                variantAvail === 0
-                  ? 'text-[#B91C1C]'
-                  : variantAvail <= 3
-                  ? 'text-[#B45309]'
-                  : 'text-[#166534]'
-              }`}
-            >
-              {variantAvail === 0 ? 'Variant Out' : `${variantAvail} left`}
-            </span>
+            {(variantAvail === 0 || variantAvail <= 5) && (
+              <span
+                className={`text-[10px] font-mono font-semibold shrink-0 tabular-nums ${
+                  variantAvail === 0 ? 'text-[#B91C1C]' : 'text-[#D97706]'
+                }`}
+              >
+                {variantAvail === 0 ? 'Out' : `${variantAvail} left`}
+              </span>
+            )}
           </div>
         )}
 
         {/* Tabular Pricing Row */}
-        <div className="flex items-baseline justify-between gap-2 pt-2 border-t border-[#E2DFD7]">
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <span className="text-base font-semibold font-mono text-[#141413] tabular-nums">
-              ₹{effectivePrice.toLocaleString()}
-            </span>
-            {product.originalPrice > effectivePrice && (
-              <>
-                <span className="text-xs text-[#63615C] line-through font-mono tabular-nums">
-                  ₹{(hasFlashSale ? product.discountedPrice : product.originalPrice).toLocaleString()}
-                </span>
-                <span className="text-[11px] font-semibold text-[#164E3F] tabular-nums">
-                  {hasFlashSale
-                    ? `${Math.round(((product.originalPrice - effectivePrice) / product.originalPrice) * 100)}% off`
-                    : `${product.discountPercent}% off`}
-                </span>
-              </>
-            )}
-          </div>
+        <div className="flex items-baseline gap-2 flex-wrap pt-2 border-t border-[#EFECE6]">
+          <span className="text-base font-bold font-mono text-[#164E3F] tabular-nums">
+            ₹{effectivePrice.toLocaleString()}
+          </span>
+          {product.originalPrice > effectivePrice && (
+            <>
+              <span className="text-xs text-[#63615C] line-through font-mono tabular-nums">
+                ₹{(hasFlashSale ? product.discountedPrice : product.originalPrice).toLocaleString()}
+              </span>
+              <span className="text-[11px] font-bold text-[#BE185D] tabular-nums">
+                {hasFlashSale
+                  ? `${Math.round(((product.originalPrice - effectivePrice) / product.originalPrice) * 100)}% OFF`
+                  : `${product.discountPercent}% OFF`}
+              </span>
+            </>
+          )}
         </div>
 
         {/* Inline Size Selection */}
         <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
-          <span className="text-[11px] text-[#63615C] mr-1">Size:</span>
           {product.sizes.map((sz) => {
             const avail = getProductVariantStock(product, sz, selectedColor);
             return (
@@ -304,27 +300,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           })}
         </div>
 
-        {/* Wholesale Note in English */}
-        <div className="flex items-center justify-between text-[11px] text-[#63615C]">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setWholesaleModalOpen(true);
-            }}
-            className="hover:text-[#164E3F] hover:underline cursor-pointer"
-          >
-            Wholesale B2B:
-          </button>
-          <a
-            href="tel:9310078735"
-            onClick={(e) => e.stopPropagation()}
-            className="text-[#164E3F] font-mono font-semibold hover:underline"
-          >
-            +91 9310078735
-          </a>
-        </div>
-
         {/* Dual Ordering CTAs */}
         <div className="grid grid-cols-2 gap-2 pt-0.5">
           <button
@@ -338,7 +313,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className={`py-2 px-2.5 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer border whitespace-nowrap ${
               !isVariantAvailable
                 ? 'bg-[#EFECE6] text-[#63615C] border-[#E2DFD7] cursor-not-allowed'
-                : 'bg-white hover:bg-[#ECF4F1] text-[#141413] border-[#E2DFD7] hover:border-[#164E3F]'
+                : 'bg-[#FFFDF9] hover:bg-[#FFF1F5] text-[#881337] border-[#FBCFE8] hover:border-[#9F1239]'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
@@ -353,13 +328,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }
             }}
             disabled={!isVariantAvailable}
-            className={`py-2 px-2.5 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap ${
+            className={`py-2 px-2.5 rounded-md text-xs font-medium transition-all flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap ${
               !isVariantAvailable
                 ? 'bg-[#EFECE6] text-[#63615C] cursor-not-allowed'
-                : 'bg-[#164E3F] hover:bg-[#0F3A2E] text-white'
+                : 'bg-gradient-to-r from-[#164E3F] to-[#0F3A2E] hover:from-[#881337] hover:to-[#9F1239] text-white shadow-xs'
             }`}
           >
-            <Zap className="w-3.5 h-3.5" />
+            <Zap className="w-3.5 h-3.5 text-[#F5D076]" />
             <span>{!isVariantAvailable ? 'Sold Out' : 'Buy Now'}</span>
           </button>
         </div>

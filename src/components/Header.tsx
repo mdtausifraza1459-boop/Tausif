@@ -71,7 +71,7 @@ export const Header: React.FC = () => {
 
   const announcement =
     settings?.announcement ||
-    'Wholesale Bulk Orders: Call or WhatsApp +91 9310078735 · Free Express Delivery Over ₹1,499';
+    'Free Express Delivery Over ₹1,499 · Wholesale: +91 9310078735';
 
   const POPULAR_SEARCHES = [
     'Anarkali Kurti',
@@ -150,18 +150,16 @@ export const Header: React.FC = () => {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E2DFD7]">
       {/* Slim Atelier Notice Strip */}
       {!announcementDismissed && (
-        <div className="bg-[#141413] text-[#F7F6F2] px-4 h-8 text-[11px] tracking-wide font-medium flex items-center justify-between">
+        <div className="bg-gradient-to-r from-[#0F3A2E] via-[#164E3F] to-[#7A1C3A] text-[#FFFDF9] px-4 h-8 text-[11px] tracking-wide font-medium flex items-center justify-between">
           <div className="w-6 hidden sm:block" />
           <p className="truncate text-center w-full sm:w-auto flex items-center justify-center gap-2">
-            <span className="text-[#D4AF6A] font-semibold">Atelier Flagship</span>
-            <span className="text-white/30" aria-hidden="true">·</span>
             <span>{announcement}</span>
           </p>
           <button
             type="button"
             onClick={() => setAnnouncementDismissed(true)}
             aria-label="Dismiss announcement"
-            className="text-white/60 hover:text-white transition-colors p-1 ml-2 cursor-pointer shrink-0"
+            className="text-white/75 hover:text-white transition-colors p-1 ml-2 cursor-pointer shrink-0"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -187,7 +185,7 @@ export const Header: React.FC = () => {
               onClick={handleLogoClick}
               className="text-left group cursor-pointer shrink-0 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164E3F] rounded"
             >
-              <span className="font-serif text-2xl sm:text-[26px] font-semibold tracking-[0.06em] text-[#141413] group-hover:text-[#164E3F] transition-colors uppercase leading-none">
+              <span className="font-serif text-xl sm:text-2xl font-bold tracking-[0.04em] text-[#164E3F] group-hover:text-[#9F1239] transition-colors uppercase leading-none">
                 {settings?.logoText || 'ZOHRA LUXE'}
               </span>
             </button>
@@ -206,8 +204,8 @@ export const Header: React.FC = () => {
                   setSearchQuery(e.target.value);
                   setSearchDropdownOpen(true);
                 }}
-                placeholder="Search Kurtis, Short Kurtis, Anarkali, Co-ord Sets..."
-                className="w-full bg-[#F7F6F2] focus:bg-white text-xs sm:text-sm text-[#141413] pl-10 pr-20 py-2 rounded-md border border-[#E2DFD7] focus:border-[#141413] focus:outline-none placeholder:text-[#63615C] transition-colors"
+                placeholder="Search Kurtis, Anarkali, Co-ord Sets..."
+                className="w-full bg-[#FAF8F4] focus:bg-white text-xs sm:text-sm text-[#141413] pl-10 pr-20 py-2 rounded-md border border-[#E2DFD7] focus:border-[#141413] focus:outline-none placeholder:text-[#63615C] transition-colors"
               />
               {searchQuery ? (
                 <button
@@ -427,12 +425,12 @@ export const Header: React.FC = () => {
                 setAuthMode('login');
                 setAuthModalOpen(true);
               }}
-              className="hidden sm:flex items-center gap-1.5 p-2 text-[#63615C] hover:text-[#141413] transition-colors relative whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 p-2 text-[#9F1239] hover:text-[#7A1C3A] transition-colors relative whitespace-nowrap shrink-0 cursor-pointer"
               aria-label="Wishlist"
             >
               <Heart className="w-4 h-4" />
               {wishlist.length > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#164E3F] text-white text-[10px] font-mono font-bold flex items-center justify-center tabular-nums">
+                <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#BE185D] text-white text-[10px] font-mono font-bold flex items-center justify-center tabular-nums">
                   {wishlist.length}
                 </span>
               )}
@@ -528,10 +526,10 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setCartDrawerOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-[#141413] hover:bg-[#164E3F] text-white rounded-md text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#164E3F] to-[#0F3A2E] hover:from-[#881337] hover:to-[#6B1030] text-white rounded-md text-xs font-medium transition-all shadow-sm whitespace-nowrap shrink-0 cursor-pointer"
               aria-label="Open Shopping Bag"
             >
-              <ShoppingBag className="w-3.5 h-3.5" />
+              <ShoppingBag className="w-3.5 h-3.5 text-[#F5D076]" />
               <span className="hidden sm:inline">Bag</span>
               <span className="font-mono font-semibold tabular-nums">({cartItemCount})</span>
             </button>
@@ -540,9 +538,9 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Editorial Silhouette Link Row (Desktop) */}
-      <div className="bg-[#F7F6F2] border-t border-[#E2DFD7] hidden md:block">
+      <div className="bg-gradient-to-r from-[#FAF6EE] via-[#FDF9F3] to-[#FAF2F5] border-t border-[#E6DFD3] hidden md:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between gap-6 text-xs">
-          <nav className="flex items-center gap-6 overflow-x-auto no-scrollbar font-medium text-[#63615C]">
+          <nav className="flex items-center gap-6 overflow-x-auto no-scrollbar font-medium text-[#524E48]">
             {[
               "Women's Kurtis",
               'Short Kurtis',
@@ -565,8 +563,8 @@ export const Header: React.FC = () => {
                   }}
                   className={`relative py-2.5 whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
                     active
-                      ? 'text-[#141413] font-semibold after:absolute after:left-0 after:right-0 after:bottom-0 after:h-[2px] after:bg-[#164E3F]'
-                      : 'hover:text-[#141413]'
+                      ? 'text-[#164E3F] font-semibold after:absolute after:left-0 after:right-0 after:bottom-0 after:h-[2px] after:bg-[#9F1239]'
+                      : 'hover:text-[#9F1239]'
                   }`}
                 >
                   {cat}
@@ -579,18 +577,18 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setLookbookModalOpen(true)}
-              className="text-[#141413] hover:text-[#164E3F] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
+              className="text-[#9F1239] hover:text-[#7A1C3A] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
             >
-              <Sparkles className="w-3 h-3 text-[#8E6D3B]" />
-              <span>Lookbook &amp; Outfit Builder</span>
+              <Sparkles className="w-3 h-3 text-[#B45309]" />
+              <span>Lookbooks</span>
             </button>
             <span className="text-[#E2DFD7]">|</span>
             <button
               type="button"
               onClick={() => setGiftCardModalOpen(true)}
-              className="text-[#141413] hover:text-[#164E3F] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
+              className="text-[#164E3F] hover:text-[#0F3A2E] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
             >
-              <Gift className="w-3 h-3 text-[#164E3F]" />
+              <Gift className="w-3 h-3 text-[#9F1239]" />
               <span>Gift Cards</span>
             </button>
             <span className="hidden xl:inline text-[#E2DFD7]">|</span>
@@ -599,7 +597,7 @@ export const Header: React.FC = () => {
               className="hidden xl:flex text-[#164E3F] hover:underline font-semibold items-center gap-1 whitespace-nowrap font-mono"
             >
               <Phone className="w-3 h-3" />
-              <span>Wholesale: +91 9310078735</span>
+              <span>+91 9310078735</span>
             </a>
           </div>
         </div>

@@ -32,20 +32,20 @@ export const Footer: React.FC = () => {
               </p>
             </div>
             <p className="text-xs text-[#A8A59E] leading-relaxed max-w-sm">
-              Your trusted online boutique exclusively for women&apos;s kurtis, short kurtis, embroidered anarkalis, co-ord sets, and festive ethnic wear across India.
+              Handcrafted kurtis, embroidered anarkalis, co-ord sets &amp; festive ethnic wear across India.
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[#E2DFD7] pt-1">
               <span className="flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5 text-[#D4AF6A]" />
-                <span>Pan-India Express Delivery</span>
+                <span>Express Delivery</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <RefreshCw className="w-3.5 h-3.5 text-[#D4AF6A]" />
-                <span>{settings?.returnPolicyDays || 7}-Day Easy Exchanges</span>
+                <span>{settings?.returnPolicyDays || 7}-Day Exchange</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <Award className="w-3.5 h-3.5 text-[#D4AF6A]" />
-                <span>Authentic Craftsmanship</span>
+                <span>Natural Weaves</span>
               </span>
             </div>
           </div>
@@ -193,31 +193,18 @@ export const Footer: React.FC = () => {
               </li>
             </ul>
 
-            <div className="pt-2 space-y-2 text-xs">
-              <div className="p-3 bg-[#1E1D1B] rounded-md border border-[#2F2D29] text-white space-y-1">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#D4AF6A]">
-                  Wholesale &amp; Bulk Pricing
-                </p>
-                <p className="text-[11px] text-[#E2DFD7]">
-                  For retail stores &amp; wholesale rates, call or WhatsApp:
-                </p>
-                <a
-                  href="tel:9310078735"
-                  className="text-xs font-semibold text-[#D4AF6A] hover:underline flex items-center gap-1.5 font-mono"
-                >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>+91 9310078735</span>
-                </a>
-              </div>
-
+            <div className="pt-2 space-y-1.5 text-xs">
               <p className="flex items-center gap-1.5">
-                <Mail className="w-3.5 h-3.5 text-[#E2DFD7]" />
+                <Mail className="w-3.5 h-3.5 text-[#D4AF6A]" />
                 <span>{settings?.supportEmail || 'care@zohraluxe.com'}</span>
               </p>
-              <p className="flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-[#E2DFD7]" />
+              <a
+                href="tel:9310078735"
+                className="flex items-center gap-1.5 hover:text-white transition-colors"
+              >
+                <Phone className="w-3.5 h-3.5 text-[#D4AF6A]" />
                 <span className="font-mono">{settings?.supportPhone || '+91 9310078735'}</span>
-              </p>
+              </a>
             </div>
           </div>
         </div>

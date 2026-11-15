@@ -382,7 +382,7 @@ const StoreContent: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F6F2] text-[#141413] pb-16 md:pb-0 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#FCF8F2] text-[#141413] pb-16 md:pb-0 font-sans">
       <PWAInstallBanner />
       <Header />
 
@@ -394,19 +394,19 @@ const StoreContent: React.FC = () => {
       <main id="catalog-section" className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {/* Live Flash Sale Strip when active */}
         {flashSales.length > 0 && (
-          <div className="mb-6 bg-[#141413] text-white rounded-lg border border-[#2E2D2A] px-5 py-3 flex flex-wrap items-center justify-between gap-3">
+          <div className="mb-6 bg-gradient-to-r from-[#6B1030] via-[#881337] to-[#164E3F] text-white rounded-lg border border-[#D4AF6A]/45 px-5 py-3 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="px-2 py-0.5 bg-[#D4AF6A] text-[#141413] font-mono text-[10px] font-bold uppercase tracking-wider rounded">
+              <span className="px-2.5 py-0.5 bg-[#F5D076] text-[#141413] font-mono text-[10px] font-bold uppercase tracking-wider rounded shadow-xs">
                 Live Flash Event
               </span>
               <p className="text-xs sm:text-sm font-medium">
                 {flashSales[0].title} —{' '}
-                <span className="text-[#D4AF6A] font-mono font-semibold">
+                <span className="text-[#F5D076] font-mono font-semibold">
                   Up to {flashSales[0].discountPercent}% Extra Privilege
                 </span>
               </p>
             </div>
-            <span className="text-[11px] font-mono text-[#CBC7BE]">
+            <span className="text-[11px] font-mono text-[#FDE68A]">
               Ends {new Date(flashSales[0].endsAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
@@ -421,8 +421,8 @@ const StoreContent: React.FC = () => {
               onClick={tab.action}
               className={`shrink-0 px-3.5 py-1.5 rounded-md text-xs font-medium border transition-colors cursor-pointer whitespace-nowrap ${
                 tab.active
-                  ? 'bg-[#164E3F] text-white border-[#164E3F]'
-                  : 'bg-white text-[#141413] border-[#E2DFD7] hover:border-[#141413]'
+                  ? 'bg-gradient-to-r from-[#164E3F] to-[#0F3A2E] text-white border-[#164E3F] shadow-xs'
+                  : 'bg-white text-[#141413] border-[#E2DFD7] hover:border-[#9F1239] hover:bg-[#FFF1F5] hover:text-[#881337]'
               }`}
             >
               {tab.label}
@@ -431,32 +431,38 @@ const StoreContent: React.FC = () => {
         </div>
 
         {/* Shop by Occasion Editorial Selector + Lookbook Shortcut */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-5 mb-6 border-b border-[#E2DFD7]">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-5 mb-6 border-b border-[#E7DEC9]">
           <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] shrink-0 mr-1">
-              Shop by Occasion:
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#9F1239] shrink-0 mr-1">
+              Occasion:
             </span>
-            {['Wedding', 'Party', 'Festive', 'Eid', 'Office', 'Casual', 'Daily Wear'].map((occ) => {
-              const active = filters.occasions.includes(occ);
+            {[
+              { name: 'Wedding', activeCls: 'bg-[#881337] text-white border-[#881337]', idleCls: 'bg-[#FFF1F5] text-[#881337] border-[#FBCFE8] hover:border-[#881337]' },
+              { name: 'Party', activeCls: 'bg-[#6B21A8] text-white border-[#6B21A8]', idleCls: 'bg-[#FAF5FF] text-[#6B21A8] border-[#E9D5FF] hover:border-[#6B21A8]' },
+              { name: 'Festive', activeCls: 'bg-[#B45309] text-white border-[#B45309]', idleCls: 'bg-[#FFFBEB] text-[#B45309] border-[#FDE68A] hover:border-[#B45309]' },
+              { name: 'Eid', activeCls: 'bg-[#164E3F] text-white border-[#164E3F]', idleCls: 'bg-[#ECFDF5] text-[#164E3F] border-[#A7F3D0] hover:border-[#164E3F]' },
+              { name: 'Office', activeCls: 'bg-[#0F766E] text-white border-[#0F766E]', idleCls: 'bg-[#F0FDFA] text-[#0F766E] border-[#99F6E4] hover:border-[#0F766E]' },
+              { name: 'Casual', activeCls: 'bg-[#9F1239] text-white border-[#9F1239]', idleCls: 'bg-[#FFF1F2] text-[#9F1239] border-[#FECDD3] hover:border-[#9F1239]' },
+              { name: 'Daily Wear', activeCls: 'bg-[#3F6212] text-white border-[#3F6212]', idleCls: 'bg-[#F7FEE7] text-[#3F6212] border-[#D9F99D] hover:border-[#3F6212]' },
+            ].map((occ) => {
+              const active = filters.occasions.includes(occ.name);
               return (
                 <button
-                  key={occ}
+                  key={occ.name}
                   type="button"
                   onClick={() =>
                     setFilters((prev) => ({
                       ...prev,
-                      occasions: prev.occasions.includes(occ)
-                        ? prev.occasions.filter((o) => o !== occ)
-                        : [...prev.occasions, occ],
+                      occasions: prev.occasions.includes(occ.name)
+                        ? prev.occasions.filter((o) => o !== occ.name)
+                        : [...prev.occasions, occ.name],
                     }))
                   }
-                  className={`shrink-0 px-2.5 py-1 rounded text-[11px] font-medium border transition-colors cursor-pointer ${
-                    active
-                      ? 'bg-[#141413] text-white border-[#141413]'
-                      : 'bg-[#F7F6F2] text-[#141413] border-[#E2DFD7] hover:border-[#8E6D3B]'
+                  className={`shrink-0 px-2.5 py-1 rounded text-[11px] font-semibold border transition-colors cursor-pointer whitespace-nowrap ${
+                    active ? occ.activeCls : occ.idleCls
                   }`}
                 >
-                  {occ}
+                  {occ.name}
                 </button>
               );
             })}
@@ -466,15 +472,15 @@ const StoreContent: React.FC = () => {
             <button
               type="button"
               onClick={() => setLookbookModalOpen(true)}
-              className="px-3 py-1.5 bg-[#FBF6EB] hover:bg-[#F5EBD6] border border-[#D4AF6A]/60 text-[#8E6D3B] text-xs font-semibold rounded-md flex items-center gap-1.5 cursor-pointer transition-colors"
+              className="px-3 py-1.5 bg-gradient-to-r from-[#FFFBEB] to-[#FFF1F5] hover:from-[#FEF3C7] hover:to-[#FFE4E6] border border-[#D4AF6A] text-[#881337] text-xs font-semibold rounded-md flex items-center gap-1.5 cursor-pointer transition-colors whitespace-nowrap"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Lookbooks &amp; Outfit Builder</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#B45309]" />
+              <span>Lookbooks</span>
             </button>
             <button
               type="button"
               onClick={() => setGiftCardModalOpen(true)}
-              className="px-3 py-1.5 bg-white hover:bg-[#ECF4F1] border border-[#E2DFD7] text-[#164E3F] text-xs font-semibold rounded-md cursor-pointer transition-colors"
+              className="px-3 py-1.5 bg-[#ECFDF5] hover:bg-[#164E3F] hover:text-white border border-[#A7F3D0] text-[#164E3F] text-xs font-semibold rounded-md cursor-pointer transition-colors whitespace-nowrap"
             >
               Gift Cards
             </button>
@@ -482,33 +488,29 @@ const StoreContent: React.FC = () => {
         </div>
 
         {/* Section Header, Count & Sort Selector */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E2DFD7]">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-6 border-b border-[#E7DEC9]">
+          <div className="flex items-baseline gap-3 flex-wrap">
             <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#141413]">
-              {filters.category === 'All' ? "Girls' & Women's Collections" : filters.category}
+              {filters.category === 'All' ? "Women's Collection" : filters.category}
             </h2>
-            <p className="text-xs text-[#63615C] mt-0.5">
-              Showing{' '}
-              <span className="font-semibold text-[#164E3F] font-mono tabular-nums">
-                {filteredProducts.length}
-              </span>{' '}
-              curated styles {searchQuery && <span>for &ldquo;{searchQuery}&rdquo;</span>}
-            </p>
+            <span className="text-xs font-semibold text-[#9F1239] font-mono tabular-nums">
+              {filteredProducts.length} styles {searchQuery && `· “${searchQuery}”`}
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden px-3.5 py-2 border border-[#141413] bg-white rounded-md text-xs font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer"
+              className="lg:hidden px-3.5 py-2 border border-[#164E3F] bg-[#ECFDF5] hover:bg-[#164E3F] hover:text-white rounded-md text-xs font-semibold text-[#164E3F] flex items-center gap-1.5 cursor-pointer transition-colors"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-[#164E3F]" />
+              <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>Filters ({filteredProducts.length})</span>
             </button>
 
             <div className="flex items-center gap-2 text-xs">
               <span className="text-[#63615C] hidden sm:inline-flex items-center gap-1 font-medium">
-                <ArrowUpDown className="w-3.5 h-3.5 text-[#164E3F]" />
+                <ArrowUpDown className="w-3.5 h-3.5 text-[#9F1239]" />
                 <span>Sort:</span>
               </span>
               <select
@@ -519,7 +521,7 @@ const StoreContent: React.FC = () => {
                     sortBy: e.target.value as any,
                   }))
                 }
-                className="bg-white border border-[#E2DFD7] text-xs font-medium text-[#141413] rounded-md px-3 py-2 focus:outline-none focus:border-[#141413] cursor-pointer"
+                className="bg-white border border-[#E2DFD7] text-xs font-medium text-[#141413] rounded-md px-3 py-2 focus:outline-none focus:border-[#9F1239] hover:border-[#D4AF6A] cursor-pointer"
               >
                 <option value="relevance">Relevance</option>
                 <option value="popularity">Popularity</option>
@@ -616,13 +618,12 @@ const StoreContent: React.FC = () => {
 
         {/* Recently Viewed Section */}
         {recentlyViewedProducts.length > 0 && (
-          <section className="mt-14 pt-10 border-t border-[#E2DFD7] space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-[#8E6D3B]" />
-                <h3 className="font-serif text-2xl font-semibold text-[#141413]">Recently Viewed</h3>
+          <section className="mt-14 pt-10 border-t border-[#E7DEC9] space-y-5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-[#FFF1F5] text-[#9F1239] flex items-center justify-center">
+                <Clock className="w-4 h-4" />
               </div>
-              <span className="text-xs text-[#63615C]">Pick up where you left off</span>
+              <h3 className="font-serif text-2xl font-semibold text-[#141413]">Recently Viewed</h3>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {recentlyViewedProducts.map((item) => (
@@ -634,13 +635,12 @@ const StoreContent: React.FC = () => {
 
         {/* Personalized Recommendations Section */}
         {recommendedProducts.length > 0 && (
-          <section className="mt-14 pt-10 border-t border-[#E2DFD7] space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Sparkles className="w-4 h-4 text-[#164E3F]" />
-                <h3 className="font-serif text-2xl font-semibold text-[#141413]">Recommended For You</h3>
+          <section className="mt-14 pt-10 border-t border-[#E7DEC9] space-y-5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-[#ECFDF5] text-[#164E3F] flex items-center justify-center">
+                <Sparkles className="w-4 h-4" />
               </div>
-              <span className="text-xs text-[#63615C]">Curated from your browsing preferences</span>
+              <h3 className="font-serif text-2xl font-semibold text-[#141413]">Recommended For You</h3>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
               {recommendedProducts.map((item) => (
@@ -661,18 +661,18 @@ const StoreContent: React.FC = () => {
 
       {/* Floating Compare Bar */}
       {compareList.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-6 left-4 z-40 bg-[#141413] text-white border border-[#2E2D2A] rounded-lg shadow-2xl px-4 py-2.5 flex items-center gap-3">
-          <GitCompare className="w-4 h-4 text-[#D4AF6A] shrink-0" />
+        <div className="fixed bottom-16 md:bottom-6 left-4 z-40 bg-gradient-to-r from-[#0F3A2E] via-[#164E3F] to-[#7A1C3A] text-white border border-[#D4AF6A]/50 rounded-lg shadow-2xl px-4 py-2.5 flex items-center gap-3">
+          <GitCompare className="w-4 h-4 text-[#F5D076] shrink-0" />
           <div className="text-xs">
-            <span className="font-semibold">{compareList.length}</span>{' '}
-            <span className="text-[#CBC7BE]">
+            <span className="font-semibold text-[#F5D076]">{compareList.length}</span>{' '}
+            <span className="text-white/90">
               {compareList.length === 1 ? 'style' : 'styles'} selected to compare
             </span>
           </div>
           <button
             type="button"
             onClick={() => setCompareModalOpen(true)}
-            className="px-3 py-1 bg-[#164E3F] hover:bg-[#0F3A2E] text-white text-[11px] font-semibold uppercase tracking-wider rounded cursor-pointer"
+            className="px-3 py-1 bg-[#F5D076] hover:bg-[#D4AF6A] text-[#141413] text-[11px] font-bold uppercase tracking-wider rounded cursor-pointer transition-colors"
           >
             Compare
           </button>
@@ -680,7 +680,7 @@ const StoreContent: React.FC = () => {
             type="button"
             onClick={clearCompare}
             aria-label="Clear compare list"
-            className="text-white/60 hover:text-white p-0.5 cursor-pointer"
+            className="text-white/70 hover:text-white p-0.5 cursor-pointer"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -719,7 +719,7 @@ const StoreContent: React.FC = () => {
                     dismissToast();
                     setCartDrawerOpen(true);
                   }}
-                  className="px-2.5 py-1 bg-[#EFECE6] hover:bg-[#E2DFD7] text-[#141413] rounded text-[11px] font-medium cursor-pointer"
+                  className="px-2.5 py-1 bg-[#FFF1F5] hover:bg-[#FFE4E6] text-[#881337] rounded text-[11px] font-semibold cursor-pointer"
                 >
                   View Bag
                 </button>
@@ -729,7 +729,7 @@ const StoreContent: React.FC = () => {
                     dismissToast();
                     setCheckoutModalOpen(true);
                   }}
-                  className="px-2.5 py-1 bg-[#164E3F] hover:bg-[#0F3A2E] text-white rounded text-[11px] font-medium cursor-pointer"
+                  className="px-2.5 py-1 bg-gradient-to-r from-[#164E3F] to-[#0F3A2E] hover:from-[#9F1239] hover:to-[#881337] text-white rounded text-[11px] font-semibold cursor-pointer transition-all"
                 >
                   Checkout
                 </button>
@@ -749,14 +749,14 @@ const StoreContent: React.FC = () => {
       )}
 
       {/* Compact Mobile Bottom Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E2DFD7] flex items-center justify-around py-1.5 px-2 h-14">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E7DEC9] flex items-center justify-around py-1.5 px-2 h-14">
         <button
           type="button"
           onClick={() => {
             setFilters((prev) => ({ ...prev, category: 'All' }));
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="flex flex-col items-center gap-0.5 text-[#141413] p-1 cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#164E3F] p-1 cursor-pointer"
         >
           <Home className="w-4 h-4" />
           <span className="text-[10px] font-semibold">Home</span>
@@ -765,7 +765,7 @@ const StoreContent: React.FC = () => {
         <button
           type="button"
           onClick={() => document.getElementById('catalog-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#9F1239] p-1 cursor-pointer"
         >
           <Grid className="w-4 h-4" />
           <span className="text-[10px] font-medium">Catalog</span>
@@ -774,7 +774,7 @@ const StoreContent: React.FC = () => {
         <button
           type="button"
           onClick={() => setTrackingModalOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#164E3F] p-1 cursor-pointer"
         >
           <Truck className="w-4 h-4" />
           <span className="text-[10px] font-medium">Track</span>
@@ -783,11 +783,11 @@ const StoreContent: React.FC = () => {
         <button
           type="button"
           onClick={() => setAuthModalOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 relative cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#BE185D] p-1 relative cursor-pointer"
         >
-          <Heart className="w-4 h-4" />
+          <Heart className="w-4 h-4 text-[#BE185D]" />
           {wishlist.length > 0 && (
-            <span className="absolute -top-0.5 right-0 text-[9px] font-bold font-mono text-[#164E3F]">
+            <span className="absolute -top-0.5 right-0 text-[9px] font-bold font-mono text-[#BE185D]">
               {wishlist.length}
             </span>
           )}
@@ -797,11 +797,11 @@ const StoreContent: React.FC = () => {
         <button
           type="button"
           onClick={() => setCartDrawerOpen(true)}
-          className="flex flex-col items-center gap-0.5 text-[#63615C] hover:text-[#141413] p-1 relative cursor-pointer"
+          className="flex flex-col items-center gap-0.5 text-[#141413] hover:text-[#9F1239] p-1 relative cursor-pointer"
         >
-          <ShoppingBag className="w-4 h-4" />
+          <ShoppingBag className="w-4 h-4 text-[#164E3F]" />
           {cartItemCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#164E3F] text-white text-[10px] font-bold rounded-full flex items-center justify-center font-mono tabular-nums">
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-[#9F1239] to-[#BE185D] text-white text-[10px] font-bold rounded-full flex items-center justify-center font-mono tabular-nums">
               {cartItemCount}
             </span>
           )}
