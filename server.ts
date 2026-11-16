@@ -21,6 +21,7 @@ import type {
 } from './src/types.ts';
 import {
   BACKUPS_DIR,
+  BLOCKED_LEGACY_ADMIN_EMAILS,
   DATA_DIR,
   createBackupFile,
   distributeVariantStock,
@@ -37,6 +38,12 @@ import {
   type DatabaseSchema,
   type InternalUser,
 } from './server/db.ts';
+import {
+  getEffectiveOriginalPrice,
+  getEffectiveSizePrice,
+  getSizeDiscountPercent,
+  normalizeSizePricingPayload,
+} from './src/utils/pricing.ts';
 import {
   ALL_PERMISSIONS,
   checkRateLimit,
@@ -192,8 +199,7 @@ function requirePermission(...requiredAny: AdminPermission[]) {
     requireAdmin(req, res, () => {
       const perms = req.adminPermissions || [];
       const isOwner =
-        req.adminUser?.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() ||
-        !!req.adminUser?.isSuperAdmin;
+        req.adminUser?.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
       if (isOwner) return next();
       const allowed = requiredAny.some((p) => perms.includes(p));
       if (!allowed) {
@@ -1656,18 +1662,19 @@ app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
   const normalizedEmail = String(email || '').trim().toLowerCase();
 
-  const rl = checkRateLimit(`cust-login:${ip}:${normalizedEmail}`, 8, 15 * 60 * 1000);
-  if (!rl.allowed) {
-    res.setHeader('Retry-After', String(rl.retryAfterSec));
-    return res.status(429).json({ error: `Too many login attempts. Retry in ${rl.retryAfterSec}s.` });
-  }
-
   if (!normalizedEmail || !password) {
     return res.status(400).json({ error: 'Email and password are required.' });
   }
 
   const db = getDB();
   const user = db.users.find((u) => u.email.toLowerCase() === normalizedEmail);
+  if (!user || user.role !== 'admin') {
+    const rl = checkRateLimit(`cust-login:${ip}:${normalizedEmail}`, 8, 15 * 60 * 1000);
+    if (!rl.allowed) {
+      res.setHeader('Retry-After', String(rl.retryAfterSec));
+      return res.status(429).json({ error: `Too many login attempts. Retry in ${rl.retryAfterSec}s.` });
+    }
+  }
   if (!user) {
     return res.status(401).json({ error: 'Invalid email address or password.' });
   }
@@ -1915,8 +1922,6 @@ app.get('/api/admin/auth/status', (_req, res) => {
 // First-time bootstrap setup ONLY if Primary Owner has no passwordHash yet and matches one-time data/owner-bootstrap.txt
 app.post('/api/admin/bootstrap-owner-password', (req, res) => {
   const ip = getClientIp(req);
-  const rl = checkRateLimit(`admin-boot:${ip}`, 5, 15 * 60 * 1000);
-  if (!rl.allowed) return res.status(429).json({ error: `Rate limit exceeded. Retry in ${rl.retryAfterSec}s.` });
 
   const { email, bootstrapCode, newPassword } = req.body;
   const norm = String(email || '').trim().toLowerCase();
@@ -1963,16 +1968,23 @@ app.post('/api/admin/login', (req, res) => {
   const targetEmail = String(username || email || '').trim().toLowerCase();
   const targetPassword = String(password || '');
 
-  const rl = checkRateLimit(`admin-login:${ip}`, 10, 15 * 60 * 1000);
-  if (!rl.allowed) {
-    res.setHeader('Retry-After', String(rl.retryAfterSec));
-    return res.status(429).json({
-      error: `Too many admin login attempts. Account/IP temporarily rate-limited for ${rl.retryAfterSec}s.`,
-    });
-  }
-
   if (!targetEmail || !targetPassword) {
     return res.status(400).json({ error: 'Authorized email address and password are required.' });
+  }
+
+  if (BLOCKED_LEGACY_ADMIN_EMAILS.has(targetEmail)) {
+    const dbBlocked = getDB();
+    logAudit(dbBlocked, {
+      adminEmail: targetEmail,
+      action: 'Blocked Revoked Admin Login',
+      result: 'blocked',
+      ipAddress: ip,
+      details: `Rejected login attempt for removed admin email ${targetEmail}.`,
+    });
+    saveDB(dbBlocked);
+    return res.status(403).json({
+      error: `Access Denied: ${targetEmail} is not authorized to access the admin dashboard.`,
+    });
   }
 
   const db = getDB();
@@ -2038,9 +2050,8 @@ app.post('/api/admin/login', (req, res) => {
   if (passCheck.needsRehash) {
     matchingUser.passwordHash = hashPassword(targetPassword);
   }
-  resetRateLimit(`admin-login:${ip}`);
 
-  const isSuper = targetEmail === SUPER_ADMIN_EMAIL.toLowerCase() || !!matchingUser.isSuperAdmin;
+  const isSuper = targetEmail === SUPER_ADMIN_EMAIL.toLowerCase();
   matchingUser.isSuperAdmin = isSuper;
   const permissions = resolveEffectivePermissions(matchingUser, SUPER_ADMIN_EMAIL);
 
@@ -2083,10 +2094,6 @@ app.post('/api/admin/login', (req, res) => {
 // Strict Server-Verified Google OAuth Login (NO blind email trust!)
 app.post('/api/admin/google-login', async (req, res) => {
   const ip = getClientIp(req);
-  const rl = checkRateLimit(`admin-glogin:${ip}`, 10, 15 * 60 * 1000);
-  if (!rl.allowed) {
-    return res.status(429).json({ error: `Rate limit exceeded. Retry in ${rl.retryAfterSec}s.` });
-  }
 
   const { idToken, credential, accessToken } = req.body;
   const verification = await verifyGoogleOAuthToken({
@@ -2101,8 +2108,14 @@ app.post('/api/admin/google-login', async (req, res) => {
     });
   }
 
-  const db = getDB();
   const normalized = verification.email;
+  if (BLOCKED_LEGACY_ADMIN_EMAILS.has(normalized)) {
+    return res.status(403).json({
+      error: `Access Denied: Google account ${normalized} is not authorized as an admin.`,
+    });
+  }
+
+  const db = getDB();
   const matching = db.users.find((u) => u.email.toLowerCase() === normalized && u.role === 'admin');
   if (!matching) {
     logAudit(db, {
@@ -2123,7 +2136,7 @@ app.post('/api/admin/google-login', async (req, res) => {
     });
   }
 
-  const isSuper = normalized === SUPER_ADMIN_EMAIL.toLowerCase() || !!matching.isSuperAdmin;
+  const isSuper = normalized === SUPER_ADMIN_EMAIL.toLowerCase();
   matching.isSuperAdmin = isSuper;
   const permissions = resolveEffectivePermissions(matching, SUPER_ADMIN_EMAIL);
 
@@ -2165,8 +2178,6 @@ app.post('/api/admin/google-login', async (req, res) => {
 
 app.post('/api/admin/forgot-password', (req, res) => {
   const ip = getClientIp(req);
-  const rl = checkRateLimit(`admin-reset:${ip}`, 5, 15 * 60 * 1000);
-  if (!rl.allowed) return res.status(429).json({ error: `Rate limit exceeded. Retry in ${rl.retryAfterSec}s.` });
 
   const email = String(req.body?.email || '').trim().toLowerCase();
   const db = getDB();
@@ -2225,7 +2236,7 @@ app.post('/api/admin/logout', requireAdmin, (req: AdminRequest, res) => {
 
 app.get('/api/admin/me', requireAdmin, (req: AdminRequest, res) => {
   const user = req.adminUser!;
-  const isSuper = user.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || !!user.isSuperAdmin;
+  const isSuper = user.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
   res.json({
     admin: {
       id: user.id,
@@ -2325,6 +2336,7 @@ app.post('/api/admin/products', requirePermission('products.manage'), (req: Admi
     wholesalePrice,
     wholesaleMoq,
     sizes,
+    sizePricing,
     colors,
     variantStock,
     fabric,
@@ -2345,11 +2357,11 @@ app.post('/api/admin/products', requirePermission('products.manage'), (req: Admi
     details,
   } = req.body;
 
-  if (!name || !category || !originalPrice || !discountedPrice || !fabric) {
-    return res.status(400).json({ error: 'Name, category, MRP, offer price, and fabric are required.' });
+  if (!name || !category || !fabric) {
+    return res.status(400).json({ error: 'Name, category, and fabric are required.' });
   }
 
-  const cleanSizes = Array.isArray(sizes) && sizes.length ? sizes : ['XS', 'S', 'M', 'L', 'XL'];
+  const cleanSizes = Array.isArray(sizes) && sizes.length ? sizes : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   const cleanColors = Array.isArray(colors) && colors.length ? colors : [{ name: 'Blush Pink', hex: '#E8C5C8' }];
   const prodId = `zk-${Date.now().toString().slice(-6)}`;
   const cleanSku = String(sku || `ZL-${prodId.toUpperCase()}`).trim().toUpperCase();
@@ -2358,9 +2370,21 @@ app.post('/api/admin/products', requirePermission('products.manage'), (req: Admi
     return res.status(400).json({ error: `Duplicate SKU "${cleanSku}". Every product must have a unique SKU.` });
   }
 
-  const origP = Number(originalPrice);
-  const discP = Number(discountedPrice);
-  const discountPercent = origP > discP ? Math.round(((origP - discP) / origP) * 100) : 0;
+  const hasRawFlat = Number(originalPrice) > 0 && Number(discountedPrice) > 0;
+  const fallbackSell = Number(discountedPrice) || 799;
+  const fallbackMrp = Math.max(fallbackSell, Number(originalPrice) || fallbackSell);
+  const cleanSizePricing = normalizeSizePricingPayload(sizePricing, cleanSizes, fallbackMrp, fallbackSell);
+
+  // Sync base product starting prices with minimum available size price
+  const activeEntries = Object.values(cleanSizePricing).filter((e) => e.available !== false);
+  const pool = activeEntries.length > 0 ? activeEntries : Object.values(cleanSizePricing);
+  const sortedBySell = [...pool].sort((a, b) => a.discountedPrice - b.discountedPrice);
+  const discP = sortedBySell[0]?.discountedPrice || fallbackSell;
+  const origP = Math.max(discP, sortedBySell[0]?.originalPrice || fallbackMrp);
+  if (!hasRawFlat && !sizePricing) {
+    return res.status(400).json({ error: 'MRP and offer price (or per-size pricing) are required.' });
+  }
+  const discountPercent = getSizeDiscountPercent(origP, discP);
 
   const matrix =
     variantStock && typeof variantStock === 'object' && Object.keys(variantStock).length > 0
@@ -2381,6 +2405,7 @@ app.post('/api/admin/products', requirePermission('products.manage'), (req: Admi
     wholesaleMoq: wholesaleMoq ? Number(wholesaleMoq) : undefined,
     discountPercent,
     sizes: cleanSizes,
+    sizePricing: cleanSizePricing,
     colors: cleanColors,
     variantStock: matrix,
     lowStockThreshold: Number(lowStockThreshold) || 10,
@@ -2435,7 +2460,7 @@ app.post('/api/admin/products', requirePermission('products.manage'), (req: Admi
     actorId: actor.id,
     action: 'Created Product',
     recordId: newProduct.id,
-    after: { id: newProduct.id, sku: newProduct.sku, name: newProduct.name, price: newProduct.discountedPrice },
+    after: { id: newProduct.id, sku: newProduct.sku, name: newProduct.name, price: newProduct.discountedPrice, sizePricing: newProduct.sizePricing },
     details: `Created product ${newProduct.name} (${newProduct.sku}).`,
   });
   saveDB(db);
@@ -2451,7 +2476,7 @@ app.put('/api/admin/products/:id', requirePermission('products.manage'), (req: A
   const existing = db.products[idx];
   const prevPrice = existing.discountedPrice;
   const prevStock = existing.stockQuantity;
-  const beforeSnap = { name: existing.name, sku: existing.sku, price: existing.discountedPrice, stock: existing.stockQuantity };
+  const beforeSnap = { name: existing.name, sku: existing.sku, price: existing.discountedPrice, sizePricing: existing.sizePricing, stock: existing.stockQuantity };
 
   if (req.body.sku) {
     const nextSku = String(req.body.sku).trim().toUpperCase();
@@ -2460,14 +2485,25 @@ app.put('/api/admin/products/:id', requirePermission('products.manage'), (req: A
     }
   }
 
-  const origP = req.body.originalPrice !== undefined ? Number(req.body.originalPrice) : existing.originalPrice;
-  const discP = req.body.discountedPrice !== undefined ? Number(req.body.discountedPrice) : existing.discountedPrice;
-  const discountPercent = origP > discP ? Math.round(((origP - discP) / origP) * 100) : 0;
+  const nextSizes = Array.isArray(req.body.sizes) && req.body.sizes.length ? req.body.sizes : existing.sizes;
+  const fallbackMrp = req.body.originalPrice !== undefined ? Number(req.body.originalPrice) : existing.originalPrice;
+  const fallbackSell = req.body.discountedPrice !== undefined ? Number(req.body.discountedPrice) : existing.discountedPrice;
+
+  const rawSizePricing = req.body.sizePricing !== undefined ? req.body.sizePricing : existing.sizePricing;
+  const nextSizePricing = normalizeSizePricingPayload(rawSizePricing, nextSizes, fallbackMrp, fallbackSell);
+
+  // Compute representative starting prices from active sizes
+  const activeEntries = Object.values(nextSizePricing).filter((e) => e.available !== false);
+  const pool = activeEntries.length > 0 ? activeEntries : Object.values(nextSizePricing);
+  const sortedBySell = [...pool].sort((a, b) => a.discountedPrice - b.discountedPrice);
+  const discP = sortedBySell[0]?.discountedPrice || fallbackSell;
+  const origP = Math.max(discP, sortedBySell[0]?.originalPrice || fallbackMrp);
+  const discountPercent = getSizeDiscountPercent(origP, discP);
 
   let nextMatrix = req.body.variantStock || existing.variantStock;
   if (req.body.stockQuantity !== undefined && !req.body.variantStock && Number(req.body.stockQuantity) !== existing.stockQuantity) {
     nextMatrix = distributeVariantStock(
-      req.body.sizes || existing.sizes,
+      nextSizes,
       req.body.colors || existing.colors,
       Math.max(0, Number(req.body.stockQuantity))
     );
@@ -2478,6 +2514,8 @@ app.put('/api/admin/products/:id', requirePermission('products.manage'), (req: A
     ...req.body,
     sku: req.body.sku ? String(req.body.sku).trim().toUpperCase() : existing.sku,
     costPrice: req.body.costPrice !== undefined ? Math.max(0, Number(req.body.costPrice)) : existing.costPrice,
+    sizes: nextSizes,
+    sizePricing: nextSizePricing,
     originalPrice: origP,
     discountedPrice: discP,
     discountPercent,
@@ -2503,19 +2541,20 @@ app.put('/api/admin/products/:id', requirePermission('products.manage'), (req: A
       }
     });
   }
-  if (updated.discountedPrice < prevPrice) {
+  const newMinEffective = getEffectiveSizePrice(updated);
+  if (newMinEffective < prevPrice) {
     db.users.forEach((u) => {
-      if (u.priceDropAlerts && u.priceDropAlerts[updated.id] && updated.discountedPrice < u.priceDropAlerts[updated.id]) {
+      if (u.priceDropAlerts && u.priceDropAlerts[updated.id] && newMinEffective < u.priceDropAlerts[updated.id]) {
         pushNotification(db, {
           audience: 'customer',
           userId: u.id,
           userEmail: u.email,
           category: 'promo',
           title: `Price Drop Alert: ${updated.name}`,
-          message: `Price dropped to ₹${updated.discountedPrice.toLocaleString()} (was ₹${prevPrice.toLocaleString()}).`,
+          message: `Price dropped to ₹${newMinEffective.toLocaleString()} (was ₹${prevPrice.toLocaleString()}).`,
           linkId: updated.id,
         });
-        u.priceDropAlerts[updated.id] = updated.discountedPrice;
+        u.priceDropAlerts[updated.id] = newMinEffective;
       }
     });
   }
@@ -2526,7 +2565,7 @@ app.put('/api/admin/products/:id', requirePermission('products.manage'), (req: A
     action: 'Updated Product',
     recordId: updated.id,
     before: beforeSnap,
-    after: { name: updated.name, sku: updated.sku, price: updated.discountedPrice, stock: updated.stockQuantity },
+    after: { name: updated.name, sku: updated.sku, price: updated.discountedPrice, sizePricing: updated.sizePricing, stock: updated.stockQuantity },
     details: `Updated product ${updated.name} (${updated.sku}).`,
   });
   saveDB(db);
@@ -2672,6 +2711,8 @@ app.post('/api/admin/products/import', requirePermission('products.manage'), (re
       existing.originalPrice = orig;
       existing.discountedPrice = disc;
       existing.discountPercent = orig > disc ? Math.round(((orig - disc) / orig) * 100) : 0;
+      existing.sizes = sizes;
+      existing.sizePricing = normalizeSizePricingPayload(existing.sizePricing, sizes, orig, disc);
       existing.variantStock = distributeVariantStock(sizes, colors, stock);
       recalcProductStock(existing);
       existing.updatedAt = new Date().toISOString();
@@ -2689,6 +2730,7 @@ app.post('/api/admin/products/import', requirePermission('products.manage'), (re
         discountedPrice: disc,
         discountPercent: orig > disc ? Math.round(((orig - disc) / orig) * 100) : 0,
         sizes,
+        sizePricing: normalizeSizePricingPayload(undefined, sizes, orig, disc),
         colors,
         variantStock: distributeVariantStock(sizes, colors, stock),
         fabric: get('fabric') || 'Pure Cotton',
@@ -2885,7 +2927,7 @@ app.patch('/api/admin/orders/:id', requirePermission('orders.manage', 'delivery.
   // Only allow finance/owner or payments.refund permission to manually alter paymentStatus
   if (paymentStatus) {
     const canModifyPay =
-      actor.isSuperAdmin ||
+      actor.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() ||
       req.adminPermissions?.includes('payments.refund') ||
       req.adminPermissions?.includes('finance.view');
     if (canModifyPay) order.paymentStatus = paymentStatus;
@@ -3240,14 +3282,14 @@ app.get('/api/admin/team', requirePermission('team.manage', 'staff.manage', 'ove
   const admins = db.users
     .filter((u) => u.role === 'admin')
     .map((u) => {
-      const isSuper = u.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || !!u.isSuperAdmin;
+      const isSuper = u.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
       return {
         id: u.id,
         name: u.name,
         email: u.email,
         phone: u.phone,
         role: u.role,
-        adminRole: u.adminRole || (isSuper ? 'primary_owner' : 'store_partner'),
+        adminRole: isSuper ? 'primary_owner' : (u.adminRole === 'primary_owner' ? 'store_partner' : u.adminRole || 'store_partner'),
         permissions: resolveEffectivePermissions(u, SUPER_ADMIN_EMAIL),
         isSuperAdmin: isSuper,
         status: u.status || 'active',
@@ -3264,11 +3306,17 @@ app.get('/api/admin/team', requirePermission('team.manage', 'staff.manage', 'ove
 
 app.post('/api/admin/team/add', requirePermission('team.manage', 'staff.manage'), (req: AdminRequest, res) => {
   const actor = req.adminUser!;
-  const isOwner = actor.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || !!actor.isSuperAdmin;
+  const isOwner = actor.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
   const { name, email, password, phone, adminRole, permissions } = req.body;
 
   if (!email || !String(email).includes('@')) {
     return res.status(400).json({ error: 'A valid email address is required.' });
+  }
+  const normalized = String(email).trim().toLowerCase();
+  if (BLOCKED_LEGACY_ADMIN_EMAILS.has(normalized)) {
+    return res.status(403).json({
+      error: `Access Denied: ${normalized} is permanently restricted from administrative access.`,
+    });
   }
   if (!password || String(password).length < 8) {
     return res.status(400).json({ error: 'A strong initial password (min 8 characters) is required. Default passwords are disabled.' });
@@ -3294,7 +3342,6 @@ app.post('/api/admin/team/add', requirePermission('team.manage', 'staff.manage')
     }
   }
 
-  const normalized = String(email).trim().toLowerCase();
   const db = getDB();
   const existing = db.users.find((u) => u.email.toLowerCase() === normalized);
   if (existing && existing.role === 'admin' && existing.status === 'active') {
@@ -3343,12 +3390,12 @@ app.post('/api/admin/team/add', requirePermission('team.manage', 'staff.manage')
 app.put('/api/admin/team/:id', requirePermission('team.manage', 'staff.manage'), (req: AdminRequest, res) => {
   const db = getDB();
   const actor = req.adminUser!;
-  const isCallerOwner = actor.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || !!actor.isSuperAdmin;
+  const isCallerOwner = actor.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
   const targetUser = db.users.find((u) => u.id === req.params.id && u.role === 'admin');
   if (!targetUser) return res.status(404).json({ error: 'Staff member not found.' });
 
   const isTargetOwner =
-    targetUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || !!targetUser.isSuperAdmin;
+    targetUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
   if (isTargetOwner && !isCallerOwner) {
     return res.status(403).json({ error: 'Partners/staff cannot modify the Primary Store Owner.' });
   }
@@ -3404,7 +3451,7 @@ app.post('/api/admin/team/:id/toggle', requirePermission('team.manage', 'staff.m
   const actor = req.adminUser!;
   const targetUser = db.users.find((u) => u.id === req.params.id && u.role === 'admin');
   if (!targetUser) return res.status(404).json({ error: 'Staff member not found.' });
-  if (targetUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || targetUser.isSuperAdmin) {
+  if (targetUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase()) {
     return res.status(403).json({ error: 'Primary Owner status cannot be toggled.' });
   }
   targetUser.status = targetUser.status === 'active' ? 'suspended' : 'active';
@@ -3426,7 +3473,7 @@ app.delete('/api/admin/team/:id', requirePermission('team.manage', 'staff.manage
   const actor = req.adminUser!;
   const targetUser = db.users.find((u) => u.id === req.params.id && u.role === 'admin');
   if (!targetUser) return res.status(404).json({ error: 'Team member not found.' });
-  if (targetUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || targetUser.isSuperAdmin) {
+  if (targetUser.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase()) {
     return res.status(403).json({ error: 'Primary Store Owner cannot be deleted or demoted.' });
   }
 
@@ -3445,7 +3492,7 @@ app.delete('/api/admin/team/:id', requirePermission('team.manage', 'staff.manage
 
 app.post('/api/admin/config/super-admin-email', requirePermission('ownership.transfer'), (req: AdminRequest, res) => {
   const actor = req.adminUser!;
-  if (actor.email.toLowerCase() !== SUPER_ADMIN_EMAIL.toLowerCase() && !actor.isSuperAdmin) {
+  if (actor.email.toLowerCase() !== SUPER_ADMIN_EMAIL.toLowerCase()) {
     return res.status(403).json({ error: 'Only Primary Owner can transfer ownership.' });
   }
   const { newEmail } = req.body;
@@ -3453,6 +3500,9 @@ app.post('/api/admin/config/super-admin-email', requirePermission('ownership.tra
     return res.status(400).json({ error: 'Valid Gmail address required.' });
   }
   const normalized = String(newEmail).trim().toLowerCase();
+  if (BLOCKED_LEGACY_ADMIN_EMAILS.has(normalized)) {
+    return res.status(403).json({ error: `${normalized} is permanently restricted from administrative ownership.` });
+  }
   const oldEmail = SUPER_ADMIN_EMAIL;
   setSuperAdminEmail(normalized);
 
@@ -4615,7 +4665,7 @@ app.post('/api/admin/flash-sales', requirePermission('coupons.manage', 'products
   const nowTs = Date.now();
   if (new Date(rule.startsAt).getTime() <= nowTs && new Date(rule.endsAt).getTime() >= nowTs) {
     for (const p of db.products) {
-      const flash = getActiveFlashSaleForProduct(db, p, false, nowTs);
+      const flash = getActiveFlashSaleForProduct(db, p, false, undefined, nowTs);
       if (flash.rule?.id === rule.id) {
         db.users.forEach((u) => {
           if (u.priceDropAlerts && u.priceDropAlerts[p.id] && flash.effectivePrice < u.priceDropAlerts[p.id]) {

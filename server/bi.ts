@@ -8,6 +8,11 @@ import type {
 } from '../src/types.ts';
 import type { DatabaseSchema, InternalUser } from './db.ts';
 import { getVariantStock } from './commerce.ts';
+import {
+  getEffectiveOriginalPrice,
+  getEffectiveSizePrice,
+  getSizePricingEntry,
+} from '../src/utils/pricing.ts';
 
 export interface VipStatusResult {
   tier: VipTierConfig;
@@ -90,13 +95,19 @@ export function getActiveFlashSaleForProduct(
   db: DatabaseSchema,
   product: Product,
   userHasEarlyAccess = false,
+  size?: string,
   nowTs = Date.now()
 ): {
   rule: FlashSaleRule | null;
   effectivePrice: number;
   discountPercent: number;
 } {
-  let bestPrice = product.discountedPrice;
+  const basePrice = size
+    ? getSizePricingEntry(product, size).discountedPrice
+    : getEffectiveSizePrice(
+        { ...product, flashSalePrice: undefined, flashSaleDiscountPercent: undefined }
+      );
+  let bestPrice = basePrice;
   let bestRule: FlashSaleRule | null = null;
   let bestDiscountPct = 0;
 
@@ -118,7 +129,7 @@ export function getActiveFlashSaleForProduct(
 
     const candidatePrice = Math.max(
       1,
-      Math.round(product.discountedPrice * (1 - Math.min(90, Math.max(1, rule.discountPercent)) / 100))
+      Math.round(basePrice * (1 - Math.min(90, Math.max(1, rule.discountPercent)) / 100))
     );
     if (candidatePrice < bestPrice) {
       bestPrice = candidatePrice;
@@ -143,6 +154,7 @@ export function enrichProductForPublic(
   return {
     ...product,
     flashSalePrice: flash.rule ? flash.effectivePrice : undefined,
+    flashSaleDiscountPercent: flash.rule ? flash.discountPercent : undefined,
     flashSaleId: flash.rule ? flash.rule.id : undefined,
     flashSaleEndsAt: flash.rule ? flash.rule.endsAt : undefined,
   };
@@ -236,6 +248,50 @@ export function evaluateCartPricing(
     const size = item.size || prod.sizes[0] || 'M';
     const color = item.color || prod.colors[0]?.name || 'Standard';
 
+    if (prod.inStock === false) {
+      return {
+        ok: false,
+        error: `${prod.name} is currently out of stock.`,
+        lines: [],
+        subtotal: 0,
+        appliedBundle: null,
+        bundleDiscount: 0,
+        vipStatus,
+        vipDiscount: 0,
+        couponDiscount: 0,
+        loyaltyPointsAvailable: user?.loyaltyPoints || 0,
+        pointsRedeemed: 0,
+        loyaltyDiscount: 0,
+        giftCardDiscount: 0,
+        shipping: 0,
+        total: 0,
+        pointsToEarn: 0,
+      };
+    }
+
+    const sizeEntry = getSizePricingEntry(prod, size);
+    const sizeExists = !Array.isArray(prod.sizes) || prod.sizes.length === 0 || prod.sizes.some((s) => s.trim().toLowerCase() === size.trim().toLowerCase());
+    if (!sizeExists || !sizeEntry.available) {
+      return {
+        ok: false,
+        error: `Size ${size} is currently unavailable for ${prod.name}. Please choose another size.`,
+        lines: [],
+        subtotal: 0,
+        appliedBundle: null,
+        bundleDiscount: 0,
+        vipStatus,
+        vipDiscount: 0,
+        couponDiscount: 0,
+        loyaltyPointsAvailable: user?.loyaltyPoints || 0,
+        pointsRedeemed: 0,
+        loyaltyDiscount: 0,
+        giftCardDiscount: 0,
+        shipping: 0,
+        total: 0,
+        pointsToEarn: 0,
+      };
+    }
+
     if (params.validateStock) {
       const available = getVariantStock(prod, size, color);
       if (available < qty) {
@@ -263,8 +319,9 @@ export function evaluateCartPricing(
       }
     }
 
-    const flash = getActiveFlashSaleForProduct(db, prod, earlyAccess);
+    const flash = getActiveFlashSaleForProduct(db, prod, earlyAccess, size);
     const unitPrice = flash.effectivePrice;
+    const originalUnitPrice = getEffectiveOriginalPrice(prod, size);
     const lineTotal = unitPrice * qty;
     subtotal += lineTotal;
     totalItemUnits += qty;
@@ -275,7 +332,7 @@ export function evaluateCartPricing(
       color,
       quantity: qty,
       unitPrice,
-      originalUnitPrice: prod.discountedPrice,
+      originalUnitPrice,
       flashSaleApplied: Boolean(flash.rule),
       lineTotal,
     });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, getProductVariantStock } from '../context/StoreContext.tsx';
+import { isSizeAvailableForPurchase } from '../utils/pricing.ts';
 import { X, Trash2, ArrowRight, Tag, ShieldCheck, ShoppingBag, Truck, Sparkles } from 'lucide-react';
 
 export const CartDrawer: React.FC = () => {
@@ -8,6 +9,7 @@ export const CartDrawer: React.FC = () => {
     cartDrawerOpen,
     setCartDrawerOpen,
     updateCartQuantity,
+    updateCartItemSize,
     removeFromCart,
     cartSubtotal,
     cartDiscount,
@@ -118,11 +120,11 @@ export const CartDrawer: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-black/55 backdrop-blur-xs">
       <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#F7F6F2] border-l border-[#E2DFD7] shadow-2xl flex flex-col font-sans text-[#141413]">
+        <div className="w-screen max-w-md bg-[#FAF8F4] border-l border-[#EADFD8] shadow-2xl flex flex-col font-sans text-[#191615]">
           {/* Header */}
-          <div className="p-4 bg-[#141413] text-white flex items-center justify-between">
+          <div className="p-4 bg-[#191615] text-white flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <ShoppingBag className="w-5 h-5 text-[#D4AF6A]" />
+              <ShoppingBag className="w-5 h-5 text-[#E8C5C8]" />
               <h2 className="font-serif text-xl font-semibold">Shopping Bag</h2>
               <span className="text-xs bg-white/15 text-white font-mono font-semibold px-2 py-0.5 rounded tabular-nums">
                 {cart.reduce((sum, item) => sum + item.quantity, 0)} items
@@ -138,24 +140,24 @@ export const CartDrawer: React.FC = () => {
           </div>
 
           {/* Free Shipping Progress */}
-          <div className="p-3.5 bg-white border-b border-[#E2DFD7] text-xs">
+          <div className="p-3.5 bg-white border-b border-[#EADFD8] text-xs">
             {amountNeededForFreeShipping > 0 ? (
-              <p className="text-[#141413] flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5 text-[#164E3F] shrink-0" />
+              <p className="text-[#191615] flex items-center gap-1.5">
+                <Truck className="w-3.5 h-3.5 text-[#9E5660] shrink-0" />
                 <span>
-                  Add <strong className="text-[#164E3F] font-mono tabular-nums">₹{amountNeededForFreeShipping}</strong> more for{' '}
+                  Add <strong className="text-[#9E5660] font-mono tabular-nums">₹{amountNeededForFreeShipping}</strong> more for{' '}
                   <strong className="text-[#166534]">Free Express Delivery</strong>
                 </span>
               </p>
             ) : (
               <p className="font-semibold text-[#166534] flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5 shrink-0" />
-                <span>Your order qualifies for Complimentary Express Delivery</span>
+                <span>Complimentary Express Delivery Unlocked</span>
               </p>
             )}
-            <div className="w-full bg-[#EFECE6] h-1.5 rounded-full mt-2 overflow-hidden">
+            <div className="w-full bg-[#F4EDE2] h-1.5 rounded-full mt-2 overflow-hidden">
               <div
-                className="bg-[#164E3F] h-full transition-all duration-300 rounded-full"
+                className="bg-[#9E5660] h-full transition-all duration-300 rounded-full"
                 style={{ width: `${freeShippingProgress}%` }}
               />
             </div>
@@ -176,7 +178,7 @@ export const CartDrawer: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setCartDrawerOpen(false)}
-                  className="px-6 py-2.5 bg-[#164E3F] hover:bg-[#0F3A2E] text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors cursor-pointer"
+                  className="px-6 py-2.5 bg-[#9E5660] hover:bg-[#84424C] text-white text-xs font-semibold uppercase tracking-wider rounded-md transition-colors cursor-pointer"
                 >
                   Continue Shopping
                 </button>
@@ -185,12 +187,13 @@ export const CartDrawer: React.FC = () => {
               cart.map((item) => {
                 const maxStock = getProductVariantStock(item.product, item.size, item.color);
                 const atLimit = item.quantity >= maxStock;
+                const unitPrice = getEffectivePrice(item.product, item.size);
                 return (
                   <div
                     key={`${item.product.id}-${item.size}-${item.color}`}
-                    className="p-3 bg-white rounded-lg border border-[#E2DFD7] flex gap-3 relative"
+                    className="p-3 bg-white rounded-lg border border-[#EADFD8] flex gap-3 relative"
                   >
-                    <div className="w-20 aspect-[3/4] rounded overflow-hidden bg-[#EFECE6] shrink-0 border border-[#E2DFD7]">
+                    <div className="w-20 aspect-[3/4] rounded overflow-hidden bg-[#F4EDE2] shrink-0 border border-[#EADFD8]">
                       <img
                         src={item.product.images[0] || '/src/assets/images/category_kurtis_showcase_1794109164419.jpg'}
                         alt={item.product.name}
@@ -202,60 +205,82 @@ export const CartDrawer: React.FC = () => {
                     <div className="flex-1 flex flex-col justify-between min-w-0">
                       <div>
                         <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-xs font-semibold text-[#141413] line-clamp-1">
+                          <h3 className="text-xs font-semibold text-[#191615] line-clamp-1">
                             {item.product.name}
                           </h3>
                           <button
                             onClick={() => removeFromCart(item.product.id, item.size, item.color)}
-                            className="text-[#63615C] hover:text-[#B91C1C] transition-colors p-0.5 cursor-pointer"
+                            className="text-[#665E5B] hover:text-[#B91C1C] transition-colors p-0.5 cursor-pointer"
                             title="Remove item"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-[#63615C] mt-1">
-                          <span>Size: <strong className="text-[#141413]">{item.size}</strong></span>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-[#665E5B] mt-1.5">
+                          <label className="inline-flex items-center gap-1">
+                            <span>Size:</span>
+                            <select
+                              aria-label={`Change size for ${item.product.name}`}
+                              value={item.size}
+                              onChange={(e) =>
+                                updateCartItemSize(item.product.id, item.size, item.color, e.target.value)
+                              }
+                              className="px-1.5 py-0.5 text-[11px] font-semibold text-[#191615] bg-[#FAF8F4] border border-[#EADFD8] rounded cursor-pointer focus:outline-none focus:border-[#9E5660]"
+                            >
+                              {item.product.sizes.map((sz) => {
+                                const szAvail = isSizeAvailableForPurchase(item.product, sz, item.color);
+                                const szPrice = getEffectivePrice(item.product, sz);
+                                return (
+                                  <option key={sz} value={sz} disabled={!szAvail}>
+                                    {sz} — ₹{szPrice.toLocaleString()}
+                                    {!szAvail ? ' (Unavailable)' : ''}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </label>
                           <span>·</span>
-                          <span>Shade: <strong className="text-[#141413]">{item.color}</strong></span>
-                          {item.product.sku && (
-                            <>
-                              <span>·</span>
-                              <span className="font-mono text-[10px]">{item.product.sku}</span>
-                            </>
-                          )}
+                          <span>Shade: <strong className="text-[#191615]">{item.color}</strong></span>
                         </div>
                         {maxStock <= 5 && maxStock > 0 && (
-                          <p className="text-[10px] text-[#8E6D3B] font-medium mt-0.5">
+                          <p className="text-[10px] text-[#B58A4A] font-medium mt-0.5">
                             Only {maxStock} left in this variant
                           </p>
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#E2DFD7]">
-                        <div className="flex items-center border border-[#E2DFD7] rounded overflow-hidden">
+                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#F4EDE2]">
+                        <div className="flex items-center border border-[#EADFD8] rounded overflow-hidden">
                           <button
                             onClick={() => updateCartQuantity(item.product.id, item.size, item.color, item.quantity - 1)}
-                            className="px-2.5 py-0.5 text-xs text-[#141413] hover:bg-[#EFECE6] cursor-pointer font-bold"
+                            className="px-2.5 py-0.5 text-xs text-[#191615] hover:bg-[#F4EDE2] cursor-pointer font-bold"
                           >
                             -
                           </button>
-                          <span className="px-2.5 text-xs font-bold font-mono tabular-nums text-[#141413] bg-[#F7F6F2]">
+                          <span className="px-2.5 text-xs font-bold font-mono tabular-nums text-[#191615] bg-[#FAF8F4]">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => updateCartQuantity(item.product.id, item.size, item.color, item.quantity + 1)}
                             disabled={atLimit}
                             title={atLimit ? `Maximum ${maxStock} available` : 'Increase quantity'}
-                            className="px-2.5 py-0.5 text-xs text-[#141413] hover:bg-[#EFECE6] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer font-bold"
+                            className="px-2.5 py-0.5 text-xs text-[#191615] hover:bg-[#F4EDE2] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer font-bold"
                           >
                             +
                           </button>
                         </div>
 
-                        <span className="text-sm font-bold font-mono text-[#141413] tabular-nums">
-                          ₹{(getEffectivePrice(item.product) * item.quantity).toLocaleString()}
-                        </span>
+                        <div className="text-right">
+                          <span className="text-sm font-bold font-mono text-[#191615] tabular-nums block">
+                            ₹{(unitPrice * item.quantity).toLocaleString()}
+                          </span>
+                          {item.quantity > 1 && (
+                            <span className="text-[10px] font-mono text-[#665E5B] tabular-nums">
+                              ₹{unitPrice.toLocaleString()} each
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -357,26 +382,26 @@ export const CartDrawer: React.FC = () => {
                     )}
                   </span>
                 </div>
-                <div className="flex justify-between text-base font-bold text-[#141413] pt-2 border-t border-[#E2DFD7]">
+                <div className="flex justify-between text-base font-bold text-[#191615] pt-2 border-t border-[#EADFD8]">
                   <span>Total Payable</span>
-                  <span className="font-mono tabular-nums text-lg text-[#164E3F]">
+                  <span className="font-mono tabular-nums text-lg text-[#9E5660]">
                     ₹{(preview?.total !== undefined ? preview.total : cartTotal).toLocaleString()}
                   </span>
                 </div>
               </div>
 
               {user && (
-                <label className="flex items-start gap-2 p-2.5 bg-[#F7F6F2] border border-[#E2DFD7] rounded text-[11px] text-[#63615C] cursor-pointer">
+                <label className="flex items-start gap-2 p-2.5 bg-[#FAF8F4] border border-[#EADFD8] rounded text-[11px] text-[#665E5B] cursor-pointer">
                   <input
                     type="checkbox"
                     disabled={savingConsent}
                     checked={Boolean(user.abandonedCartConsent)}
                     onChange={(e) => handleToggleCartConsent(e.target.checked)}
-                    className="mt-0.5 accent-[#164E3F]"
+                    className="mt-0.5 accent-[#9E5660]"
                   />
                   <span>
-                    <Sparkles className="w-3 h-3 inline text-[#8E6D3B] mr-1" />
-                    Keep my bag synced &amp; notify me with gentle reminders if items wait in my bag.
+                    <Sparkles className="w-3 h-3 inline text-[#B58A4A] mr-1" />
+                    Keep my bag synced &amp; notify me with gentle reminders.
                   </span>
                 </label>
               )}
@@ -386,15 +411,15 @@ export const CartDrawer: React.FC = () => {
                   setCartDrawerOpen(false);
                   setCheckoutModalOpen(true);
                 }}
-                className="w-full py-3.5 bg-[#164E3F] hover:bg-[#0F3A2E] text-white text-xs font-semibold tracking-wider uppercase rounded-md transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-[#9E5660] hover:bg-[#84424C] text-white text-xs font-semibold tracking-wider uppercase rounded-md transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Proceed to Checkout</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#63615C]">
+              <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#665E5B]">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#166534]" />
-                <span>256-Bit Encrypted Checkout · 100% Authentic Women&apos;s Fashion</span>
+                <span>Secure Checkout · Cash on Delivery &amp; Verified Payments</span>
               </div>
             </div>
           )}

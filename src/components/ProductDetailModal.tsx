@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Product, Review, ProductQuestion } from '../types.ts';
 import { useStore, getProductVariantStock } from '../context/StoreContext.tsx';
 import {
+  getEffectiveOriginalPrice,
+  getEffectiveSizePrice,
+  getProductPriceRange,
+  getSizeDiscountPercent,
+  getStartingSize,
+  isSizeAvailableForPurchase,
+} from '../utils/pricing.ts';
+import {
   X,
   Star,
   Heart,
@@ -59,7 +67,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
     type: 'image',
     index: 0,
   });
-  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'M');
+  const [selectedSize, setSelectedSize] = useState<string>(() => getStartingSize(product));
   const [selectedColor, setSelectedColor] = useState<string>(product.colors[0]?.name || 'Standard');
   const [quantity, setQuantity] = useState(1);
   const [zoomActive, setZoomActive] = useState(false);
@@ -88,7 +96,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
   useEffect(() => {
     setActiveMedia({ type: 'image', index: 0 });
-    setSelectedSize(product.sizes[0] || 'M');
+    setSelectedSize(getStartingSize(product));
     setSelectedColor(product.colors[0]?.name || 'Standard');
     setQuantity(1);
     setZoomActive(false);
@@ -111,6 +119,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
   }, [user?.name]);
 
   const variantStock = getProductVariantStock(product, selectedSize, selectedColor);
+  const sizePurchasable = isSizeAvailableForPurchase(product, selectedSize, selectedColor) && variantStock > 0;
+  const activeSellingPrice = getEffectiveSizePrice(product, selectedSize);
+  const activeOriginalPrice = getEffectiveOriginalPrice(product, selectedSize);
+  const activeDiscountPercent = getSizeDiscountPercent(activeOriginalPrice, activeSellingPrice);
+  const priceRange = getProductPriceRange(product);
 
   useEffect(() => {
     if (variantStock > 0 && quantity > variantStock) {
@@ -137,7 +150,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
   const handleShare = async () => {
     const url = window.location.href;
-    const text = `${product.name} — ₹${product.discountedPrice.toLocaleString()} at Zohra Luxe`;
+    const text = `${product.name} (Size ${selectedSize}) — ₹${activeSellingPrice.toLocaleString()} at Zohra Luxe`;
     if (navigator.share) {
       try {
         await navigator.share({ title: product.name, text, url });
@@ -331,17 +344,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-[#F7F6F2] rounded-xl shadow-2xl border border-[#E2DFD7] overflow-hidden my-auto max-h-[92vh] flex flex-col font-sans text-[#141413]">
+      <div className="relative w-full max-w-5xl bg-[#FAF8F4] rounded-xl shadow-2xl border border-[#EADFD8] overflow-hidden my-auto max-h-[92vh] flex flex-col font-sans text-[#191615]">
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2DFD7] bg-white">
-          <div className="flex items-center gap-2 text-xs text-[#63615C] min-w-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#EADFD8] bg-white">
+          <div className="flex items-center gap-2 text-xs text-[#665E5B] min-w-0">
             <span>Women&apos;s Fashion</span>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-            <span className="font-semibold text-[#164E3F] truncate">{product.category}</span>
+            <span className="font-semibold text-[#9E5660] truncate">{product.category}</span>
             {product.sku && (
               <>
-                <span className="text-[#E2DFD7]">|</span>
-                <span className="font-mono text-[11px] text-[#63615C]">SKU: {product.sku}</span>
+                <span className="text-[#EADFD8]">|</span>
+                <span className="font-mono text-[11px] text-[#665E5B]">SKU: {product.sku}</span>
               </>
             )}
           </div>
@@ -351,8 +364,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
               onClick={() => toggleCompare(product)}
               className={`px-2.5 py-1.5 rounded-md border text-[11px] font-medium flex items-center gap-1.5 cursor-pointer transition-colors ${
                 compared
-                  ? 'bg-[#164E3F] text-white border-[#164E3F]'
-                  : 'bg-[#F7F6F2] text-[#141413] border-[#E2DFD7] hover:border-[#141413]'
+                  ? 'bg-[#9E5660] text-white border-[#9E5660]'
+                  : 'bg-[#FAF8F4] text-[#191615] border-[#EADFD8] hover:border-[#9E5660]'
               }`}
             >
               <GitCompare className="w-3.5 h-3.5" />
@@ -361,7 +374,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             <button
               type="button"
               onClick={handleShare}
-              className="px-2.5 py-1.5 rounded-md border border-[#E2DFD7] bg-[#F7F6F2] hover:border-[#141413] text-[11px] font-medium text-[#141413] flex items-center gap-1.5 cursor-pointer transition-colors"
+              className="px-2.5 py-1.5 rounded-md border border-[#EADFD8] bg-[#FAF8F4] hover:border-[#9E5660] text-[11px] font-medium text-[#191615] flex items-center gap-1.5 cursor-pointer transition-colors"
             >
               <Share2 className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Share</span>
@@ -370,7 +383,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
               type="button"
               onClick={onClose}
               aria-label="Close product view"
-              className="p-1.5 rounded-md hover:bg-[#EFECE6] text-[#63615C] hover:text-[#141413] transition-colors cursor-pointer"
+              className="p-1.5 rounded-md hover:bg-[#F4EDE2] text-[#665E5B] hover:text-[#191615] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -383,7 +396,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             {/* Gallery Column (Images & Videos) */}
             <div className="lg:col-span-6 space-y-4">
               {activeMedia.type === 'video' && videos[activeMedia.index] ? (
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#141413] border border-[#E2DFD7] flex items-center justify-center">
+                <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#191615] border border-[#EADFD8] flex items-center justify-center">
                   <video
                     src={videos[activeMedia.index]}
                     controls
@@ -393,7 +406,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                 </div>
               ) : (
                 <div
-                  className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#EFECE6] border border-[#E2DFD7] cursor-crosshair group"
+                  className="relative aspect-[3/4] rounded-lg overflow-hidden bg-[#F4EDE2] border border-[#EADFD8] cursor-crosshair group"
                   onClick={() => setZoomActive(!zoomActive)}
                 >
                   <img
@@ -401,7 +414,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                     alt={product.name}
                     referrerPolicy="no-referrer"
                     className={`w-full h-full object-cover object-top transition-transform duration-300 ${
-                      zoomActive ? 'scale-150' : 'group-hover:scale-105'
+                      zoomActive ? 'scale-150' : 'group-hover:scale-[1.03]'
                     }`}
                   />
                   <button
@@ -410,7 +423,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                       e.stopPropagation();
                       setZoomActive(!zoomActive);
                     }}
-                    className="absolute bottom-3 right-3 bg-white/95 p-2 rounded-md text-[#141413] border border-[#E2DFD7] shadow-sm hover:bg-white cursor-pointer"
+                    className="absolute bottom-3 right-3 bg-white/95 p-2 rounded-md text-[#191615] border border-[#EADFD8] shadow-sm hover:bg-white cursor-pointer"
                     title="Toggle Image Zoom"
                   >
                     <ZoomIn className="w-4 h-4" />
@@ -430,8 +443,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                       }}
                       className={`relative w-20 aspect-[3/4] rounded-md overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
                         activeMedia.type === 'image' && activeMedia.index === idx
-                          ? 'border-[#164E3F]'
-                          : 'border-[#E2DFD7] opacity-75 hover:opacity-100'
+                          ? 'border-[#9E5660]'
+                          : 'border-[#EADFD8] opacity-75 hover:opacity-100'
                       }`}
                     >
                       <img src={img} alt="" referrerPolicy="no-referrer" className="w-full h-full object-cover object-top" />
@@ -445,13 +458,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                         setActiveMedia({ type: 'video', index: vIdx });
                         setZoomActive(false);
                       }}
-                      className={`relative w-20 aspect-[3/4] rounded-md overflow-hidden border-2 transition-all shrink-0 cursor-pointer bg-[#141413] text-white flex flex-col items-center justify-center gap-1 ${
+                      className={`relative w-20 aspect-[3/4] rounded-md overflow-hidden border-2 transition-all shrink-0 cursor-pointer bg-[#191615] text-white flex flex-col items-center justify-center gap-1 ${
                         activeMedia.type === 'video' && activeMedia.index === vIdx
-                          ? 'border-[#164E3F]'
-                          : 'border-[#E2DFD7] opacity-85 hover:opacity-100'
+                          ? 'border-[#9E5660]'
+                          : 'border-[#EADFD8] opacity-85 hover:opacity-100'
                       }`}
                     >
-                      <Video className="w-5 h-5 text-[#D4AF6A]" />
+                      <Video className="w-5 h-5 text-[#E8C5C8]" />
                       <span className="text-[10px] font-semibold">Runway {vIdx + 1}</span>
                     </button>
                   ))}
@@ -462,96 +475,98 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             {/* Purchase Column */}
             <div className="lg:col-span-6 space-y-5">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#164E3F] mb-1">
+                <p className="text-xs font-semibold uppercase tracking-widest text-[#9E5660] mb-1">
                   {product.category} · {product.brand}
                 </p>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#141413] leading-tight">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#191615] leading-tight">
                   {product.name}
                 </h2>
 
                 <div className="flex items-center gap-2 mt-2">
-                  <div className="flex items-center text-[#8E6D3B]">
+                  <div className="flex items-center text-[#B58A4A]">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-[#E2DFD7]'}`}
+                        className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-[#EADFD8]'}`}
                       />
                     ))}
                   </div>
-                  <span className="text-xs font-bold text-[#141413] font-mono tabular-nums">{product.rating}</span>
-                  <span className="text-xs text-[#63615C]">({reviews.length || product.reviewCount} reviews)</span>
+                  <span className="text-xs font-bold text-[#191615] font-mono tabular-nums">{product.rating}</span>
+                  <span className="text-xs text-[#665E5B]">({reviews.length || product.reviewCount} reviews)</span>
                 </div>
               </div>
 
-              {/* Pricing Card */}
-              <div className="p-4 rounded-lg bg-white border border-[#E2DFD7] space-y-1.5">
+              {/* Dynamic Size-Based Pricing Card */}
+              <div className="p-4 rounded-lg bg-white border border-[#EADFD8] space-y-2">
                 <div className="flex flex-wrap items-baseline gap-3">
-                  <span className="text-2xl sm:text-3xl font-bold font-mono text-[#141413] tabular-nums">
-                    ₹{(product.flashSalePrice && product.flashSalePrice < product.discountedPrice
-                      ? product.flashSalePrice
-                      : product.discountedPrice
-                    ).toLocaleString()}
+                  <span className="text-2xl sm:text-3xl font-bold font-mono text-[#191615] tabular-nums">
+                    ₹{activeSellingPrice.toLocaleString()}
                   </span>
-                  {product.originalPrice > (product.flashSalePrice || product.discountedPrice) && (
+                  {activeOriginalPrice > activeSellingPrice && (
                     <>
-                      <span className="text-base text-[#63615C] line-through font-mono tabular-nums">
-                        ₹{(product.flashSalePrice ? product.discountedPrice : product.originalPrice).toLocaleString()}
+                      <span className="text-base text-[#665E5B] line-through font-mono tabular-nums">
+                        ₹{activeOriginalPrice.toLocaleString()}
                       </span>
-                      <span className="text-xs font-bold text-[#166534] tabular-nums">
-                        {product.flashSalePrice
-                          ? 'Flash Sale Active'
-                          : `Save ${product.discountPercent}%`}
+                      <span className="text-xs font-semibold text-[#9E5660] tabular-nums">
+                        {product.flashSalePrice || product.flashSaleDiscountPercent
+                          ? `Flash Deal · ${activeDiscountPercent}% OFF`
+                          : `${activeDiscountPercent}% OFF`}
                       </span>
                     </>
                   )}
-                  <span className="ml-auto text-[11px] text-[#63615C]">Inclusive of all taxes</span>
+                  <span className="ml-auto text-[11px] font-medium text-[#665E5B]">
+                    Size <strong className="text-[#191615]">{selectedSize}</strong> · Incl. all taxes
+                  </span>
                 </div>
-                {product.flashSalePrice && product.flashSaleEndsAt && (
-                  <p className="text-[11px] font-mono text-[#164E3F] font-semibold">
-                    Limited Flash Offer ends {new Date(product.flashSaleEndsAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                {product.flashSaleEndsAt && (product.flashSalePrice || product.flashSaleDiscountPercent) && (
+                  <p className="text-[11px] font-mono text-[#9E5660] font-semibold">
+                    Limited Offer ends {new Date(product.flashSaleEndsAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
                 )}
               </div>
 
               {/* Specifications */}
-              <div className="grid grid-cols-2 gap-3 p-3.5 bg-white rounded-lg border border-[#E2DFD7] text-xs">
+              <div className="grid grid-cols-2 gap-3 p-3.5 bg-white rounded-lg border border-[#EADFD8] text-xs">
                 <div>
-                  <span className="text-[#63615C] block">Fabric</span>
-                  <span className="font-semibold text-[#141413]">{product.fabric}</span>
+                  <span className="text-[#665E5B] block">Fabric</span>
+                  <span className="font-semibold text-[#191615]">{product.fabric}</span>
                 </div>
                 <div>
-                  <span className="text-[#63615C] block">Neckline</span>
-                  <span className="font-semibold text-[#141413]">{product.details?.neckline || 'Handcrafted'}</span>
+                  <span className="text-[#665E5B] block">Neckline</span>
+                  <span className="font-semibold text-[#191615]">{product.details?.neckline || 'Handcrafted'}</span>
                 </div>
                 <div>
-                  <span className="text-[#63615C] block">Sleeves</span>
-                  <span className="font-semibold text-[#141413]">{product.details?.sleeves || 'Three-Quarter'}</span>
+                  <span className="text-[#665E5B] block">Sleeves</span>
+                  <span className="font-semibold text-[#191615]">{product.details?.sleeves || 'Three-Quarter'}</span>
                 </div>
                 <div>
-                  <span className="text-[#63615C] block">Wash &amp; Care</span>
-                  <span className="font-semibold text-[#141413]">{product.details?.washCare || 'Gentle Wash'}</span>
+                  <span className="text-[#665E5B] block">Wash &amp; Care</span>
+                  <span className="font-semibold text-[#191615]">{product.details?.washCare || 'Gentle Wash'}</span>
                 </div>
               </div>
 
-              {/* Size Selector */}
+              {/* Size Selector with Per-Size Pricing & Availability */}
               <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#141413]">
-                    Select Size: <strong className="text-[#164E3F]">{selectedSize}</strong>
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#191615]">
+                    Select Size: <strong className="text-[#9E5660]">{selectedSize}</strong>
+                    <span className="ml-2 font-mono font-bold text-[#191615]">
+                      (₹{activeSellingPrice.toLocaleString()})
+                    </span>
                   </span>
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
                       onClick={() => setSizeRecommenderOpen(true)}
-                      className="text-xs text-[#164E3F] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                      className="text-xs text-[#9E5660] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                     >
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Smart Fit Finder</span>
+                      <span>Fit Finder</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setSizeGuideModalOpen(true)}
-                      className="text-xs text-[#63615C] hover:text-[#141413] font-medium flex items-center gap-1 cursor-pointer"
+                      className="text-xs text-[#665E5B] hover:text-[#191615] font-medium flex items-center gap-1 cursor-pointer"
                     >
                       <Ruler className="w-3.5 h-3.5" />
                       <span>Size Chart</span>
@@ -562,20 +577,32 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                 <div className="flex flex-wrap items-center gap-2">
                   {product.sizes.map((sz) => {
                     const szStock = getProductVariantStock(product, sz, selectedColor);
+                    const available = isSizeAvailableForPurchase(product, sz, selectedColor) && szStock > 0;
+                    const szPrice = getEffectiveSizePrice(product, sz);
                     return (
                       <button
                         key={sz}
                         type="button"
+                        disabled={!available}
                         onClick={() => setSelectedSize(sz)}
-                        className={`min-w-[44px] h-10 px-3 text-xs font-bold rounded-md border transition-colors cursor-pointer ${
-                          selectedSize === sz
-                            ? 'border-[#164E3F] bg-[#164E3F] text-white'
-                            : szStock === 0
-                            ? 'border-[#E2DFD7] bg-[#EFECE6] text-[#63615C] line-through'
-                            : 'border-[#E2DFD7] bg-white text-[#141413] hover:border-[#164E3F]'
+                        className={`min-w-[56px] px-3 py-2 text-xs font-semibold rounded-md border transition-colors flex flex-col items-center justify-center ${
+                          !available
+                            ? 'border-[#EADFD8] bg-[#FAF8F4] text-[#B8AFA8] line-through cursor-not-allowed opacity-70'
+                            : selectedSize === sz
+                            ? 'border-[#9E5660] bg-[#9E5660] text-white cursor-pointer'
+                            : 'border-[#EADFD8] bg-white text-[#191615] hover:border-[#9E5660] cursor-pointer'
                         }`}
                       >
-                        {sz}
+                        <span className="font-bold">{sz}</span>
+                        {priceRange.hasRange && available && (
+                          <span
+                            className={`text-[10px] font-mono tabular-nums mt-0.5 ${
+                              selectedSize === sz ? 'text-white/90' : 'text-[#665E5B]'
+                            }`}
+                          >
+                            ₹{szPrice.toLocaleString()}
+                          </span>
+                        )}
                       </button>
                     );
                   })}
@@ -584,18 +611,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                 <button
                   type="button"
                   onClick={() => setVirtualTryOnOpen(true)}
-                  className="w-full py-2.5 px-3 bg-[#ECF4F1] hover:bg-[#DCECE6] border border-[#164E3F]/25 rounded-md text-xs font-semibold text-[#164E3F] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  className="w-full py-2.5 px-3 bg-[#F4EDE2] hover:bg-[#EDE1D1] border border-[#EADFD8] rounded-md text-xs font-semibold text-[#191615] flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Preview Silhouette with Virtual Try-On Studio</span>
+                  <Sparkles className="w-4 h-4 text-[#9E5660]" />
+                  <span>Virtual Try-On Studio</span>
                 </button>
               </div>
 
               {/* Colour Selector */}
               {product.colors && product.colors.length > 0 && (
                 <div className="space-y-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#141413]">
-                    Colour: <strong className="text-[#164E3F]">{selectedColor}</strong>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#191615]">
+                    Colour: <strong className="text-[#9E5660]">{selectedColor}</strong>
                   </span>
                   <div className="flex flex-wrap items-center gap-2">
                     {product.colors.map((c) => (
@@ -605,12 +632,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                         onClick={() => setSelectedColor(c.name)}
                         className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium border transition-colors cursor-pointer ${
                           selectedColor === c.name
-                            ? 'border-[#164E3F] bg-white text-[#141413] ring-1 ring-[#164E3F]'
-                            : 'border-[#E2DFD7] bg-white text-[#63615C] hover:border-[#164E3F]'
+                            ? 'border-[#9E5660] bg-white text-[#191615] ring-1 ring-[#9E5660]'
+                            : 'border-[#EADFD8] bg-white text-[#665E5B] hover:border-[#9E5660]'
                         }`}
                       >
                         <span
-                          className="w-3.5 h-3.5 rounded-full border border-[#E2DFD7]"
+                          className="w-3.5 h-3.5 rounded-full border border-[#EADFD8]"
                           style={{ backgroundColor: c.hex }}
                         />
                         <span>{c.name}</span>
@@ -622,12 +649,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
               {/* Quantity & Per-Variant Stock */}
               <div className="flex flex-wrap items-center gap-4">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#141413]">Quantity:</span>
-                <div className="flex items-center border border-[#E2DFD7] rounded-md bg-white overflow-hidden">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#191615]">Quantity:</span>
+                <div className="flex items-center border border-[#EADFD8] rounded-md bg-white overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-1.5 text-sm hover:bg-[#EFECE6] text-[#141413] cursor-pointer"
+                    className="px-3 py-1.5 text-sm hover:bg-[#F4EDE2] text-[#191615] cursor-pointer"
                   >
                     -
                   </button>
@@ -636,22 +663,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                   </span>
                   <button
                     type="button"
-                    disabled={quantity >= variantStock}
+                    disabled={!sizePurchasable || quantity >= variantStock}
                     onClick={() => setQuantity(Math.min(Math.max(1, variantStock), quantity + 1))}
-                    className="px-3 py-1.5 text-sm hover:bg-[#EFECE6] text-[#141413] disabled:opacity-40 cursor-pointer"
+                    className="px-3 py-1.5 text-sm hover:bg-[#F4EDE2] text-[#191615] disabled:opacity-40 cursor-pointer"
                   >
                     +
                   </button>
                 </div>
 
                 <div className="text-xs">
-                  {variantStock > 0 ? (
+                  {sizePurchasable ? (
                     <span className="text-[#166534] font-semibold">
-                      In Stock ({variantStock} left in {selectedSize} · {selectedColor})
+                      In Stock ({variantStock} left · Size {selectedSize})
                     </span>
                   ) : (
                     <span className="text-[#B91C1C] font-semibold">
-                      Sold out in Size {selectedSize} ({selectedColor})
+                      Unavailable in Size {selectedSize} ({selectedColor})
                     </span>
                   )}
                 </div>
@@ -662,18 +689,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                 <button
                   type="button"
                   onClick={() => addToCart(product, selectedSize, selectedColor, quantity, false)}
-                  disabled={variantStock === 0}
-                  className="flex-1 py-3 px-5 rounded-md border border-[#141413] bg-white hover:bg-[#EFECE6] text-[#141413] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!sizePurchasable}
+                  className="flex-1 py-3 px-5 rounded-md border border-[#191615] bg-white hover:bg-[#F4EDE2] text-[#191615] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>Add to Bag</span>
+                  <span>Add to Bag · ₹{(activeSellingPrice * quantity).toLocaleString()}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => buyNow(product, selectedSize, selectedColor, quantity)}
-                  disabled={variantStock === 0}
-                  className="flex-1 py-3 px-5 rounded-md bg-[#164E3F] hover:bg-[#0F3A2E] text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!sizePurchasable}
+                  className="flex-1 py-3 px-5 rounded-md bg-[#9E5660] hover:bg-[#84424C] text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Zap className="w-4 h-4" />
                   <span>Buy Now</span>
@@ -685,8 +712,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                   aria-label="Save to wishlist"
                   className={`p-3 rounded-md border transition-colors cursor-pointer ${
                     isLiked
-                      ? 'bg-[#164E3F] border-[#164E3F] text-white'
-                      : 'bg-white border-[#E2DFD7] text-[#63615C] hover:text-[#164E3F] hover:border-[#164E3F]'
+                      ? 'bg-[#9E5660] border-[#9E5660] text-white'
+                      : 'bg-white border-[#EADFD8] text-[#665E5B] hover:text-[#9E5660] hover:border-[#9E5660]'
                   }`}
                 >
                   <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
@@ -925,59 +952,63 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             )}
           </div>
 
-          {/* Complete the Look Matching Pieces */}
-          {completeTheLook.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-[#E2DFD7] space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-[#8E6D3B]" />
-                  <h3 className="font-serif text-xl font-bold text-[#141413]">Complete the Look</h3>
-                </div>
-                <span className="text-[11px] text-[#63615C]">Coordinating silhouettes paired by our stylists</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {completeTheLook.map((match) => (
-                  <div
-                    key={match.id}
-                    className="bg-white border border-[#E2DFD7] rounded-lg p-3 flex items-center gap-3"
-                  >
-                    <img
-                      src={match.images[0]}
-                      alt={match.name}
-                      referrerPolicy="no-referrer"
-                      onClick={() => setQuickViewProduct(match)}
-                      className="w-16 h-20 object-cover rounded border border-[#E2DFD7] cursor-pointer shrink-0"
-                    />
-                    <div className="flex-1 min-w-0 space-y-1">
-                      <p className="text-[10px] uppercase tracking-wider text-[#8E6D3B] font-semibold">
-                        {match.category}
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => setQuickViewProduct(match)}
-                        className="text-xs font-semibold text-[#141413] hover:text-[#164E3F] truncate block w-full text-left cursor-pointer"
-                      >
-                        {match.name}
-                      </button>
-                      <p className="text-xs font-mono font-bold text-[#164E3F]">
-                        ₹{(match.flashSalePrice || match.discountedPrice).toLocaleString()}
-                      </p>
-                      <button
-                        type="button"
-                        disabled={!match.inStock || match.stockQuantity <= 0}
-                        onClick={() =>
-                          addToCart(match, match.sizes[0] || 'M', match.colors[0]?.name || 'Standard', 1, false)
-                        }
-                        className="px-2.5 py-1 bg-[#141413] hover:bg-[#164E3F] text-white text-[10px] font-semibold rounded cursor-pointer disabled:opacity-40"
-                      >
-                        + Add Pairing
-                      </button>
+              {/* Complete the Look Matching Pieces */}
+              {completeTheLook.length > 0 && (
+                <div className="mt-8 pt-6 border-t border-[#EADFD8] space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-[#B58A4A]" />
+                      <h3 className="font-serif text-xl font-bold text-[#191615]">Complete the Look</h3>
                     </div>
+                    <span className="text-[11px] text-[#665E5B]">Coordinating silhouettes styled for this piece</span>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {completeTheLook.map((match) => {
+                      const matchSize = getStartingSize(match);
+                      const matchPrice = getEffectiveSizePrice(match, matchSize);
+                      return (
+                        <div
+                          key={match.id}
+                          className="bg-white border border-[#EADFD8] rounded-lg p-3 flex items-center gap-3"
+                        >
+                          <img
+                            src={match.images[0]}
+                            alt={match.name}
+                            referrerPolicy="no-referrer"
+                            onClick={() => setQuickViewProduct(match)}
+                            className="w-16 h-20 object-cover rounded border border-[#EADFD8] cursor-pointer shrink-0"
+                          />
+                          <div className="flex-1 min-w-0 space-y-1">
+                            <p className="text-[10px] uppercase tracking-wider text-[#B58A4A] font-semibold">
+                              {match.category}
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() => setQuickViewProduct(match)}
+                              className="text-xs font-semibold text-[#191615] hover:text-[#9E5660] truncate block w-full text-left cursor-pointer"
+                            >
+                              {match.name}
+                            </button>
+                            <p className="text-xs font-mono font-bold text-[#9E5660]">
+                              ₹{matchPrice.toLocaleString()}
+                            </p>
+                            <button
+                              type="button"
+                              disabled={!match.inStock || match.stockQuantity <= 0}
+                              onClick={() =>
+                                addToCart(match, matchSize, match.colors[0]?.name || 'Standard', 1, false)
+                              }
+                              className="px-2.5 py-1 bg-[#191615] hover:bg-[#9E5660] text-white text-[10px] font-semibold rounded cursor-pointer disabled:opacity-40 transition-colors"
+                            >
+                              + Add ({matchSize})
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
           {/* Customer Reviews */}
           <div className="mt-8 pt-6 border-t border-[#E2DFD7]">
@@ -1214,32 +1245,37 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
           {/* Related & Similar Styles */}
           {relatedProducts.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-[#E2DFD7] space-y-4">
-              <h3 className="font-serif text-xl font-bold text-[#141413]">Related &amp; Similar Styles</h3>
+            <div className="mt-8 pt-6 border-t border-[#EADFD8] space-y-4">
+              <h3 className="font-serif text-xl font-bold text-[#191615]">Related &amp; Similar Styles</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {relatedProducts.map((rel) => (
-                  <button
-                    key={rel.id}
-                    type="button"
-                    onClick={() => setQuickViewProduct(rel)}
-                    className="text-left bg-white rounded-lg border border-[#E2DFD7] hover:border-[#141413] overflow-hidden transition-colors cursor-pointer group"
-                  >
-                    <div className="aspect-[3/4] bg-[#EFECE6] overflow-hidden">
-                      <img
-                        src={rel.images[0]}
-                        alt={rel.name}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <div className="p-2.5 space-y-0.5">
-                      <p className="text-xs font-semibold text-[#141413] truncate">{rel.name}</p>
-                      <p className="text-xs font-mono font-bold text-[#164E3F] tabular-nums">
-                        ₹{rel.discountedPrice.toLocaleString()}
-                      </p>
-                    </div>
-                  </button>
-                ))}
+                {relatedProducts.map((rel) => {
+                  const relRange = getProductPriceRange(rel);
+                  return (
+                    <button
+                      key={rel.id}
+                      type="button"
+                      onClick={() => setQuickViewProduct(rel)}
+                      className="text-left bg-white rounded-lg border border-[#EADFD8] hover:border-[#9E5660] overflow-hidden transition-colors cursor-pointer group"
+                    >
+                      <div className="aspect-[3/4] bg-[#F4EDE2] overflow-hidden">
+                        <img
+                          src={rel.images[0]}
+                          alt={rel.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform"
+                        />
+                      </div>
+                      <div className="p-2.5 space-y-0.5">
+                        <p className="text-xs font-semibold text-[#191615] truncate">{rel.name}</p>
+                        <p className="text-xs font-mono font-bold text-[#9E5660] tabular-nums">
+                          {relRange.hasRange
+                            ? `₹${relRange.min.toLocaleString()} – ₹${relRange.max.toLocaleString()}`
+                            : `₹${getEffectiveSizePrice(rel).toLocaleString()}`}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../context/StoreContext.tsx';
+import { getProductPriceRange } from '../utils/pricing.ts';
 import {
   Search,
   ShoppingBag,
@@ -71,7 +72,7 @@ export const Header: React.FC = () => {
 
   const announcement =
     settings?.announcement ||
-    'Free Express Delivery Over ₹1,499 · Wholesale: +91 9310078735';
+    'Complimentary Express Shipping Over ₹1,499 · Festive Couture Edit 2026';
 
   const POPULAR_SEARCHES = [
     'Anarkali Kurti',
@@ -79,7 +80,7 @@ export const Header: React.FC = () => {
     'Party Wear Kurti',
     'Silk Kurti Sets',
     'Printed Kurti Under ₹999',
-    'Lavender Co-ord Set',
+    'Co-ord Set',
     'Straight Cut Kurti',
   ];
 
@@ -147,10 +148,10 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E2DFD7]">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#EADFD8]">
       {/* Slim Atelier Notice Strip */}
       {!announcementDismissed && (
-        <div className="bg-gradient-to-r from-[#0F3A2E] via-[#164E3F] to-[#7A1C3A] text-[#FFFDF9] px-4 h-8 text-[11px] tracking-wide font-medium flex items-center justify-between">
+        <div className="bg-[#191615] text-[#FAF8F4] px-4 h-8 text-[11px] tracking-wide font-medium flex items-center justify-between border-b border-[#2D2624]">
           <div className="w-6 hidden sm:block" />
           <p className="truncate text-center w-full sm:w-auto flex items-center justify-center gap-2">
             <span>{announcement}</span>
@@ -159,7 +160,7 @@ export const Header: React.FC = () => {
             type="button"
             onClick={() => setAnnouncementDismissed(true)}
             aria-label="Dismiss announcement"
-            className="text-white/75 hover:text-white transition-colors p-1 ml-2 cursor-pointer shrink-0"
+            className="text-white/75 hover:text-[#E8C5C8] transition-colors p-1 ml-2 cursor-pointer shrink-0"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -174,7 +175,7 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-[#141413] hover:bg-[#EFECE6] rounded-md transition-colors cursor-pointer"
+              className="lg:hidden p-2 text-[#191615] hover:bg-[#F4EDE2] rounded-md transition-colors cursor-pointer"
               aria-label="Toggle Menu"
             >
               <Menu className="w-5 h-5" />
@@ -183,9 +184,9 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={handleLogoClick}
-              className="text-left group cursor-pointer shrink-0 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#164E3F] rounded"
+              className="text-left group cursor-pointer shrink-0 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9E5660] rounded"
             >
-              <span className="font-serif text-xl sm:text-2xl font-bold tracking-[0.04em] text-[#164E3F] group-hover:text-[#9F1239] transition-colors uppercase leading-none">
+              <span className="font-serif text-xl sm:text-2xl font-bold tracking-[0.06em] text-[#191615] group-hover:text-[#9E5660] transition-colors uppercase leading-none">
                 {settings?.logoText || 'ZOHRA LUXE'}
               </span>
             </button>
@@ -194,7 +195,7 @@ export const Header: React.FC = () => {
           {/* Zone 2: Command Search Bar with Instant Suggestions */}
           <div ref={searchContainerRef} className="flex-1 max-w-xl relative">
             <form onSubmit={handleSearchSubmit} className="relative w-full flex items-center">
-              <Search className="w-4 h-4 text-[#63615C] absolute left-3.5 pointer-events-none" />
+              <Search className="w-4 h-4 text-[#665E5B] absolute left-3.5 pointer-events-none" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -205,26 +206,26 @@ export const Header: React.FC = () => {
                   setSearchDropdownOpen(true);
                 }}
                 placeholder="Search Kurtis, Anarkali, Co-ord Sets..."
-                className="w-full bg-[#FAF8F4] focus:bg-white text-xs sm:text-sm text-[#141413] pl-10 pr-20 py-2 rounded-md border border-[#E2DFD7] focus:border-[#141413] focus:outline-none placeholder:text-[#63615C] transition-colors"
+                className="w-full bg-[#FAF8F4] focus:bg-white text-xs sm:text-sm text-[#191615] pl-10 pr-20 py-2 rounded-md border border-[#EADFD8] focus:border-[#9E5660] focus:outline-none placeholder:text-[#665E5B] transition-colors"
               />
               {searchQuery ? (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
                   aria-label="Clear search"
-                  className="absolute right-12 top-1/2 -translate-y-1/2 text-[#63615C] hover:text-[#141413] p-1 cursor-pointer"
+                  className="absolute right-12 top-1/2 -translate-y-1/2 text-[#665E5B] hover:text-[#191615] p-1 cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               ) : (
-                <kbd className="hidden md:inline-block absolute right-12 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono text-[#63615C] bg-white border border-[#E2DFD7] rounded pointer-events-none">
+                <kbd className="hidden md:inline-block absolute right-12 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono text-[#665E5B] bg-white border border-[#EADFD8] rounded pointer-events-none">
                   /
                 </kbd>
               )}
               <button
                 type="submit"
                 aria-label="Submit search"
-                className="absolute right-1.5 top-1 bottom-1 px-2.5 text-xs font-semibold text-[#141413] hover:bg-[#EFECE6] rounded transition-colors cursor-pointer"
+                className="absolute right-1.5 top-1 bottom-1 px-2.5 text-xs font-semibold text-[#9E5660] hover:bg-[#F9EEF0] rounded transition-colors cursor-pointer"
               >
                 Find
               </button>
@@ -232,53 +233,61 @@ export const Header: React.FC = () => {
 
             {/* Live Search Dropdown */}
             {searchDropdownOpen && (
-              <div className="absolute left-0 right-0 top-full mt-1.5 bg-white text-[#141413] rounded-lg shadow-xl border border-[#E2DFD7] py-3 px-4 z-50 space-y-3">
+              <div className="absolute left-0 right-0 top-full mt-1.5 bg-white text-[#191615] rounded-lg shadow-xl border border-[#EADFD8] py-3 px-4 z-50 space-y-3">
                 {searchQuery.trim() && liveMatchingProducts.length > 0 && (
-                  <div className="space-y-2 border-b border-[#E2DFD7] pb-3">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#63615C] block">
-                      Matching Garments
+                  <div className="space-y-2 border-b border-[#EADFD8] pb-3">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-[#665E5B] block">
+                      Matching Styles
                     </span>
                     <div className="space-y-1">
-                      {liveMatchingProducts.map((p) => (
-                        <button
-                          key={p.id}
-                          type="button"
-                          onClick={() => {
-                            setQuickViewProduct(p);
-                            setSearchDropdownOpen(false);
-                          }}
-                          className="w-full text-left flex items-center gap-3 p-1.5 rounded-md hover:bg-[#F7F6F2] cursor-pointer transition-colors"
-                        >
-                          <img
-                            src={p.images[0]}
-                            alt={p.name}
-                            referrerPolicy="no-referrer"
-                            className="w-9 h-12 object-cover rounded border border-[#E2DFD7] shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-semibold text-[#141413] truncate">{p.name}</p>
-                            <p className="text-[11px] text-[#63615C] tabular-nums">
-                              {p.category} · <span className="font-mono text-[#164E3F] font-semibold">₹{p.discountedPrice.toLocaleString()}</span>
-                            </p>
-                          </div>
-                          <ArrowRight className="w-3.5 h-3.5 text-[#63615C]" />
-                        </button>
-                      ))}
+                      {liveMatchingProducts.map((p) => {
+                        const range = getProductPriceRange(p);
+                        return (
+                          <button
+                            key={p.id}
+                            type="button"
+                            onClick={() => {
+                              setQuickViewProduct(p);
+                              setSearchDropdownOpen(false);
+                            }}
+                            className="w-full text-left flex items-center gap-3 p-1.5 rounded-md hover:bg-[#FAF8F4] cursor-pointer transition-colors"
+                          >
+                            <img
+                              src={p.images[0]}
+                              alt={p.name}
+                              referrerPolicy="no-referrer"
+                              className="w-9 h-12 object-cover rounded border border-[#EADFD8] shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-[#191615] truncate">{p.name}</p>
+                              <p className="text-[11px] text-[#665E5B] tabular-nums">
+                                {p.category} ·{' '}
+                                <span className="font-mono text-[#9E5660] font-semibold">
+                                  {range.hasRange
+                                    ? `₹${range.min.toLocaleString()} – ₹${range.max.toLocaleString()}`
+                                    : `₹${range.min.toLocaleString()}`}
+                                </span>
+                              </p>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-[#665E5B]" />
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
 
                 {recentSearches.length > 0 && (
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] font-semibold text-[#63615C]">
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-[#665E5B]">
                       <span className="flex items-center gap-1.5">
-                        <Clock className="w-3 h-3 text-[#164E3F]" />
-                        <span>Recent Searches</span>
+                        <Clock className="w-3 h-3 text-[#9E5660]" />
+                        <span>Recent</span>
                       </span>
                       <button
                         type="button"
                         onClick={clearRecentSearches}
-                        className="text-[11px] text-[#164E3F] hover:underline font-medium cursor-pointer"
+                        className="text-[11px] text-[#9E5660] hover:underline font-medium cursor-pointer"
                       >
                         Clear All
                       </button>
@@ -289,7 +298,7 @@ export const Header: React.FC = () => {
                           key={i}
                           type="button"
                           onClick={() => handleSelectSuggestion(term)}
-                          className="px-2.5 py-1 bg-[#F7F6F2] hover:bg-[#ECF4F1] hover:text-[#164E3F] border border-[#E2DFD7] rounded text-xs text-[#141413] transition-colors cursor-pointer"
+                          className="px-2.5 py-1 bg-[#FAF8F4] hover:bg-[#F9EEF0] hover:text-[#9E5660] border border-[#EADFD8] rounded text-xs text-[#191615] transition-colors cursor-pointer"
                         >
                           {term}
                         </button>
@@ -299,9 +308,9 @@ export const Header: React.FC = () => {
                 )}
 
                 <div className="space-y-1.5 pt-1">
-                  <span className="text-[11px] font-semibold text-[#63615C] flex items-center gap-1.5">
-                    <TrendingUp className="w-3 h-3 text-[#8E6D3B]" />
-                    <span>Popular Styles</span>
+                  <span className="text-[11px] font-semibold text-[#665E5B] flex items-center gap-1.5">
+                    <TrendingUp className="w-3 h-3 text-[#B58A4A]" />
+                    <span>Trending Searches</span>
                   </span>
                   <div className="flex flex-wrap gap-1.5">
                     {POPULAR_SEARCHES.map((term, i) => (
@@ -309,7 +318,7 @@ export const Header: React.FC = () => {
                         key={i}
                         type="button"
                         onClick={() => handleSelectSuggestion(term)}
-                        className="px-2.5 py-1 bg-[#F7F6F2] hover:bg-[#ECF4F1] hover:text-[#164E3F] border border-[#E2DFD7] rounded text-xs text-[#141413] transition-colors cursor-pointer"
+                        className="px-2.5 py-1 bg-[#FAF8F4] hover:bg-[#F9EEF0] hover:text-[#9E5660] border border-[#EADFD8] rounded text-xs text-[#191615] transition-colors cursor-pointer"
                       >
                         {term}
                       </button>
@@ -325,22 +334,22 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setWholesaleModalOpen(true)}
-              className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#8E6D3B] hover:text-[#141413] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#B58A4A] hover:text-[#191615] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Building2 className="w-3.5 h-3.5" />
-              <span>B2B Wholesale</span>
+              <span>Wholesale</span>
             </button>
 
             <button
               type="button"
               onClick={() => setTrackingModalOpen(true)}
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#63615C] hover:text-[#141413] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-[#665E5B] hover:text-[#191615] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Truck className="w-4 h-4" />
               <span>Track Order</span>
             </button>
 
-            {/* Notification Bell (Logged-in Customer) */}
+            {/* Notification Bell */}
             {user && (
               <div ref={notifContainerRef} className="relative shrink-0">
                 <button
@@ -349,35 +358,35 @@ export const Header: React.FC = () => {
                     setNotifMenuOpen(!notifMenuOpen);
                     setAccountMenuOpen(false);
                   }}
-                  className="p-2 text-[#63615C] hover:text-[#141413] transition-colors relative whitespace-nowrap shrink-0 cursor-pointer"
+                  className="p-2 text-[#665E5B] hover:text-[#191615] transition-colors relative whitespace-nowrap shrink-0 cursor-pointer"
                   aria-label="Notifications"
                 >
                   <Bell className="w-4 h-4" />
                   {unreadNotificationCount > 0 && (
-                    <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#B91C1C] text-white text-[10px] font-mono font-bold flex items-center justify-center tabular-nums">
+                    <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#9E5660] text-white text-[10px] font-mono font-bold flex items-center justify-center tabular-nums">
                       {unreadNotificationCount > 9 ? '9+' : unreadNotificationCount}
                     </span>
                   )}
                 </button>
 
                 {notifMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white border border-[#E2DFD7] rounded-lg shadow-xl z-50 text-[#141413] overflow-hidden">
-                    <div className="px-4 py-2.5 border-b border-[#E2DFD7] flex items-center justify-between bg-[#F7F6F2]">
-                      <span className="text-xs font-semibold">Order &amp; Account Alerts</span>
+                  <div className="absolute right-0 mt-2 w-80 bg-white border border-[#EADFD8] rounded-lg shadow-xl z-50 text-[#191615] overflow-hidden">
+                    <div className="px-4 py-2.5 border-b border-[#EADFD8] flex items-center justify-between bg-[#FAF8F4]">
+                      <span className="text-xs font-semibold">Alerts &amp; Updates</span>
                       {unreadNotificationCount > 0 && (
                         <button
                           type="button"
                           onClick={() => markCustomerNotificationsRead()}
-                          className="text-[11px] font-medium text-[#164E3F] hover:underline cursor-pointer"
+                          className="text-[11px] font-medium text-[#9E5660] hover:underline cursor-pointer"
                         >
                           Mark all read
                         </button>
                       )}
                     </div>
-                    <div className="max-h-72 overflow-y-auto divide-y divide-[#EFECE6]">
+                    <div className="max-h-72 overflow-y-auto divide-y divide-[#F4EDE2]">
                       {customerNotifications.length === 0 ? (
-                        <p className="px-4 py-6 text-xs text-center text-[#63615C]">
-                          No notifications yet. Order updates and alerts will appear here.
+                        <p className="px-4 py-6 text-xs text-center text-[#665E5B]">
+                          No alerts yet. Order updates will appear here.
                         </p>
                       ) : (
                         customerNotifications.slice(0, 12).map((n) => (
@@ -387,27 +396,32 @@ export const Header: React.FC = () => {
                             onClick={() => {
                               markCustomerNotificationsRead(n.id);
                               setNotifMenuOpen(false);
-                              if (n.linkId && (n.category === 'order' || n.category === 'payment' || n.category === 'return')) {
+                              if (
+                                n.linkId &&
+                                (n.category === 'order' ||
+                                  n.category === 'payment' ||
+                                  n.category === 'return')
+                              ) {
                                 setLastOrderId(n.linkId);
                                 setTrackingModalOpen(true);
                               }
                             }}
-                            className={`w-full text-left px-4 py-3 hover:bg-[#F7F6F2] transition-colors cursor-pointer ${
-                              !n.isRead ? 'bg-[#ECF4F1]/50' : ''
+                            className={`w-full text-left px-4 py-3 hover:bg-[#FAF8F4] transition-colors cursor-pointer ${
+                              !n.isRead ? 'bg-[#F9EEF0]/50' : ''
                             }`}
                           >
                             <div className="flex items-center justify-between gap-2">
-                              <span className="text-xs font-semibold text-[#141413] truncate">
+                              <span className="text-xs font-semibold text-[#191615] truncate">
                                 {n.title}
                               </span>
                               {!n.isRead && (
-                                <span className="w-2 h-2 rounded-full bg-[#164E3F] shrink-0" />
+                                <span className="w-2 h-2 rounded-full bg-[#9E5660] shrink-0" />
                               )}
                             </div>
-                            <p className="text-[11px] text-[#63615C] mt-0.5 line-clamp-2">
+                            <p className="text-[11px] text-[#665E5B] mt-0.5 line-clamp-2">
                               {n.message}
                             </p>
-                            <p className="text-[10px] font-mono text-[#63615C] mt-1">
+                            <p className="text-[10px] font-mono text-[#665E5B] mt-1">
                               {new Date(n.createdAt).toLocaleDateString()}
                             </p>
                           </button>
@@ -425,12 +439,12 @@ export const Header: React.FC = () => {
                 setAuthMode('login');
                 setAuthModalOpen(true);
               }}
-              className="hidden sm:flex items-center gap-1.5 p-2 text-[#9F1239] hover:text-[#7A1C3A] transition-colors relative whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 p-2 text-[#9E5660] hover:text-[#84424C] transition-colors relative whitespace-nowrap shrink-0 cursor-pointer"
               aria-label="Wishlist"
             >
               <Heart className="w-4 h-4" />
               {wishlist.length > 0 && (
-                <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#BE185D] text-white text-[10px] font-mono font-bold flex items-center justify-center tabular-nums">
+                <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#9E5660] text-white text-[10px] font-mono font-bold flex items-center justify-center tabular-nums">
                   {wishlist.length}
                 </span>
               )}
@@ -448,10 +462,10 @@ export const Header: React.FC = () => {
                     setAccountMenuOpen(!accountMenuOpen);
                   }
                 }}
-                className="px-3 py-1.5 bg-[#F7F6F2] hover:bg-[#EFECE6] border border-[#E2DFD7] text-[#141413] rounded-md font-medium text-xs transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+                className="px-3 py-1.5 bg-[#FAF8F4] hover:bg-[#F4EDE2] border border-[#EADFD8] text-[#191615] rounded-md font-medium text-xs transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
                 aria-label="Customer Account"
               >
-                <UserIcon className="w-3.5 h-3.5 text-[#164E3F]" />
+                <UserIcon className="w-3.5 h-3.5 text-[#9E5660]" />
                 <span className="hidden sm:inline">
                   {user ? user.name.split(' ')[0] : 'Sign In'}
                 </span>
@@ -459,10 +473,10 @@ export const Header: React.FC = () => {
               </button>
 
               {accountMenuOpen && user && (
-                <div className="absolute right-0 mt-2 w-56 bg-white border border-[#E2DFD7] rounded-lg shadow-xl py-2 z-50 text-[#141413]">
-                  <div className="px-4 py-2.5 border-b border-[#E2DFD7]">
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-[#EADFD8] rounded-lg shadow-xl py-2 z-50 text-[#191615]">
+                  <div className="px-4 py-2.5 border-b border-[#EADFD8]">
                     <p className="text-xs font-semibold truncate">{user.name}</p>
-                    <p className="text-[11px] text-[#63615C] truncate font-mono">{user.email}</p>
+                    <p className="text-[11px] text-[#665E5B] truncate font-mono">{user.email}</p>
                   </div>
                   {isOwnerOrPartner && (
                     <button
@@ -471,7 +485,7 @@ export const Header: React.FC = () => {
                         setAccountMenuOpen(false);
                         setActiveView(activeView === 'store' ? 'admin' : 'store');
                       }}
-                      className="w-full text-left px-4 py-2 text-xs font-semibold text-[#164E3F] bg-[#ECF4F1] hover:bg-[#DCECE6] transition-colors flex items-center gap-1.5 border-b border-[#E2DFD7] cursor-pointer"
+                      className="w-full text-left px-4 py-2 text-xs font-semibold text-[#9E5660] bg-[#F9EEF0] hover:bg-[#F3DDE1] transition-colors flex items-center gap-1.5 border-b border-[#EADFD8] cursor-pointer"
                     >
                       <Shield className="w-3.5 h-3.5" />
                       <span>{activeView === 'admin' ? 'Back to Store' : 'Admin Dashboard'}</span>
@@ -483,7 +497,7 @@ export const Header: React.FC = () => {
                       setAccountMenuOpen(false);
                       setAuthModalOpen(true);
                     }}
-                    className="w-full text-left px-4 py-2 text-xs hover:bg-[#F7F6F2] transition-colors cursor-pointer"
+                    className="w-full text-left px-4 py-2 text-xs hover:bg-[#FAF8F4] transition-colors cursor-pointer"
                   >
                     My Orders &amp; Account
                   </button>
@@ -493,9 +507,9 @@ export const Header: React.FC = () => {
                       setAccountMenuOpen(false);
                       setTrackingModalOpen(true);
                     }}
-                    className="w-full text-left px-4 py-2 text-xs hover:bg-[#F7F6F2] transition-colors cursor-pointer"
+                    className="w-full text-left px-4 py-2 text-xs hover:bg-[#FAF8F4] transition-colors cursor-pointer"
                   >
-                    Track Live Orders
+                    Track Orders
                   </button>
                   <button
                     type="button"
@@ -515,10 +529,10 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setActiveView(activeView === 'admin' ? 'store' : 'admin')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border border-[#E2DFD7] hover:border-[#141413] text-xs font-medium text-[#141413] rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-              title="Store Owner & Partner Admin Sign In"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border border-[#EADFD8] hover:border-[#9E5660] text-xs font-medium text-[#191615] rounded-md transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              title="Store Admin Sign In"
             >
-              <Shield className="w-3.5 h-3.5 text-[#164E3F]" />
+              <Shield className="w-3.5 h-3.5 text-[#9E5660]" />
               <span>Admin</span>
             </button>
 
@@ -526,10 +540,10 @@ export const Header: React.FC = () => {
             <button
               type="button"
               onClick={() => setCartDrawerOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#164E3F] to-[#0F3A2E] hover:from-[#881337] hover:to-[#6B1030] text-white rounded-md text-xs font-medium transition-all shadow-sm whitespace-nowrap shrink-0 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 bg-[#9E5660] hover:bg-[#84424C] text-white rounded-md text-xs font-medium transition-colors shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
               aria-label="Open Shopping Bag"
             >
-              <ShoppingBag className="w-3.5 h-3.5 text-[#F5D076]" />
+              <ShoppingBag className="w-3.5 h-3.5 text-[#F4EDE2]" />
               <span className="hidden sm:inline">Bag</span>
               <span className="font-mono font-semibold tabular-nums">({cartItemCount})</span>
             </button>
@@ -537,10 +551,10 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Editorial Silhouette Link Row (Desktop) */}
-      <div className="bg-gradient-to-r from-[#FAF6EE] via-[#FDF9F3] to-[#FAF2F5] border-t border-[#E6DFD3] hidden md:block">
+      {/* Editorial Category Link Row (Desktop) */}
+      <div className="bg-[#FAF8F4] border-t border-[#EADFD8] hidden md:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between gap-6 text-xs">
-          <nav className="flex items-center gap-6 overflow-x-auto no-scrollbar font-medium text-[#524E48]">
+          <nav className="flex items-center gap-6 overflow-x-auto no-scrollbar font-medium text-[#665E5B]">
             {[
               "Women's Kurtis",
               'Short Kurtis',
@@ -563,8 +577,8 @@ export const Header: React.FC = () => {
                   }}
                   className={`relative py-2.5 whitespace-nowrap shrink-0 cursor-pointer transition-colors ${
                     active
-                      ? 'text-[#164E3F] font-semibold after:absolute after:left-0 after:right-0 after:bottom-0 after:h-[2px] after:bg-[#9F1239]'
-                      : 'hover:text-[#9F1239]'
+                      ? 'text-[#9E5660] font-semibold after:absolute after:left-0 after:right-0 after:bottom-0 after:h-[2px] after:bg-[#9E5660]'
+                      : 'hover:text-[#191615]'
                   }`}
                 >
                   {cat}
@@ -573,32 +587,24 @@ export const Header: React.FC = () => {
             })}
           </nav>
 
-          <div className="flex items-center gap-3 text-[11px] shrink-0 text-[#63615C]">
+          <div className="flex items-center gap-3 text-[11px] shrink-0 text-[#665E5B]">
             <button
               type="button"
               onClick={() => setLookbookModalOpen(true)}
-              className="text-[#9F1239] hover:text-[#7A1C3A] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
+              className="text-[#9E5660] hover:text-[#84424C] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
             >
-              <Sparkles className="w-3 h-3 text-[#B45309]" />
+              <Sparkles className="w-3 h-3 text-[#B58A4A]" />
               <span>Lookbooks</span>
             </button>
-            <span className="text-[#E2DFD7]">|</span>
+            <span className="text-[#EADFD8]">|</span>
             <button
               type="button"
               onClick={() => setGiftCardModalOpen(true)}
-              className="text-[#164E3F] hover:text-[#0F3A2E] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
+              className="text-[#191615] hover:text-[#9E5660] font-semibold flex items-center gap-1 whitespace-nowrap cursor-pointer transition-colors"
             >
-              <Gift className="w-3 h-3 text-[#9F1239]" />
+              <Gift className="w-3 h-3 text-[#9E5660]" />
               <span>Gift Cards</span>
             </button>
-            <span className="hidden xl:inline text-[#E2DFD7]">|</span>
-            <a
-              href="tel:9310078735"
-              className="hidden xl:flex text-[#164E3F] hover:underline font-semibold items-center gap-1 whitespace-nowrap font-mono"
-            >
-              <Phone className="w-3 h-3" />
-              <span>+91 9310078735</span>
-            </a>
           </div>
         </div>
       </div>
@@ -606,26 +612,18 @@ export const Header: React.FC = () => {
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex">
-          <div className="bg-white w-4/5 max-w-xs h-full p-5 overflow-y-auto space-y-5 text-[#141413]">
-            <div className="flex items-center justify-between border-b border-[#E2DFD7] pb-3">
-              <span className="font-serif font-semibold text-xl tracking-wide text-[#141413]">
+          <div className="bg-white w-4/5 max-w-xs h-full p-5 overflow-y-auto space-y-5 text-[#191615]">
+            <div className="flex items-center justify-between border-b border-[#EADFD8] pb-3">
+              <span className="font-serif font-semibold text-xl tracking-wide text-[#191615]">
                 ZOHRA LUXE
               </span>
-              <button type="button" onClick={() => setMobileMenuOpen(false)} className="cursor-pointer p-1">
-                <X className="w-5 h-5 text-[#63615C]" />
-              </button>
-            </div>
-
-            <div className="p-3.5 bg-[#F7F6F2] border border-[#E2DFD7] rounded-md text-xs space-y-2">
-              <p className="font-semibold text-[#141413]">Wholesale &amp; Bulk Inquiries</p>
-              <p className="text-[11px] text-[#63615C]">Special boutique &amp; retail partner rates:</p>
-              <a
-                href="tel:9310078735"
-                className="w-full py-2 px-3 bg-[#164E3F] text-white font-semibold rounded text-xs flex items-center justify-center gap-1.5 font-mono"
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="cursor-pointer p-1"
               >
-                <Phone className="w-3.5 h-3.5" />
-                <span>Call +91 9310078735</span>
-              </a>
+                <X className="w-5 h-5 text-[#665E5B]" />
+              </button>
             </div>
 
             <div className="space-y-1 text-xs">
@@ -635,7 +633,7 @@ export const Header: React.FC = () => {
                   selectCategory('All');
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-left py-2 px-3 rounded hover:bg-[#F7F6F2] font-semibold text-[#164E3F]"
+                className="w-full text-left py-2 px-3 rounded hover:bg-[#FAF8F4] font-semibold text-[#9E5660]"
               >
                 All Collections
               </button>
@@ -655,21 +653,21 @@ export const Header: React.FC = () => {
                     selectCategory(c);
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full text-left py-2 px-3 rounded hover:bg-[#F7F6F2] text-[#141413]"
+                  className="w-full text-left py-2 px-3 rounded hover:bg-[#FAF8F4] text-[#191615]"
                 >
                   {c}
                 </button>
               ))}
             </div>
 
-            <div className="pt-4 border-t border-[#E2DFD7] space-y-2">
+            <div className="pt-4 border-t border-[#EADFD8] space-y-2">
               <button
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setLookbookModalOpen(true);
                 }}
-                className="w-full py-2.5 px-3 bg-[#FBF6EB] text-[#8E6D3B] border border-[#D4AF6A]/40 rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-3 bg-[#F9EEF0] text-[#9E5660] border border-[#EADFD8] rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>Lookbook &amp; Outfit Builder</span>
@@ -680,9 +678,9 @@ export const Header: React.FC = () => {
                   setMobileMenuOpen(false);
                   setGiftCardModalOpen(true);
                 }}
-                className="w-full py-2.5 px-3 bg-[#F7F6F2] text-[#164E3F] border border-[#E2DFD7] rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-3 bg-[#FAF8F4] text-[#191615] border border-[#EADFD8] rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
               >
-                <Gift className="w-4 h-4" />
+                <Gift className="w-4 h-4 text-[#9E5660]" />
                 <span>Digital Gift Cards</span>
               </button>
               <button
@@ -691,10 +689,10 @@ export const Header: React.FC = () => {
                   setMobileMenuOpen(false);
                   setWholesaleModalOpen(true);
                 }}
-                className="w-full py-2.5 px-3 bg-[#ECF4F1] text-[#164E3F] border border-[#164E3F]/20 rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-3 bg-[#FAF8F4] text-[#191615] border border-[#EADFD8] rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
               >
-                <Building2 className="w-4 h-4" />
-                <span>Wholesale B2B Portal</span>
+                <Building2 className="w-4 h-4 text-[#B58A4A]" />
+                <span>Wholesale Portal</span>
               </button>
               <button
                 type="button"
@@ -702,21 +700,28 @@ export const Header: React.FC = () => {
                   setMobileMenuOpen(false);
                   setTrackingModalOpen(true);
                 }}
-                className="w-full py-2.5 px-3 bg-[#F7F6F2] text-[#141413] border border-[#E2DFD7] rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-3 bg-[#FAF8F4] text-[#191615] border border-[#EADFD8] rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
               >
-                <Truck className="w-4 h-4 text-[#164E3F]" />
+                <Truck className="w-4 h-4 text-[#9E5660]" />
                 <span>Track Order</span>
               </button>
+              <a
+                href="tel:9310078735"
+                className="w-full py-2.5 px-3 bg-[#F4EDE2] text-[#191615] rounded font-medium text-xs flex items-center gap-2 font-mono"
+              >
+                <Phone className="w-4 h-4 text-[#9E5660]" />
+                <span>+91 9310078735</span>
+              </a>
               <button
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setActiveView('admin');
                 }}
-                className="w-full py-2.5 px-3 bg-[#141413] text-white rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
+                className="w-full py-2.5 px-3 bg-[#191615] text-white rounded font-medium text-xs text-left flex items-center gap-2 cursor-pointer"
               >
-                <Shield className="w-4 h-4" />
-                <span>Admin &amp; Partner Sign In</span>
+                <Shield className="w-4 h-4 text-[#E8C5C8]" />
+                <span>Admin Portal</span>
               </button>
             </div>
           </div>
@@ -725,3 +730,4 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+

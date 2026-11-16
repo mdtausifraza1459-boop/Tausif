@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product } from '../types.ts';
 import { useStore, getProductVariantStock } from '../context/StoreContext.tsx';
+import {
+  getEffectiveOriginalPrice,
+  getEffectiveSizePrice,
+  getProductPriceRange,
+  getSizeDiscountPercent,
+  getStartingSize,
+  isSizeAvailableForPurchase,
+} from '../utils/pricing.ts';
 import { Heart, Star, ShoppingBag, Eye, Zap, GitCompare, Share2 } from 'lucide-react';
 
 interface ProductCardProps {
@@ -17,48 +25,59 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     buyNow,
     setQuickViewProduct,
     showToast,
-    getEffectivePrice,
   } = useStore();
-  const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || 'M');
+
+  const [selectedSize, setSelectedSize] = useState<string>(() => getStartingSize(product));
+  const [userSelectedSize, setUserSelectedSize] = useState<boolean>(false);
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
   const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setSelectedSize(getStartingSize(product));
+    setUserSelectedSize(false);
+    setSelectedColorIndex(0);
+    setImageError(false);
+  }, [product.id]);
 
   const isLiked = isInWishlist(product.id);
   const isCompared = isInCompare(product.id);
   const selectedColor = product.colors[selectedColorIndex]?.name || 'Standard';
   const variantAvail = getProductVariantStock(product, selectedSize, selectedColor);
-  const isVariantAvailable = variantAvail > 0 && product.stockQuantity > 0;
+  const isVariantAvailable =
+    isSizeAvailableForPurchase(product, selectedSize, selectedColor) && variantAvail > 0;
 
   const primaryImage =
     product.images[0] || '/src/assets/images/category_kurtis_showcase_1794109164419.jpg';
-  const secondaryImage = product.images[1] || primaryImage;
-  const hasSecondary = secondaryImage !== primaryImage;
 
-  const effectivePrice = getEffectivePrice(product);
-  const hasFlashSale =
-    product.flashSalePrice !== undefined && product.flashSalePrice < product.discountedPrice;
+  const priceRange = getProductPriceRange(product);
+  const effectivePrice = getEffectiveSizePrice(product, selectedSize);
+  const originalPriceForSize = getEffectiveOriginalPrice(product, selectedSize);
+  const effectiveDiscountPercent = getSizeDiscountPercent(originalPriceForSize, effectivePrice);
+  const hasFlashSale = Boolean(
+    product.flashSaleDiscountPercent ||
+      (product.flashSalePrice !== undefined && product.flashSalePrice < product.discountedPrice)
+  );
 
   const highlightLabel =
     product.stockQuantity === 0
-      ? 'SOLD OUT'
+      ? 'Sold Out'
       : hasFlashSale
-      ? 'FLASH SALE'
-      : product.badge ||
-        (product.stockQuantity < 10
-          ? 'LOW STOCK'
-          : product.isBestSeller
-          ? 'BEST SELLER'
-          : product.isNewArrival
-          ? 'NEW ARRIVAL'
-          : undefined);
+      ? 'Flash Sale'
+      : product.isBestSeller
+      ? 'Best Seller'
+      : product.isNewArrival
+      ? 'New'
+      : product.stockQuantity < 8
+      ? 'Limited'
+      : undefined;
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const shareUrl = `${window.location.origin}/?product=${encodeURIComponent(product.id)}`;
     const shareData = {
       title: `${product.name} — Zohra Luxe`,
-      text: `Explore ${product.name} (${product.fabric}) at ₹${product.discountedPrice.toLocaleString()} on Zohra Luxe.`,
+      text: `Explore ${product.name} at ₹${effectivePrice.toLocaleString()} on Zohra Luxe.`,
       url: shareUrl,
     };
     try {
@@ -66,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         await navigator.share(shareData);
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(shareUrl);
-        showToast({ title: 'Product Link Copied', subtitle: product.name, type: 'success' });
+        showToast({ title: 'Link Copied', subtitle: product.name, type: 'success' });
       }
     } catch {
       // ignore cancelled native share
@@ -77,62 +96,45 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <article
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group flex flex-col bg-white rounded-xl overflow-hidden border border-[#E6DFD3] hover:border-[#D4AF6A] hover:-translate-y-1 hover:shadow-lg hover:shadow-[#8E6D3B]/15 transition-all duration-200 relative"
+      className="group flex flex-col bg-white rounded-xl overflow-hidden border border-[#EADFD8] hover:border-[#D4B2B8] hover:-translate-y-0.5 hover:shadow-md hover:shadow-[#9E5660]/10 transition-all duration-200 relative"
     >
-      {/* Editorial 3:4 Portrait Container with Smooth Secondary Crossfade */}
+      {/* 3:4 Portrait Showcase (Single Clean Product Photo) */}
       <div
-        className="relative aspect-[3/4] w-full bg-[#EFECE6] overflow-hidden cursor-pointer"
+        className="relative aspect-[3/4] w-full bg-[#F4EDE2] overflow-hidden cursor-pointer"
         onClick={() => setQuickViewProduct(product)}
       >
         {imageError ? (
-          <div className="absolute inset-0 bg-[#EFECE6] flex flex-col items-center justify-center p-4 text-center">
-            <span className="font-serif text-lg font-medium text-[#141413]">{product.name}</span>
-            <span className="text-xs text-[#63615C] mt-1">{product.category}</span>
+          <div className="absolute inset-0 bg-[#F4EDE2] flex flex-col items-center justify-center p-4 text-center">
+            <span className="font-serif text-lg font-medium text-[#191615]">{product.name}</span>
+            <span className="text-xs text-[#665E5B] mt-1">{product.category}</span>
           </div>
         ) : (
-          <>
-            <img
-              src={primaryImage}
-              alt={product.name}
-              referrerPolicy="no-referrer"
-              onError={() => setImageError(true)}
-              className={`w-full h-full object-cover object-top transition-transform duration-500 ${
-                isHovered ? 'scale-105' : 'scale-100'
-              }`}
-            />
-            {hasSecondary && (
-              <img
-                src={secondaryImage}
-                alt=""
-                aria-hidden="true"
-                referrerPolicy="no-referrer"
-                className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${
-                  isHovered ? 'opacity-100 scale-105' : 'opacity-0'
-                }`}
-              />
-            )}
-          </>
+          <img
+            src={primaryImage}
+            alt={product.name}
+            referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
+            className={`w-full h-full object-cover object-top transition-transform duration-500 ${
+              isHovered ? 'scale-[1.03]' : 'scale-100'
+            }`}
+          />
         )}
 
         {highlightLabel && (
           <span
-            className={`absolute top-2.5 left-2.5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded shadow-sm z-10 pointer-events-none ${
-              highlightLabel === 'SOLD OUT'
+            className={`absolute top-2.5 left-2.5 text-[10px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded z-10 pointer-events-none ${
+              highlightLabel === 'Sold Out'
                 ? 'bg-[#B91C1C] text-white'
-                : highlightLabel === 'FLASH SALE'
-                ? 'bg-gradient-to-r from-[#881337] to-[#BE185D] text-[#F5D076]'
-                : highlightLabel === 'LOW STOCK'
-                ? 'bg-[#D97706] text-white'
-                : highlightLabel === 'BEST SELLER'
-                ? 'bg-gradient-to-r from-[#9F1239] to-[#7A1C3A] text-white'
-                : 'bg-[#164E3F] text-[#F5D076]'
+                : highlightLabel === 'Flash Sale'
+                ? 'bg-[#9E5660] text-white'
+                : 'bg-white/95 text-[#191615] border border-[#EADFD8]'
             }`}
           >
             {highlightLabel}
           </span>
         )}
 
-        {/* Top-right Action Stack: Wishlist, Compare, Share */}
+        {/* Action Rail */}
         <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
           <button
             type="button"
@@ -144,8 +146,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             title={isLiked ? 'Remove from wishlist' : 'Save to wishlist'}
             className={`p-2 rounded-full transition-colors cursor-pointer shadow-xs ${
               isLiked
-                ? 'bg-[#BE185D] text-white'
-                : 'bg-white/95 text-[#9F1239] hover:bg-[#FFF1F5] hover:text-[#BE185D]'
+                ? 'bg-[#9E5660] text-white'
+                : 'bg-white/95 text-[#665E5B] hover:text-[#9E5660]'
             }`}
           >
             <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''}`} />
@@ -158,11 +160,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               toggleCompare(product);
             }}
             aria-label={isCompared ? 'Remove from comparison' : 'Compare product'}
-            title={isCompared ? 'In comparison' : 'Compare garment'}
-            className={`p-2 rounded-full transition-colors cursor-pointer ${
+            title="Compare"
+            className={`p-2 rounded-full transition-colors cursor-pointer shadow-xs ${
               isCompared
-                ? 'bg-[#141413] text-[#D4AF6A]'
-                : 'bg-white/90 text-[#63615C] hover:bg-white hover:text-[#141413]'
+                ? 'bg-[#191615] text-white'
+                : 'bg-white/95 text-[#665E5B] hover:text-[#191615]'
             }`}
           >
             <GitCompare className="w-3.5 h-3.5" />
@@ -172,16 +174,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             type="button"
             onClick={handleShare}
             aria-label="Share product"
-            title="Share product link"
-            className="p-2 rounded-full bg-white/90 text-[#63615C] hover:bg-white hover:text-[#141413] transition-colors cursor-pointer"
+            title="Share"
+            className="p-2 rounded-full bg-white/95 text-[#665E5B] hover:text-[#191615] transition-colors cursor-pointer shadow-xs"
           >
             <Share2 className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Quick View Trigger Overlay */}
+        {/* Quick View Bar */}
         <div
-          className={`absolute inset-x-3 bottom-3 transition-all duration-200 z-10 ${
+          className={`hidden sm:block absolute inset-x-3 bottom-3 transition-all duration-200 z-10 ${
             isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
           }`}
         >
@@ -191,7 +193,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               e.stopPropagation();
               setQuickViewProduct(product);
             }}
-            className="w-full py-2 px-3 bg-white/95 hover:bg-[#141413] hover:text-white text-xs font-medium text-[#141413] rounded-md shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            className="w-full py-2 px-3 bg-white/95 hover:bg-[#191615] hover:text-white text-xs font-medium text-[#191615] rounded-md shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Quick View</span>
@@ -199,14 +201,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* Clean Metadata, Swatches & Variant Ordering Controls */}
-      <div className="p-4 flex flex-col flex-1 justify-between gap-2.5 bg-white">
+      {/* Concise Editorial Product Metadata */}
+      <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between gap-2.5 bg-white">
         <div className="space-y-1">
-          <div className="flex items-center justify-between gap-2 text-[11px] text-[#63615C]">
-            <span className="truncate font-semibold uppercase tracking-wider text-[#164E3F]">
+          <div className="flex items-center justify-between gap-2 text-[11px] text-[#665E5B]">
+            <span className="truncate font-medium uppercase tracking-wider text-[#9E5660]">
               {product.category}
             </span>
-            <span className="inline-flex items-center gap-0.5 text-[#D97706] font-mono font-semibold shrink-0 tabular-nums">
+            <span className="inline-flex items-center gap-0.5 text-[#B58A4A] font-mono font-semibold shrink-0 tabular-nums">
               <span>{product.rating}</span>
               <Star className="w-3 h-3 fill-current" />
             </span>
@@ -214,15 +216,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           <h3
             onClick={() => setQuickViewProduct(product)}
-            className="font-serif text-[17px] font-semibold text-[#141413] hover:text-[#9F1239] transition-colors line-clamp-1 cursor-pointer leading-snug"
+            className="font-serif text-[17px] sm:text-[18px] font-semibold text-[#191615] hover:text-[#9E5660] transition-colors line-clamp-1 cursor-pointer leading-snug"
             title={product.name}
           >
             {product.name}
           </h3>
-          <p className="text-[11px] text-[#63615C] truncate">{product.fabric}</p>
+          <p className="text-[11px] text-[#665E5B] truncate">{product.fabric}</p>
         </div>
 
-        {/* Colour Swatch Row */}
+        {/* Colour Swatches */}
         {product.colors && product.colors.length > 0 && (
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5">
@@ -233,22 +235,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   onClick={() => setSelectedColorIndex(idx)}
                   title={col.name}
                   aria-label={`Select color ${col.name}`}
-                  className={`w-4 h-4 rounded-full border transition-transform cursor-pointer ${
+                  className={`w-3.5 h-3.5 rounded-full border transition-transform cursor-pointer ${
                     selectedColorIndex === idx
-                      ? 'ring-2 ring-offset-1 ring-[#9F1239] scale-110 border-[#9F1239]'
-                      : 'border-[#E2DFD7] hover:scale-105'
+                      ? 'ring-2 ring-offset-1 ring-[#9E5660] scale-110 border-[#9E5660]'
+                      : 'border-[#EADFD8] hover:scale-105'
                   }`}
                   style={{ backgroundColor: col.hex }}
                 />
               ))}
-              <span className="text-[11px] text-[#63615C] ml-1 truncate max-w-[95px]">
+              <span className="text-[11px] text-[#665E5B] ml-1 truncate max-w-[90px]">
                 {selectedColor}
               </span>
             </div>
             {(variantAvail === 0 || variantAvail <= 5) && (
               <span
-                className={`text-[10px] font-mono font-semibold shrink-0 tabular-nums ${
-                  variantAvail === 0 ? 'text-[#B91C1C]' : 'text-[#D97706]'
+                className={`text-[10px] font-mono font-medium shrink-0 tabular-nums ${
+                  variantAvail === 0 ? 'text-[#B91C1C]' : 'text-[#B58A4A]'
                 }`}
               >
                 {variantAvail === 0 ? 'Out' : `${variantAvail} left`}
@@ -257,41 +259,58 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
 
-        {/* Tabular Pricing Row */}
-        <div className="flex items-baseline gap-2 flex-wrap pt-2 border-t border-[#EFECE6]">
-          <span className="text-base font-bold font-mono text-[#164E3F] tabular-nums">
-            ₹{effectivePrice.toLocaleString()}
-          </span>
-          {product.originalPrice > effectivePrice && (
-            <>
-              <span className="text-xs text-[#63615C] line-through font-mono tabular-nums">
-                ₹{(hasFlashSale ? product.discountedPrice : product.originalPrice).toLocaleString()}
-              </span>
-              <span className="text-[11px] font-bold text-[#BE185D] tabular-nums">
-                {hasFlashSale
-                  ? `${Math.round(((product.originalPrice - effectivePrice) / product.originalPrice) * 100)}% OFF`
-                  : `${product.discountPercent}% OFF`}
-              </span>
-            </>
+        {/* Dynamic Size-Aware Price Display */}
+        <div className="pt-2 border-t border-[#F4EDE2] space-y-1">
+          <div className="flex items-baseline gap-2 flex-wrap">
+            <span className="text-base font-bold font-mono text-[#191615] tabular-nums">
+              ₹{effectivePrice.toLocaleString()}
+            </span>
+            {originalPriceForSize > effectivePrice && (
+              <>
+                <span className="text-xs text-[#665E5B] line-through font-mono tabular-nums">
+                  ₹{originalPriceForSize.toLocaleString()}
+                </span>
+                <span className="text-[11px] font-semibold text-[#9E5660] tabular-nums">
+                  {effectiveDiscountPercent}% OFF
+                </span>
+              </>
+            )}
+            <span className="ml-auto text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-[#F9EEF0] text-[#9E5660]">
+              {selectedSize}
+            </span>
+          </div>
+          {priceRange.hasRange && !userSelectedSize && (
+            <p className="text-[10px] font-mono text-[#665E5B] tabular-nums">
+              By size: ₹{priceRange.min.toLocaleString()} – ₹{priceRange.max.toLocaleString()}
+            </p>
           )}
         </div>
 
-        {/* Inline Size Selection */}
+        {/* Size Buttons with Live Price & Unavailability Handling */}
         <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
           {product.sizes.map((sz) => {
-            const avail = getProductVariantStock(product, sz, selectedColor);
+            const available = isSizeAvailableForPurchase(product, sz, selectedColor);
+            const szStock = getProductVariantStock(product, sz, selectedColor);
             return (
               <button
                 key={sz}
                 type="button"
-                onClick={() => setSelectedSize(sz)}
-                title={avail > 0 ? `${avail} in stock` : 'Out of stock'}
-                className={`text-[11px] font-medium px-2 py-0.5 rounded border transition-colors cursor-pointer shrink-0 ${
-                  selectedSize === sz
-                    ? 'border-[#141413] bg-[#141413] text-white'
-                    : avail === 0
-                    ? 'border-[#E2DFD7] bg-[#F7F6F2] text-[#A8A59E] line-through'
-                    : 'border-[#E2DFD7] bg-white text-[#141413] hover:border-[#141413]'
+                disabled={!available}
+                onClick={() => {
+                  setSelectedSize(sz);
+                  setUserSelectedSize(true);
+                }}
+                title={
+                  available
+                    ? `${sz} · ₹${getEffectiveSizePrice(product, sz).toLocaleString()} (${szStock} in stock)`
+                    : `${sz} unavailable`
+                }
+                className={`text-[11px] font-medium px-2 py-1 rounded border transition-colors shrink-0 ${
+                  !available
+                    ? 'border-[#EADFD8] bg-[#FAF8F4] text-[#B8AFA8] line-through cursor-not-allowed opacity-70'
+                    : selectedSize === sz
+                    ? 'border-[#9E5660] bg-[#9E5660] text-white cursor-pointer'
+                    : 'border-[#EADFD8] bg-white text-[#191615] hover:border-[#9E5660] cursor-pointer'
                 }`}
               >
                 {sz}
@@ -300,7 +319,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           })}
         </div>
 
-        {/* Dual Ordering CTAs */}
+        {/* CTAs */}
         <div className="grid grid-cols-2 gap-2 pt-0.5">
           <button
             type="button"
@@ -310,10 +329,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }
             }}
             disabled={!isVariantAvailable}
-            className={`py-2 px-2.5 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer border whitespace-nowrap ${
+            className={`py-2 px-2.5 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1.5 border whitespace-nowrap ${
               !isVariantAvailable
-                ? 'bg-[#EFECE6] text-[#63615C] border-[#E2DFD7] cursor-not-allowed'
-                : 'bg-[#FFFDF9] hover:bg-[#FFF1F5] text-[#881337] border-[#FBCFE8] hover:border-[#9F1239]'
+                ? 'bg-[#F4EDE2] text-[#665E5B] border-[#EADFD8] cursor-not-allowed'
+                : 'bg-white hover:bg-[#F9EEF0] text-[#191615] hover:text-[#9E5660] border-[#EADFD8] hover:border-[#9E5660] cursor-pointer'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
@@ -328,14 +347,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }
             }}
             disabled={!isVariantAvailable}
-            className={`py-2 px-2.5 rounded-md text-xs font-medium transition-all flex items-center justify-center gap-1 cursor-pointer whitespace-nowrap ${
+            className={`py-2 px-2.5 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1 whitespace-nowrap ${
               !isVariantAvailable
-                ? 'bg-[#EFECE6] text-[#63615C] cursor-not-allowed'
-                : 'bg-gradient-to-r from-[#164E3F] to-[#0F3A2E] hover:from-[#881337] hover:to-[#9F1239] text-white shadow-xs'
+                ? 'bg-[#F4EDE2] text-[#665E5B] cursor-not-allowed'
+                : 'bg-[#9E5660] hover:bg-[#84424C] text-white cursor-pointer'
             }`}
           >
-            <Zap className="w-3.5 h-3.5 text-[#F5D076]" />
-            <span>{!isVariantAvailable ? 'Sold Out' : 'Buy Now'}</span>
+            <Zap className="w-3.5 h-3.5" />
+            <span>{!isVariantAvailable ? 'Unavailable' : 'Buy Now'}</span>
           </button>
         </div>
       </div>

@@ -4,8 +4,8 @@
       "id": "zk-101",
       "name": "Gulmohar Rose-Gold Embroidered Anarkali Set",
       "category": "Anarkali Kurtis",
-      "originalPrice": 4999,
-      "discountedPrice": 3299,
+      "originalPrice": 4699,
+      "discountedPrice": 3099,
       "discountPercent": 34,
       "sizes": [
         "XS",
@@ -40,8 +40,7 @@
       "rating": 4.9,
       "reviewCount": 42,
       "images": [
-        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
-        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
       ],
       "details": {
         "neckline": "Sweetheart Neck with Zardozi Work",
@@ -75,14 +74,104 @@
         "XXL::Rose Gold": 2
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "XS": {
+          "originalPrice": 4699,
+          "discountedPrice": 3099,
+          "available": true
+        },
+        "S": {
+          "originalPrice": 4849,
+          "discountedPrice": 3199,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 4999,
+          "discountedPrice": 3299,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 5149,
+          "discountedPrice": 3399,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 5299,
+          "discountedPrice": 3499,
+          "available": true
+        },
+        "XXL": {
+          "originalPrice": 5449,
+          "discountedPrice": 3599,
+          "available": true
+        }
+      },
+      "occasion": "Wedding",
+      "accessoryType": "anarkali",
+      "measurements": {
+        "XS": {
+          "bustIn": 34,
+          "waistIn": 28,
+          "hipIn": 37,
+          "lengthIn": 44
+        },
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        },
+        "XXL": {
+          "bustIn": 44,
+          "waistIn": 38,
+          "hipIn": 47,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Benaras & Jaipur Artisan Looms",
+        "weave": "Pure Chanderi Silk & Organza",
+        "washMethod": "Dry clean only for first 3 washes; spot clean gently with cold water.",
+        "ironing": "Low-heat steam iron inside out with a protective muslin cloth.",
+        "storage": "Store folded inside breathable unbleached muslin bags away from direct sunlight."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-108",
+        "zk-102"
+      ],
+      "stylingNotes": {
+        "jewellery": "Antique gold chandbalis or kundan choker",
+        "footwear": "Embroidered zari juttis or champagne block heels",
+        "bag": "Potli clutch with pearl & brass tassels",
+        "dupatta": "Pair with a Katan Zari or sheer organza scalloped dupatta"
+      }
     },
     {
       "id": "zk-102",
       "name": "Parijat Sage Mint Straight-Cut Silk Kurti",
       "category": "Straight Cut Kurtis",
-      "originalPrice": 3499,
-      "discountedPrice": 2199,
+      "originalPrice": 3339,
+      "discountedPrice": 2099,
       "discountPercent": 37,
       "sizes": [
         "XS",
@@ -116,8 +205,7 @@
       "rating": 4.8,
       "reviewCount": 31,
       "images": [
-        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
-        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
       ],
       "details": {
         "neckline": "Split Mandarin V-Neck",
@@ -148,15 +236,94 @@
         "XL::Almond Beige": 3
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "XS": {
+          "originalPrice": 3339,
+          "discountedPrice": 2099,
+          "available": true
+        },
+        "S": {
+          "originalPrice": 3419,
+          "discountedPrice": 2149,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 3499,
+          "discountedPrice": 2199,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 3579,
+          "discountedPrice": 2249,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 3659,
+          "discountedPrice": 2299,
+          "available": true
+        }
+      },
+      "occasion": "Office",
+      "accessoryType": "kurti",
+      "measurements": {
+        "XS": {
+          "bustIn": 34,
+          "waistIn": 28,
+          "hipIn": 37,
+          "lengthIn": 44
+        },
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Benaras & Jaipur Artisan Looms",
+        "weave": "Raw Silk Blend",
+        "washMethod": "Dry clean only for first 3 washes; spot clean gently with cold water.",
+        "ironing": "Low-heat steam iron inside out with a protective muslin cloth.",
+        "storage": "Store folded inside breathable unbleached muslin bags away from direct sunlight."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-104",
+        "zk-107"
+      ],
+      "stylingNotes": {
+        "jewellery": "Oxidised silver jhumkas or minimalist pearl studs",
+        "footwear": "Handcrafted tan leather kolhapuris or nude mules",
+        "bag": "Structured canvas & leather sling tote",
+        "dupatta": "Style solo or drape a lightweight cotton kota dupatta"
+      }
     },
     {
       "id": "zk-103",
       "name": "Noorani Wine Silk Flared Festive Anarkali",
       "category": "Festive Wear",
-      "originalPrice": 6499,
-      "discountedPrice": 4299,
-      "discountPercent": 33,
+      "originalPrice": 6349,
+      "discountedPrice": 4199,
+      "discountPercent": 34,
       "sizes": [
         "S",
         "M",
@@ -189,8 +356,7 @@
       "rating": 5,
       "reviewCount": 56,
       "images": [
-        "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
-        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
       ],
       "details": {
         "neckline": "Round Neck with Keyhole Detail",
@@ -221,15 +387,94 @@
         "XXL::Emerald Green": 1
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "S": {
+          "originalPrice": 6349,
+          "discountedPrice": 4199,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 6499,
+          "discountedPrice": 4299,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 6649,
+          "discountedPrice": 4399,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 6799,
+          "discountedPrice": 4499,
+          "available": true
+        },
+        "XXL": {
+          "originalPrice": 6949,
+          "discountedPrice": 4599,
+          "available": true
+        }
+      },
+      "occasion": "Festive",
+      "accessoryType": "kurti",
+      "measurements": {
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        },
+        "XXL": {
+          "bustIn": 44,
+          "waistIn": 38,
+          "hipIn": 47,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Benaras & Jaipur Artisan Looms",
+        "weave": "Heavy Art Silk & Brocade",
+        "washMethod": "Dry clean only for first 3 washes; spot clean gently with cold water.",
+        "ironing": "Low-heat steam iron inside out with a protective muslin cloth.",
+        "storage": "Store folded inside breathable unbleached muslin bags away from direct sunlight."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-106",
+        "zk-101"
+      ],
+      "stylingNotes": {
+        "jewellery": "Antique gold chandbalis or kundan choker",
+        "footwear": "Embroidered zari juttis or champagne block heels",
+        "bag": "Potli clutch with pearl & brass tassels",
+        "dupatta": "Pair with a Katan Zari or sheer organza scalloped dupatta"
+      }
     },
     {
       "id": "zk-104",
       "name": "Lilac Whisper Embroidered Pret Co-ord Set",
       "category": "Co-ord Sets",
-      "originalPrice": 3899,
-      "discountedPrice": 2499,
-      "discountPercent": 35,
+      "originalPrice": 3739,
+      "discountedPrice": 2399,
+      "discountPercent": 36,
       "sizes": [
         "XS",
         "S",
@@ -262,8 +507,7 @@
       "rating": 4.7,
       "reviewCount": 19,
       "images": [
-        "/src/assets/images/category_coord_tunics_1794109164576.jpg",
-        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
       ],
       "details": {
         "neckline": "Notched Collar Yoke",
@@ -294,14 +538,92 @@
         "XL::Vanilla Cream": 2
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "XS": {
+          "originalPrice": 3739,
+          "discountedPrice": 2399,
+          "available": true
+        },
+        "S": {
+          "originalPrice": 3819,
+          "discountedPrice": 2449,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 3899,
+          "discountedPrice": 2499,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 3979,
+          "discountedPrice": 2549,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 4059,
+          "discountedPrice": 2599,
+          "available": true
+        }
+      },
+      "occasion": "Party",
+      "accessoryType": "coord",
+      "measurements": {
+        "XS": {
+          "bustIn": 34,
+          "waistIn": 28,
+          "hipIn": 37,
+          "lengthIn": 44
+        },
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Jaipur & Sanganer Handloom Clusters",
+        "weave": "Fine Cotton Modal Slub",
+        "washMethod": "Gentle cold hand wash separately using mild pH-neutral liquid detergent.",
+        "ironing": "Medium steam iron while slightly damp inside out.",
+        "storage": "Hang on padded wooden hangers or fold neatly in a dry wardrobe."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-107"
+      ],
+      "stylingNotes": {
+        "jewellery": "Antique gold chandbalis or kundan choker",
+        "footwear": "Embroidered zari juttis or champagne block heels",
+        "bag": "Potli clutch with pearl & brass tassels",
+        "dupatta": "Pair with a Katan Zari or sheer organza scalloped dupatta"
+      }
     },
     {
       "id": "zk-105",
       "name": "Chandni Handloom Cotton Short Kurti",
       "category": "Short Kurtis",
-      "originalPrice": 2199,
-      "discountedPrice": 1399,
+      "originalPrice": 2039,
+      "discountedPrice": 1299,
       "discountPercent": 36,
       "sizes": [
         "XS",
@@ -336,8 +658,7 @@
       "rating": 4.8,
       "reviewCount": 38,
       "images": [
-        "/src/assets/images/category_coord_tunics_1794109164576.jpg",
-        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
       ],
       "details": {
         "neckline": "Mandarin Collar with Placket",
@@ -371,15 +692,105 @@
         "XXL::Sky Mist": 3
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "XS": {
+          "originalPrice": 2039,
+          "discountedPrice": 1299,
+          "available": true
+        },
+        "S": {
+          "originalPrice": 2119,
+          "discountedPrice": 1349,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 2199,
+          "discountedPrice": 1399,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 2279,
+          "discountedPrice": 1449,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 2359,
+          "discountedPrice": 1499,
+          "available": true
+        },
+        "XXL": {
+          "originalPrice": 2439,
+          "discountedPrice": 1549,
+          "available": true
+        }
+      },
+      "occasion": "Daily Wear",
+      "accessoryType": "kurti",
+      "measurements": {
+        "XS": {
+          "bustIn": 34,
+          "waistIn": 28,
+          "hipIn": 37,
+          "lengthIn": 44
+        },
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        },
+        "XXL": {
+          "bustIn": 44,
+          "waistIn": 38,
+          "hipIn": 47,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Jaipur & Sanganer Handloom Clusters",
+        "weave": "100% Breathable Handloom Mulmul",
+        "washMethod": "Gentle cold hand wash separately using mild pH-neutral liquid detergent.",
+        "ironing": "Medium steam iron while slightly damp inside out.",
+        "storage": "Hang on padded wooden hangers or fold neatly in a dry wardrobe."
+      },
+      "completeTheLookIds": [
+        "zk-104",
+        "zk-107",
+        "zk-102"
+      ],
+      "stylingNotes": {
+        "jewellery": "Oxidised silver jhumkas or minimalist pearl studs",
+        "footwear": "Handcrafted tan leather kolhapuris or nude mules",
+        "bag": "Structured canvas & leather sling tote",
+        "dupatta": "Style solo or drape a lightweight cotton kota dupatta"
+      }
     },
     {
       "id": "zk-106",
       "name": "Kashmiri Tilla A-Line Long Kurti",
       "category": "Long Kurtis",
-      "originalPrice": 4299,
-      "discountedPrice": 2899,
-      "discountPercent": 32,
+      "originalPrice": 4149,
+      "discountedPrice": 2799,
+      "discountPercent": 33,
       "sizes": [
         "S",
         "M",
@@ -411,8 +822,7 @@
       "rating": 4.9,
       "reviewCount": 27,
       "images": [
-        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
-        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
       ],
       "details": {
         "neckline": "Round Neck with Placket Slit",
@@ -440,14 +850,82 @@
         "XL::Emerald Mist": 2
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "S": {
+          "originalPrice": 4149,
+          "discountedPrice": 2799,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 4299,
+          "discountedPrice": 2899,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 4449,
+          "discountedPrice": 2999,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 4599,
+          "discountedPrice": 3099,
+          "available": true
+        }
+      },
+      "occasion": "Eid",
+      "accessoryType": "kurti",
+      "measurements": {
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Benaras & Jaipur Artisan Looms",
+        "weave": "Georgette with Silver Tilla Work",
+        "washMethod": "Dry clean only for first 3 washes; spot clean gently with cold water.",
+        "ironing": "Low-heat steam iron inside out with a protective muslin cloth.",
+        "storage": "Store folded inside breathable unbleached muslin bags away from direct sunlight."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-104",
+        "zk-107"
+      ],
+      "stylingNotes": {
+        "jewellery": "Antique gold chandbalis or kundan choker",
+        "footwear": "Embroidered zari juttis or champagne block heels",
+        "bag": "Potli clutch with pearl & brass tassels",
+        "dupatta": "Pair with a Katan Zari or sheer organza scalloped dupatta"
+      }
     },
     {
       "id": "zk-107",
       "name": "Sanganeri Handblock Floral Printed Kurti",
       "category": "Printed Kurtis",
-      "originalPrice": 2499,
-      "discountedPrice": 1599,
+      "originalPrice": 2339,
+      "discountedPrice": 1499,
       "discountPercent": 36,
       "sizes": [
         "XS",
@@ -482,8 +960,7 @@
       "rating": 4.8,
       "reviewCount": 45,
       "images": [
-        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
-        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
+        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
       ],
       "details": {
         "neckline": "Round Neck with Potli Buttons",
@@ -517,14 +994,103 @@
         "XXL::Terracotta": 2
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "XS": {
+          "originalPrice": 2339,
+          "discountedPrice": 1499,
+          "available": true
+        },
+        "S": {
+          "originalPrice": 2419,
+          "discountedPrice": 1549,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 2499,
+          "discountedPrice": 1599,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 2579,
+          "discountedPrice": 1649,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 2659,
+          "discountedPrice": 1699,
+          "available": true
+        },
+        "XXL": {
+          "originalPrice": 2729,
+          "discountedPrice": 1749,
+          "available": true
+        }
+      },
+      "occasion": "Casual",
+      "accessoryType": "kurti",
+      "measurements": {
+        "XS": {
+          "bustIn": 34,
+          "waistIn": 28,
+          "hipIn": 37,
+          "lengthIn": 44
+        },
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        },
+        "XXL": {
+          "bustIn": 44,
+          "waistIn": 38,
+          "hipIn": 47,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Jaipur & Sanganer Handloom Clusters",
+        "weave": "Organic Cambric Cotton",
+        "washMethod": "Gentle cold hand wash separately using mild pH-neutral liquid detergent.",
+        "ironing": "Medium steam iron while slightly damp inside out.",
+        "storage": "Hang on padded wooden hangers or fold neatly in a dry wardrobe."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-104"
+      ],
+      "stylingNotes": {
+        "jewellery": "Oxidised silver jhumkas or minimalist pearl studs",
+        "footwear": "Handcrafted tan leather kolhapuris or nude mules",
+        "bag": "Structured canvas & leather sling tote",
+        "dupatta": "Style solo or drape a lightweight cotton kota dupatta"
+      }
     },
     {
       "id": "zk-108",
       "name": "Zahra Festive 3-Piece Silk Kurti Set with Dupatta",
       "category": "Kurti Sets",
-      "originalPrice": 5999,
-      "discountedPrice": 3899,
+      "originalPrice": 5849,
+      "discountedPrice": 3799,
       "discountPercent": 35,
       "sizes": [
         "S",
@@ -558,8 +1124,7 @@
       "rating": 4.9,
       "reviewCount": 52,
       "images": [
-        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
-        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
+        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
       ],
       "details": {
         "neckline": "Boat Neck with Gold Zari Resham",
@@ -590,7 +1155,86 @@
         "XXL::Royal Crimson": 2
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "S": {
+          "originalPrice": 5849,
+          "discountedPrice": 3799,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 5999,
+          "discountedPrice": 3899,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 6149,
+          "discountedPrice": 3999,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 6309,
+          "discountedPrice": 4099,
+          "available": true
+        },
+        "XXL": {
+          "originalPrice": 6459,
+          "discountedPrice": 4199,
+          "available": true
+        }
+      },
+      "occasion": "Festive",
+      "accessoryType": "kurti",
+      "measurements": {
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        },
+        "XXL": {
+          "bustIn": 44,
+          "waistIn": 38,
+          "hipIn": 47,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Benaras & Jaipur Artisan Looms",
+        "weave": "Viscose Silk & Tissue Dupatta",
+        "washMethod": "Dry clean only for first 3 washes; spot clean gently with cold water.",
+        "ironing": "Low-heat steam iron inside out with a protective muslin cloth.",
+        "storage": "Store folded inside breathable unbleached muslin bags away from direct sunlight."
+      },
+      "completeTheLookIds": [
+        "zk-109",
+        "zk-104",
+        "zk-107"
+      ],
+      "stylingNotes": {
+        "jewellery": "Antique gold chandbalis or kundan choker",
+        "footwear": "Embroidered zari juttis or champagne block heels",
+        "bag": "Potli clutch with pearl & brass tassels",
+        "dupatta": "Pair with a Katan Zari or sheer organza scalloped dupatta"
+      }
     },
     {
       "id": "zk-109",
@@ -627,8 +1271,7 @@
       "rating": 5,
       "reviewCount": 64,
       "images": [
-        "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
-        "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg"
+        "/src/assets/images/category_anarkali_festive_1794109164992.jpg"
       ],
       "details": {
         "neckline": "N/A",
@@ -647,15 +1290,50 @@
         "Free Size (2.5m)::Bottle Green": 11
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "Free Size (2.5m)": {
+          "originalPrice": 2999,
+          "discountedPrice": 1799,
+          "available": true
+        }
+      },
+      "occasion": "Festive",
+      "accessoryType": "dupatta",
+      "measurements": {
+        "Free Size (2.5m)": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Benaras & Jaipur Artisan Looms",
+        "weave": "Katan Silk with Pure Gold Zari Weave",
+        "washMethod": "Dry clean only for first 3 washes; spot clean gently with cold water.",
+        "ironing": "Low-heat steam iron inside out with a protective muslin cloth.",
+        "storage": "Store folded inside breathable unbleached muslin bags away from direct sunlight."
+      },
+      "completeTheLookIds": [
+        "zk-101",
+        "zk-103",
+        "zk-108"
+      ],
+      "stylingNotes": {
+        "jewellery": "Antique gold chandbalis or kundan choker",
+        "footwear": "Embroidered zari juttis or champagne block heels",
+        "bag": "Potli clutch with pearl & brass tassels",
+        "dupatta": "Pair with a Katan Zari or sheer organza scalloped dupatta"
+      }
     },
     {
       "id": "zk-110",
       "name": "Breeze Cotton Mulmul Tunic with Lace Trims",
       "category": "Women's Tunics",
-      "originalPrice": 2299,
-      "discountedPrice": 1499,
-      "discountPercent": 34,
+      "originalPrice": 2149,
+      "discountedPrice": 1399,
+      "discountPercent": 35,
       "sizes": [
         "XS",
         "S",
@@ -688,8 +1366,7 @@
       "rating": 4.7,
       "reviewCount": 22,
       "images": [
-        "/src/assets/images/category_coord_tunics_1794109164576.jpg",
-        "/src/assets/images/category_kurtis_showcase_1794109164419.jpg"
+        "/src/assets/images/category_coord_tunics_1794109164576.jpg"
       ],
       "details": {
         "neckline": "V-Neck with Schiffli Lace Trim",
@@ -720,7 +1397,86 @@
         "XL::Dusty Mint": 2
       },
       "videos": [],
-      "lowStockThreshold": 10
+      "lowStockThreshold": 10,
+      "sizePricing": {
+        "XS": {
+          "originalPrice": 2149,
+          "discountedPrice": 1399,
+          "available": true
+        },
+        "S": {
+          "originalPrice": 2219,
+          "discountedPrice": 1449,
+          "available": true
+        },
+        "M": {
+          "originalPrice": 2299,
+          "discountedPrice": 1499,
+          "available": true
+        },
+        "L": {
+          "originalPrice": 2379,
+          "discountedPrice": 1549,
+          "available": true
+        },
+        "XL": {
+          "originalPrice": 2449,
+          "discountedPrice": 1599,
+          "available": true
+        }
+      },
+      "occasion": "Casual",
+      "accessoryType": "tunic",
+      "measurements": {
+        "XS": {
+          "bustIn": 34,
+          "waistIn": 28,
+          "hipIn": 37,
+          "lengthIn": 44
+        },
+        "S": {
+          "bustIn": 36,
+          "waistIn": 30,
+          "hipIn": 39,
+          "lengthIn": 45
+        },
+        "M": {
+          "bustIn": 38,
+          "waistIn": 32,
+          "hipIn": 41,
+          "lengthIn": 46
+        },
+        "L": {
+          "bustIn": 40,
+          "waistIn": 34,
+          "hipIn": 43,
+          "lengthIn": 46
+        },
+        "XL": {
+          "bustIn": 42,
+          "waistIn": 36,
+          "hipIn": 45,
+          "lengthIn": 47
+        }
+      },
+      "fabricCareGuide": {
+        "origin": "Jaipur & Sanganer Handloom Clusters",
+        "weave": "100% Organic Mulmul Cotton",
+        "washMethod": "Gentle cold hand wash separately using mild pH-neutral liquid detergent.",
+        "ironing": "Medium steam iron while slightly damp inside out.",
+        "storage": "Hang on padded wooden hangers or fold neatly in a dry wardrobe."
+      },
+      "completeTheLookIds": [
+        "zk-104",
+        "zk-107",
+        "zk-102"
+      ],
+      "stylingNotes": {
+        "jewellery": "Oxidised silver jhumkas or minimalist pearl studs",
+        "footwear": "Handcrafted tan leather kolhapuris or nude mules",
+        "bag": "Structured canvas & leather sling tote",
+        "dupatta": "Style solo or drape a lightweight cotton kota dupatta"
+      }
     }
   ],
   "categories": [
@@ -1048,7 +1804,7 @@
       "name": "Super Admin (Website Owner)",
       "email": "mdtausifraza1459@gmail.com",
       "role": "admin",
-      "isSuperAdmin": true,
+      "isSuperAdmin": false,
       "status": "active",
       "addresses": [],
       "wishlist": [],
@@ -1058,8 +1814,12 @@
       "loyaltyHistory": [],
       "stockAlerts": [],
       "priceDropAlerts": {},
-      "adminRole": "primary_owner",
-      "passwordHash": "scrypt$875e1eda6ec403b652fb0d6e2f474a8b$a07170727032ab4aa6f700af9eedb427a4f10dd2bee9e53ebb2bbfdbedc5609f259ea18e2416e96521b84dab4ef527c88efaeabac05a777963cd42c9669b75f6"
+      "adminRole": "store_partner",
+      "passwordHash": "scrypt$875e1eda6ec403b652fb0d6e2f474a8b$a07170727032ab4aa6f700af9eedb427a4f10dd2bee9e53ebb2bbfdbedc5609f259ea18e2416e96521b84dab4ef527c88efaeabac05a777963cd42c9669b75f6",
+      "abandonedCartConsent": false,
+      "marketingConsent": false,
+      "recentlyViewedIds": [],
+      "savedCart": []
     },
     {
       "id": "user-customer-1",
@@ -1090,7 +1850,11 @@
       "loyaltyPoints": 0,
       "loyaltyHistory": [],
       "stockAlerts": [],
-      "priceDropAlerts": {}
+      "priceDropAlerts": {},
+      "abandonedCartConsent": false,
+      "marketingConsent": false,
+      "recentlyViewedIds": [],
+      "savedCart": []
     },
     {
       "id": "user-customer-2",
@@ -1121,14 +1885,18 @@
       "loyaltyPoints": 0,
       "loyaltyHistory": [],
       "stockAlerts": [],
-      "priceDropAlerts": {}
+      "priceDropAlerts": {},
+      "abandonedCartConsent": false,
+      "marketingConsent": false,
+      "recentlyViewedIds": [],
+      "savedCart": []
     },
     {
       "id": "user-1794215544631",
       "name": "Md roman",
       "email": "mdromaan91@gmail.com",
       "passwordHash": "f3366c351716140235ae584c046d1e4e4d4835efd87158c77ec80c5691ba61d1",
-      "role": "customer",
+      "role": "admin",
       "status": "active",
       "addresses": [],
       "wishlist": [],
@@ -1137,7 +1905,13 @@
       "loyaltyPoints": 0,
       "loyaltyHistory": [],
       "stockAlerts": [],
-      "priceDropAlerts": {}
+      "priceDropAlerts": {},
+      "abandonedCartConsent": false,
+      "marketingConsent": false,
+      "recentlyViewedIds": [],
+      "savedCart": [],
+      "isSuperAdmin": true,
+      "adminRole": "primary_owner"
     },
     {
       "id": "admin-1794498907959",
@@ -1145,7 +1919,7 @@
       "email": "mdromaan99@gmail.com",
       "phone": "9310078735",
       "passwordHash": "scrypt$5002c1d79cdeaf74083441bf2ef223af$4957c0af5a04e457f074e5233c6f04056b70cf65708011f4730cb14d8e996fd850875dd8b094e08a589aa117aecd2e9164f2145a44f2d8e60e67ca75bbbb74b4",
-      "role": "admin",
+      "role": "customer",
       "isSuperAdmin": false,
       "status": "active",
       "addresses": [],
@@ -1156,7 +1930,11 @@
       "loyaltyHistory": [],
       "stockAlerts": [],
       "priceDropAlerts": {},
-      "adminRole": "store_partner"
+      "abandonedCartConsent": false,
+      "marketingConsent": false,
+      "recentlyViewedIds": [],
+      "savedCart": [],
+      "permissions": []
     }
   ],
   "coupons": [
@@ -1613,6 +2391,20 @@
   "expenses": [],
   "backups": [
     {
+      "id": "bkp-1794838659760-53",
+      "filename": "bkp-1794838659760-53.json",
+      "createdAt": "2026-11-16T14:17:39.760Z",
+      "createdBy": "system@zohraluxe.com",
+      "trigger": "pre_migration",
+      "sizeBytes": 85130,
+      "checksum": "b76bafb36f861e5d3b1c56281b1115472b5c8e92779fa6c9ee3f007e7a7f7ae2",
+      "counts": {
+        "products": 10,
+        "orders": 3,
+        "users": 5
+      }
+    },
+    {
       "id": "bkp-1794638780014-71",
       "filename": "bkp-1794638780014-71.json",
       "createdAt": "2026-11-14T06:46:20.014Z",
@@ -1626,5 +2418,158 @@
         "users": 5
       }
     }
-  ]
+  ],
+  "lookbooks": [
+    {
+      "id": "lb-wedding-mehfil",
+      "title": "The Royal Wedding & Sangeet Edit",
+      "occasion": "Wedding",
+      "subtitle": "Hand-embroidered Chanderi & Katan Silk ensembles styled with heirloom Banarasi weaves.",
+      "editorialNote": "Pair flowing Anarkali silhouettes with a handwoven Katan Zari dupatta and antique kundan jhumkas for effortless evening poise.",
+      "image": "/src/assets/images/category_anarkali_festive_1794109164992.jpg",
+      "productIds": [
+        "zk-101",
+        "zk-108",
+        "zk-109"
+      ],
+      "bundleDiscountPercent": 8,
+      "active": true,
+      "createdAt": "2026-01-10T10:00:00.000Z"
+    },
+    {
+      "id": "lb-eid-crescent",
+      "title": "Crescent Eid & Festive Soirée",
+      "occasion": "Eid",
+      "subtitle": "Rich wine brocade, silver Tilla embroidery, and luminous silk borders crafted for celebration.",
+      "editorialNote": "Designed for candlelit Eid gatherings—balance flared wine silk with delicate silver tilla work and pearl chandbalis.",
+      "image": "/src/assets/images/hero_ethnic_fashion_1794109163430.jpg",
+      "productIds": [
+        "zk-103",
+        "zk-106",
+        "zk-109"
+      ],
+      "bundleDiscountPercent": 8,
+      "active": true,
+      "createdAt": "2026-01-12T10:00:00.000Z"
+    },
+    {
+      "id": "lb-modern-office",
+      "title": "Atelier Boardroom & Office Grace",
+      "occasion": "Office",
+      "subtitle": "Breathable mulmul, Cambric floral prints, and structured straight-cut silk silhouettes.",
+      "editorialNote": "Tailored straight hemlines in sage mint and organic cotton deliver crisp drape from morning meetings to evening dinners.",
+      "image": "/src/assets/images/category_kurtis_showcase_1794109164419.jpg",
+      "productIds": [
+        "zk-102",
+        "zk-107",
+        "zk-110"
+      ],
+      "bundleDiscountPercent": 5,
+      "active": true,
+      "createdAt": "2026-01-14T10:00:00.000Z"
+    },
+    {
+      "id": "lb-everyday-pret",
+      "title": "Effortless Pret & Casual Lounge",
+      "occasion": "Casual",
+      "subtitle": "Airy lilac co-ord sets and handloom short kurtis designed for sunlit afternoons.",
+      "editorialNote": "Style hip-length mulmul kurtis or matching lilac co-ords with kolhapuri flats and minimal silver studs.",
+      "image": "/src/assets/images/category_coord_tunics_1794109164576.jpg",
+      "productIds": [
+        "zk-104",
+        "zk-105",
+        "zk-110"
+      ],
+      "bundleDiscountPercent": 5,
+      "active": true,
+      "createdAt": "2026-01-16T10:00:00.000Z"
+    }
+  ],
+  "flashSales": [],
+  "bundles": [
+    {
+      "id": "bnd-festive-duo",
+      "title": "Complete Ethnic Duo (Anarkali + Silk Dupatta)",
+      "description": "Pair any Anarkali or Kurti Set with the Banarasi Zari Silk Dupatta to unlock ₹350 instant combo savings.",
+      "requiredProductIds": [
+        "zk-101",
+        "zk-109"
+      ],
+      "minItems": 2,
+      "discountType": "fixed",
+      "discountValue": 350,
+      "active": true,
+      "createdAt": "2026-01-15T10:00:00.000Z"
+    },
+    {
+      "id": "bnd-wardrobe-trio",
+      "title": "Curated Wardrobe Trio (3+ Styles)",
+      "description": "Enjoy 7% combo savings automatically when styling 3 or more Zohra Luxe pieces together.",
+      "requiredProductIds": [],
+      "minItems": 3,
+      "discountType": "percentage",
+      "discountValue": 7,
+      "active": true,
+      "createdAt": "2026-01-16T10:00:00.000Z"
+    }
+  ],
+  "giftCards": [],
+  "vipTiers": [
+    {
+      "id": "tier-pearl",
+      "name": "Pearl Member",
+      "minLifetimeSpend": 0,
+      "minOrders": 0,
+      "discountPercent": 0,
+      "freeShippingAlways": false,
+      "pointsMultiplier": 1,
+      "earlyAccessFlashSales": false,
+      "badgeColor": "#63615C",
+      "perks": [
+        "Earn 1 point per ₹100 spent",
+        "Saved wishlist & multi-address book",
+        "Early lookbook previews"
+      ]
+    },
+    {
+      "id": "tier-emerald",
+      "name": "Emerald Circle",
+      "minLifetimeSpend": 8000,
+      "minOrders": 2,
+      "discountPercent": 5,
+      "freeShippingAlways": true,
+      "pointsMultiplier": 1.5,
+      "earlyAccessFlashSales": true,
+      "badgeColor": "#164E3F",
+      "perks": [
+        "Extra 5% member privilege at checkout",
+        "Complimentary Express Shipping on every order",
+        "1.5x Loyalty Points multiplier",
+        "2-hour early access to Flash Sales"
+      ]
+    },
+    {
+      "id": "tier-royal",
+      "name": "Royal Zohra VIP",
+      "minLifetimeSpend": 20000,
+      "minOrders": 4,
+      "discountPercent": 10,
+      "freeShippingAlways": true,
+      "pointsMultiplier": 2,
+      "earlyAccessFlashSales": true,
+      "badgeColor": "#8E6D3B",
+      "perks": [
+        "Extra 10% Royal VIP privilege at checkout",
+        "Complimentary Express Shipping on every order",
+        "2x Loyalty Points multiplier",
+        "Priority Stylist Escalation & Flash Sale early access"
+      ]
+    }
+  ],
+  "campaigns": [],
+  "productQuestions": [],
+  "complaints": [],
+  "abandonedCarts": [],
+  "scheduledReports": [],
+  "adminWidgetPrefs": {}
 }

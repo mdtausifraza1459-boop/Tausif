@@ -35,6 +35,12 @@ export type AdminPermission =
   | 'backups.manage'
   | 'ownership.transfer';
 
+export interface SizePricingEntry {
+  originalPrice?: number;
+  discountedPrice: number;
+  available?: boolean;
+}
+
 export interface ProductColor {
   name: string;
   hex: string;
@@ -54,6 +60,8 @@ export interface Product {
   wholesaleMoq?: number;
   discountPercent: number;
   sizes: string[];
+  /** Individual pricing and availability per size (e.g. XS, S, M, L, XL, XXL) */
+  sizePricing?: Record<string, SizePricingEntry>;
   colors: ProductColor[];
   /** Variant stock keyed as `${size}::${colorName}` */
   variantStock: Record<string, number>;
@@ -102,6 +110,7 @@ export interface Product {
   };
   accessoryType?: 'kurti' | 'anarkali' | 'coord' | 'tunic' | 'dupatta' | 'jewellery' | 'footwear';
   flashSalePrice?: number;
+  flashSaleDiscountPercent?: number;
   flashSaleId?: string;
   flashSaleEndsAt?: string;
   createdAt?: string;

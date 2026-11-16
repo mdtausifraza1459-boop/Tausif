@@ -15,6 +15,10 @@ import {
   VipTierConfig,
   Order,
 } from '../types.ts';
+import {
+  getEffectiveSizePrice,
+  isSizeAvailableForPurchase,
+} from '../utils/pricing.ts';
 
 export interface ToastNotice {
   id: number;
@@ -122,7 +126,7 @@ interface StoreContextType {
   bundles: BundleOffer[];
   vipTiers: VipTierConfig[];
   vipStatus: any | null;
-  getEffectivePrice: (product: Product) => number;
+  getEffectivePrice: (product: Product, size?: string) => number;
   refreshGrowthFeeds: () => Promise<void>;
 
   // Toast notifications
@@ -157,6 +161,7 @@ interface StoreContextType {
   reorderFromOrder: (order: Order) => void;
   removeFromCart: (productId: string, size: string, color: string) => void;
   updateCartQuantity: (productId: string, size: string, color: string, quantity: number) => void;
+  updateCartItemSize: (productId: string, oldSize: string, color: string, newSize: string) => void;
   clearCart: () => void;
   appliedCoupon: { code: string; discountAmount: number; description: string } | null;
   applyCoupon: (code: string) => Promise<{ success: boolean; message: string }>;
@@ -631,6 +636,16 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const addToCart = (product: Product, size: string, color: string, quantity = 1, openDrawer = false) => {
+    if (!isSizeAvailableForPurchase(product, size, color)) {
+      const maxAvailCheck = getProductVariantStock(product, size, color);
+      showToast({
+        title: maxAvailCheck <= 0 ? 'Variant Out of Stock' : 'Size Unavailable',
+        subtitle: `Size ${size} · ${color} is currently unavailable.`,
+        type: 'error',
+      });
+      return;
+    }
+
     const maxAvail = getProductVariantStock(product, size, color);
     if (maxAvail <= 0 || product.stockQuantity <= 0) {
       showToast({
@@ -651,11 +666,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (nextQty > maxAvail) {
           capped = true;
           const updated = [...prev];
-          updated[existingIndex] = { ...updated[existingIndex], quantity: maxAvail };
+          updated[existingIndex] = { ...updated[existingIndex], product, quantity: maxAvail };
           return updated;
         }
         const updated = [...prev];
-        updated[existingIndex] = { ...updated[existingIndex], quantity: nextQty };
+        updated[existingIndex] = { ...updated[existingIndex], product, quantity: nextQty };
         return updated;
       }
       const addQty = Math.min(quantity, maxAvail);
@@ -675,7 +690,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } else {
       showToast({
         title: `Added ${product.name}`,
-        subtitle: `Size ${size} · ${color} · Qty ${quantity}`,
+        subtitle: `Size ${size} · ${color} · ₹${getEffectiveSizePrice(product, size).toLocaleString()}`,
         image: product.images[0],
         type: 'success',
         showBagActions: true,
@@ -684,6 +699,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const buyNow = (product: Product, size: string, color: string, quantity = 1) => {
+    if (!isSizeAvailableForPurchase(product, size, color)) {
+      showToast({
+        title: 'Size Unavailable',
+        subtitle: `Size ${size} · ${color} is currently unavailable.`,
+        type: 'error',
+      });
+      return;
+    }
     const maxAvail = getProductVariantStock(product, size, color);
     if (maxAvail <= 0 || product.stockQuantity <= 0) {
       showToast({
@@ -722,16 +745,46 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
   };
 
+  const updateCartItemSize = (productId: string, oldSize: string, color: string, newSize: string) => {
+    if (oldSize === newSize) return;
+    setCart((prev) => {
+      const idx = prev.findIndex((i) => i.product.id === productId && i.size === oldSize && i.color === color);
+      if (idx === -1) return prev;
+      const target = prev[idx];
+      const latestProduct = products.find((p) => p.id === productId) || target.product;
+      if (!isSizeAvailableForPurchase(latestProduct, newSize, color)) {
+        showToast({
+          title: 'Size Unavailable',
+          subtitle: `Size ${newSize} is currently unavailable for ${latestProduct.name}.`,
+          type: 'error',
+        });
+        return prev;
+      }
+      const maxAvail = Math.max(1, getProductVariantStock(latestProduct, newSize, color));
+      const existingTargetIdx = prev.findIndex(
+        (i, k) => k !== idx && i.product.id === productId && i.size === newSize && i.color === color
+      );
+      if (existingTargetIdx > -1) {
+        const mergedQty = Math.min(maxAvail, prev[existingTargetIdx].quantity + target.quantity);
+        return prev
+          .map((item, k) => (k === existingTargetIdx ? { ...item, product: latestProduct, quantity: mergedQty } : item))
+          .filter((_, k) => k !== idx);
+      }
+      return prev.map((item, k) =>
+        k === idx
+          ? { ...item, product: latestProduct, size: newSize, quantity: Math.min(item.quantity, maxAvail) }
+          : item
+      );
+    });
+  };
+
   const clearCart = () => {
     setCart([]);
     setAppliedCoupon(null);
   };
 
-  const getEffectivePrice = useCallback((product: Product) => {
-    if (product.flashSalePrice && product.flashSalePrice > 0 && product.flashSalePrice < product.discountedPrice) {
-      return product.flashSalePrice;
-    }
-    return product.discountedPrice;
+  const getEffectivePrice = useCallback((product: Product, size?: string) => {
+    return getEffectiveSizePrice(product, size);
   }, []);
 
   const reorderFromOrder = (order: Order) => {
@@ -744,7 +797,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         continue;
       }
       const avail = getProductVariantStock(prod, item.size, item.color);
-      if (avail <= 0) {
+      if (avail <= 0 || !isSizeAvailableForPurchase(prod, item.size, item.color)) {
         skippedCount++;
         continue;
       }
@@ -769,7 +822,24 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const cartSubtotal = cart.reduce((sum, item) => sum + getEffectivePrice(item.product) * item.quantity, 0);
+  // Sync live product pricing & size availability onto persisted cart items whenever catalog refreshes
+  useEffect(() => {
+    if (products.length === 0) return;
+    setCart((prev) => {
+      let changed = false;
+      const next = prev.map((item) => {
+        const fresh = products.find((p) => p.id === item.product.id);
+        if (fresh && (fresh.updatedAt !== item.product.updatedAt || fresh.flashSalePrice !== item.product.flashSalePrice)) {
+          changed = true;
+          return { ...item, product: fresh };
+        }
+        return item;
+      });
+      return changed ? next : prev;
+    });
+  }, [products]);
+
+  const cartSubtotal = cart.reduce((sum, item) => sum + getEffectivePrice(item.product, item.size) * item.quantity, 0);
   const freeThreshold = settings?.freeShippingThreshold || 1499;
   const standardFee = settings?.standardShippingFee || 99;
   const cartShipping = cart.length === 0 ? 0 : vipStatus?.tier?.freeShippingAlways || cartSubtotal >= freeThreshold ? 0 : standardFee;
@@ -1112,6 +1182,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         reorderFromOrder,
         removeFromCart,
         updateCartQuantity,
+        updateCartItemSize,
         clearCart,
         appliedCoupon,
         applyCoupon,

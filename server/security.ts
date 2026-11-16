@@ -149,7 +149,7 @@ export function resolveEffectivePermissions(
   superAdminEmail: string
 ): AdminPermission[] {
   if (user.role !== 'admin') return [];
-  const isOwner = user.email.toLowerCase() === superAdminEmail.toLowerCase() || !!user.isSuperAdmin;
+  const isOwner = user.email.toLowerCase() === superAdminEmail.toLowerCase();
   if (isOwner) return [...ALL_PERMISSIONS];
 
   if (Array.isArray(user.permissions) && user.permissions.length > 0) {

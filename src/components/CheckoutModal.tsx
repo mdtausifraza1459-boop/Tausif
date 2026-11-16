@@ -327,7 +327,7 @@ export const CheckoutModal: React.FC = () => {
           image: item.product.images[0] || '',
           size: item.size,
           color: item.color,
-          price: item.product.discountedPrice,
+          price: getEffectivePrice(item.product, item.size),
           quantity: item.quantity,
         })),
         paymentMethod,
@@ -782,13 +782,13 @@ export const CheckoutModal: React.FC = () => {
                         className="w-11 h-14 object-cover rounded border border-[#E2DFD7] shrink-0"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-[#141413] truncate">{item.product.name}</p>
-                        <p className="text-[11px] text-[#63615C]">
-                          Size {item.size} · {item.color} · Qty {item.quantity}
+                        <p className="font-semibold text-[#191615] truncate">{item.product.name}</p>
+                        <p className="text-[11px] text-[#665E5B]">
+                          Size {item.size} · {item.color} · Qty {item.quantity} (₹{getEffectivePrice(item.product, item.size).toLocaleString()})
                         </p>
                       </div>
-                      <span className="font-mono font-semibold text-[#141413] tabular-nums">
-                        ₹{(getEffectivePrice(item.product) * item.quantity).toLocaleString()}
+                      <span className="font-mono font-semibold text-[#191615] tabular-nums">
+                        ₹{(getEffectivePrice(item.product, item.size) * item.quantity).toLocaleString()}
                       </span>
                     </div>
                   ))}

@@ -14,7 +14,14 @@ import {
   Video,
   Image as ImageIcon,
 } from 'lucide-react';
-import { Product, Category, StockMovement } from '../../types.ts';
+import { Product, Category, StockMovement, SizePricingEntry } from '../../types.ts';
+import {
+  STANDARD_SIZES,
+  buildProgressiveSizePricing,
+  getProductPriceRange,
+  getSizeDiscountPercent,
+  normalizeSizePricingPayload,
+} from '../../utils/pricing.ts';
 
 interface CommonProps {
   adminToken: string;
@@ -270,12 +277,21 @@ export const ProductsCatalogView: React.FC<
                       <p className="text-[10px] text-[#63615C]">{p.brand}</p>
                     </td>
                     <td className="p-3 font-mono tabular-nums space-y-0.5">
-                      <p className="font-bold text-[#141413]">
-                        ₹{p.discountedPrice.toLocaleString()}{' '}
-                        <span className="line-through text-[10px] text-[#63615C] font-normal">
-                          ₹{p.originalPrice.toLocaleString()}
-                        </span>
-                      </p>
+                      {(() => {
+                        const range = getProductPriceRange(p);
+                        return range.hasRange ? (
+                          <p className="font-bold text-[#141413]">
+                            ₹{range.min.toLocaleString()} – ₹{range.max.toLocaleString()}
+                          </p>
+                        ) : (
+                          <p className="font-bold text-[#141413]">
+                            ₹{p.discountedPrice.toLocaleString()}{' '}
+                            <span className="line-through text-[10px] text-[#63615C] font-normal">
+                              ₹{p.originalPrice.toLocaleString()}
+                            </span>
+                          </p>
+                        );
+                      })()}
                       <p className="text-[10px] text-[#63615C]">
                         Cost:{' '}
                         {p.costPrice > 0 ? (
@@ -491,9 +507,23 @@ const ProductFormModal: React.FC<{
   const [description, setDescription] = useState(product?.description || '');
 
   const [sizes, setSizes] = useState<string[]>(
-    product?.sizes?.length ? product.sizes : ['XS', 'S', 'M', 'L', 'XL']
+    product?.sizes?.length ? product.sizes : [...STANDARD_SIZES]
   );
   const [newSizeInput, setNewSizeInput] = useState('');
+  const [sizePricing, setSizePricing] = useState<Record<string, SizePricingEntry>>(() =>
+    product?.sizePricing && Object.keys(product.sizePricing).length > 0
+      ? normalizeSizePricingPayload(
+          product.sizePricing,
+          product.sizes?.length ? product.sizes : [...STANDARD_SIZES],
+          product.originalPrice || 2999,
+          product.discountedPrice || 1799
+        )
+      : buildProgressiveSizePricing(
+          product?.sizes?.length ? product.sizes : [...STANDARD_SIZES],
+          product?.originalPrice || 2999,
+          product?.discountedPrice || 1799
+        )
+  );
   const [colors, setColors] = useState<{ name: string; hex: string }[]>(
     product?.colors?.length ? product.colors : [{ name: 'Blush Pink', hex: '#E8C5C8' }]
   );
@@ -505,7 +535,7 @@ const ProductFormModal: React.FC<{
       return { ...product.variantStock };
     }
     const init: Record<string, number> = {};
-    (product?.sizes || ['XS', 'S', 'M', 'L', 'XL']).forEach((s) => {
+    (product?.sizes || [...STANDARD_SIZES]).forEach((s) => {
       (product?.colors || [{ name: 'Blush Pink', hex: '#E8C5C8' }]).forEach((c) => {
         init[`${s}::${c.name}`] = 5;
       });
@@ -536,6 +566,38 @@ const ProductFormModal: React.FC<{
     0
   );
 
+  const ensureSizePricingEntry = (size: string) => {
+    setSizePricing((prev) => {
+      if (prev[size]) return prev;
+      const baseSell = Math.max(1, Number(discountedPrice) || 1799);
+      const baseMrp = Math.max(baseSell, Number(originalPrice) || baseSell);
+      return {
+        ...prev,
+        [size]: {
+          originalPrice: baseMrp,
+          discountedPrice: baseSell,
+          available: true,
+        },
+      };
+    });
+  };
+
+  const applyBasePriceToAllSizes = () => {
+    const cleanSell = Math.max(1, Math.round(Number(discountedPrice) || 1));
+    const cleanMrp = Math.max(cleanSell, Math.round(Number(originalPrice) || cleanSell));
+    setSizePricing((prev) => {
+      const next: Record<string, SizePricingEntry> = {};
+      for (const sz of sizes) {
+        next[sz] = {
+          originalPrice: cleanMrp,
+          discountedPrice: cleanSell,
+          available: prev[sz]?.available !== false,
+        };
+      }
+      return next;
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -548,6 +610,23 @@ const ProductFormModal: React.FC<{
         });
       });
 
+      const normalizedSizePricing = normalizeSizePricingPayload(
+        sizePricing,
+        sizes,
+        Number(originalPrice),
+        Number(discountedPrice)
+      );
+
+      // Keep product-level starting prices aligned with lowest available size price
+      const availableEntries = sizes
+        .map((sz) => normalizedSizePricing[sz])
+        .filter((e) => e && e.available);
+      const refPool = availableEntries.length > 0 ? availableEntries : Object.values(normalizedSizePricing);
+      const minSellEntry = refPool.reduce(
+        (min, cur) => (cur.discountedPrice < min.discountedPrice ? cur : min),
+        refPool[0] || { originalPrice: Number(originalPrice), discountedPrice: Number(discountedPrice), available: true }
+      );
+
       const payload = {
         sku: sku.trim() || undefined,
         name,
@@ -555,8 +634,9 @@ const ProductFormModal: React.FC<{
         supplier: supplier.trim() || undefined,
         category,
         costPrice: Number(costPrice) || 0,
-        originalPrice: Number(originalPrice),
-        discountedPrice: Number(discountedPrice),
+        originalPrice: minSellEntry.originalPrice,
+        discountedPrice: minSellEntry.discountedPrice,
+        sizePricing: normalizedSizePricing,
         wholesalePrice: wholesalePrice > 0 ? Number(wholesalePrice) : undefined,
         wholesaleMoq: wholesalePrice > 0 ? Number(wholesaleMoq) || 10 : undefined,
         lowStockThreshold: Number(lowStockThreshold) || 10,
@@ -816,6 +896,7 @@ const ProductFormModal: React.FC<{
                     const s = newSizeInput.trim();
                     if (s && !sizes.includes(s)) {
                       setSizes([...sizes, s]);
+                      ensureSizePricingEntry(s);
                       setNewSizeInput('');
                     }
                   }}
@@ -823,6 +904,21 @@ const ProductFormModal: React.FC<{
                 >
                   Add
                 </button>
+              </div>
+              <div className="flex flex-wrap gap-1 pt-0.5">
+                {STANDARD_SIZES.filter((std) => !sizes.includes(std)).map((std) => (
+                  <button
+                    key={std}
+                    type="button"
+                    onClick={() => {
+                      setSizes((prev) => [...prev, std]);
+                      ensureSizePricingEntry(std);
+                    }}
+                    className="px-2 py-0.5 bg-white border border-dashed border-[#E2DFD7] hover:border-[#164E3F] rounded text-[10px] font-mono text-[#63615C] hover:text-[#164E3F] cursor-pointer"
+                  >
+                    + {std}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -879,6 +975,150 @@ const ProductFormModal: React.FC<{
                   Add
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Size-Wise Pricing & Availability */}
+          <div className="p-3.5 bg-[#F7F6F2] rounded-lg border border-[#E2DFD7] space-y-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span className="font-bold text-[#141413] block">Size-Wise Pricing &amp; Availability</span>
+                <span className="text-[11px] text-[#63615C]">
+                  Configure independent selling price, MRP, and availability toggle per size (uncheck to disable on storefront).
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSizePricing(
+                      buildProgressiveSizePricing(sizes, Number(originalPrice), Number(discountedPrice))
+                    )
+                  }
+                  className="px-3 py-1.5 bg-[#164E3F] hover:bg-[#0F3A2E] text-white rounded text-[11px] font-semibold transition-colors cursor-pointer"
+                >
+                  Auto-Tier by Size (Small → Large)
+                </button>
+                <button
+                  type="button"
+                  onClick={applyBasePriceToAllSizes}
+                  className="px-3 py-1.5 bg-white hover:bg-[#164E3F] hover:text-white border border-[#E2DFD7] rounded text-[11px] font-semibold text-[#164E3F] transition-colors cursor-pointer"
+                >
+                  Same Base Price (₹{discountedPrice}) All Sizes
+                </button>
+              </div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="text-[11px] text-[#63615C] border-b border-[#E2DFD7]">
+                    <th className="py-1.5 pr-3">Size</th>
+                    <th className="py-1.5 px-2">Available</th>
+                    <th className="py-1.5 px-2">Selling Price (₹)</th>
+                    <th className="py-1.5 px-2">MRP (₹)</th>
+                    <th className="py-1.5 px-2 text-center">Discount</th>
+                    <th className="py-1.5 pl-2 text-right">Row Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sizes.map((s) => {
+                    const rawEntry = sizePricing[s];
+                    const entrySell = Math.max(
+                      1,
+                      Number(rawEntry?.discountedPrice) || Number(discountedPrice) || 1799
+                    );
+                    const entryMrp = Math.max(
+                      entrySell,
+                      Number(rawEntry?.originalPrice) || Number(originalPrice) || entrySell
+                    );
+                    const entryAvailable = rawEntry ? rawEntry.available !== false : true;
+                    const rowStock = colors.reduce(
+                      (sum, col) => sum + (Number(variantStock[`${s}::${col.name}`]) || 0),
+                      0
+                    );
+                    const pct = getSizeDiscountPercent(entryMrp, entrySell);
+                    return (
+                      <tr
+                        key={s}
+                        className={`border-t border-[#E2DFD7] ${
+                          !entryAvailable ? 'opacity-60 bg-[#FEF2F2]/40' : ''
+                        }`}
+                      >
+                        <td className="py-2 pr-3 font-mono font-bold text-[#141413]">{s}</td>
+                        <td className="py-2 px-2">
+                          <label className="inline-flex items-center gap-1.5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={entryAvailable}
+                              onChange={(e) =>
+                                setSizePricing((prev) => ({
+                                  ...prev,
+                                  [s]: {
+                                    discountedPrice: entrySell,
+                                    originalPrice: entryMrp,
+                                    available: e.target.checked,
+                                  },
+                                }))
+                              }
+                            />
+                            <span className="text-[11px] font-medium">
+                              {entryAvailable ? 'Enabled' : 'Disabled'}
+                            </span>
+                          </label>
+                        </td>
+                        <td className="py-1.5 px-2">
+                          <input
+                            type="number"
+                            min={1}
+                            required
+                            value={entrySell}
+                            onChange={(e) => {
+                              const val = Math.max(1, Number(e.target.value));
+                              setSizePricing((prev) => ({
+                                ...prev,
+                                [s]: {
+                                  discountedPrice: val,
+                                  originalPrice: Math.max(val, entryMrp),
+                                  available: entryAvailable,
+                                },
+                              }));
+                            }}
+                            className="w-24 p-1.5 border border-[#E2DFD7] rounded bg-white font-mono text-right"
+                          />
+                        </td>
+                        <td className="py-1.5 px-2">
+                          <input
+                            type="number"
+                            min={1}
+                            required
+                            value={entryMrp}
+                            onChange={(e) => {
+                              const val = Math.max(1, Number(e.target.value));
+                              setSizePricing((prev) => ({
+                                ...prev,
+                                [s]: {
+                                  discountedPrice: entrySell,
+                                  originalPrice: Math.max(val, entrySell),
+                                  available: entryAvailable,
+                                },
+                              }));
+                            }}
+                            className="w-24 p-1.5 border border-[#E2DFD7] rounded bg-white font-mono text-right"
+                          />
+                        </td>
+                        <td className="py-2 px-2 text-center font-mono font-semibold text-[#164E3F]">
+                          {pct > 0 ? `${pct}% OFF` : '—'}
+                        </td>
+                        <td className="py-2 pl-2 text-right font-mono font-semibold">
+                          <span className={rowStock === 0 ? 'text-[#B91C1C]' : 'text-[#141413]'}>
+                            {rowStock} pcs
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
 

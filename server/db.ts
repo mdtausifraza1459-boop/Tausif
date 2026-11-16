@@ -31,22 +31,33 @@ import type {
   WholesaleAccount,
   WholesaleOrderRequest,
 } from '../src/types.ts';
-import { sanitizeAuditPayload } from './security.ts';
+import { sanitizeAuditPayload, revokeSessionsForUser } from './security.ts';
+import {
+  buildProgressiveSizePricing,
+  normalizeSizePricingPayload,
+} from '../src/utils/pricing.ts';
 
 export const DATA_DIR = path.resolve('data');
 export const DB_FILE = path.join(DATA_DIR, 'db.json');
 export const BACKUPS_DIR = path.join(DATA_DIR, 'backups');
 
+export const BLOCKED_LEGACY_ADMIN_EMAILS = new Set(['mdromaan99@gmail.com']);
+
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(BACKUPS_DIR)) fs.mkdirSync(BACKUPS_DIR, { recursive: true });
 
-export let SUPER_ADMIN_EMAIL = (
+const RAW_ENV_SUPER_ADMIN = (
   process.env.NEW_SUPER_ADMIN_EMAIL ||
   process.env.OWNER_ADMIN_EMAIL ||
-  'mdtausifraza1459@gmail.com'
+  'mdromaan91@gmail.com'
 )
   .trim()
   .toLowerCase();
+
+export let SUPER_ADMIN_EMAIL =
+  RAW_ENV_SUPER_ADMIN === 'mdromaan99@gmail.com'
+    ? 'mdromaan91@gmail.com'
+    : RAW_ENV_SUPER_ADMIN;
 
 export function setSuperAdminEmail(next: string) {
   SUPER_ADMIN_EMAIL = next.trim().toLowerCase();
@@ -582,6 +593,16 @@ export function getDB(): DatabaseSchema {
       );
       needsSave = true;
     }
+    if (!prod.sizePricing || Object.keys(prod.sizePricing).length === 0) {
+      const targetSizes =
+        Array.isArray(prod.sizes) && prod.sizes.length ? prod.sizes : ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+      prod.sizePricing = buildProgressiveSizePricing(
+        targetSizes,
+        prod.originalPrice,
+        prod.discountedPrice
+      );
+      needsSave = true;
+    }
     if (!Array.isArray(prod.videos)) {
       prod.videos = [];
     }
@@ -593,8 +614,9 @@ export function getDB(): DatabaseSchema {
     }
   }
 
-  // Non-destructive user normalization
+  // Non-destructive user normalization & strict Super Admin authority enforcement
   for (const u of parsed.users as InternalUser[]) {
+    const emailNorm = (u.email || '').trim().toLowerCase();
     if (!u.referralCode) {
       u.referralCode = `ZL-${(u.name || 'LUXE').replace(/[^A-Za-z]/g, '').slice(0, 4).toUpperCase() || 'VIP'}${u.id.slice(-4).toUpperCase()}`;
       needsSave = true;
@@ -609,14 +631,39 @@ export function getDB(): DatabaseSchema {
     if (u.marketingConsent === undefined) u.marketingConsent = false;
     if (!Array.isArray(u.recentlyViewedIds)) u.recentlyViewedIds = [];
     if (!Array.isArray(u.savedCart)) u.savedCart = [];
+
+    // Permanently revoke admin access from removed legacy admin email(s)
+    if (BLOCKED_LEGACY_ADMIN_EMAILS.has(emailNorm)) {
+      if (u.role !== 'customer' || u.isSuperAdmin || u.adminRole || (u.permissions && u.permissions.length > 0)) {
+        u.role = 'customer';
+        u.isSuperAdmin = false;
+        delete u.adminRole;
+        u.permissions = [];
+        revokeSessionsForUser(u.id, u.email);
+        needsSave = true;
+      }
+      continue;
+    }
+
+    // Only SUPER_ADMIN_EMAIL may retain primary_owner / isSuperAdmin authority
+    if (emailNorm !== SUPER_ADMIN_EMAIL.toLowerCase()) {
+      if (u.isSuperAdmin || u.adminRole === 'primary_owner') {
+        u.isSuperAdmin = false;
+        if (u.adminRole === 'primary_owner') {
+          u.adminRole = 'store_partner';
+        }
+        needsSave = true;
+      }
+    }
+
     if (u.role === 'admin' && !u.adminRole) {
-      const isOwner = u.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase() || !!u.isSuperAdmin;
+      const isOwner = emailNorm === SUPER_ADMIN_EMAIL.toLowerCase();
       u.adminRole = isOwner ? 'primary_owner' : 'store_partner';
       needsSave = true;
     }
   }
 
-  // Ensure Primary Owner record exists & stays superAdmin
+  // Ensure Primary Owner record exists & holds exclusive Super Admin role
   const owner = (parsed.users as InternalUser[]).find(
     (u) => u.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase()
   );
@@ -636,11 +683,17 @@ export function getDB(): DatabaseSchema {
       createdAt: new Date().toISOString(),
     });
     needsSave = true;
-  } else {
+  } else if (
+    owner.role !== 'admin' ||
+    !owner.isSuperAdmin ||
+    owner.adminRole !== 'primary_owner' ||
+    owner.status !== 'active'
+  ) {
     owner.role = 'admin';
     owner.isSuperAdmin = true;
     owner.adminRole = 'primary_owner';
     owner.status = 'active';
+    needsSave = true;
   }
 
   // Ensure paymentTransactions mirror existing real orders without modifying order amounts/statuses
